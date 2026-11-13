@@ -259,7 +259,7 @@ function signIn(){$('g-err').textContent='';if(!window.cloud){$('g-err').textCon
 addEventListener('cm-auth',async e=>{const was=cu;cu=e.detail;gateDone=true;
  if(cu){
   try{const d=await cloud.load();if(d)S=clean(d);else{S=DEF();cloud.save(S,true)}sync='synced'}
-  catch(err){console.error(err);$('g-err').textContent='Could not load your save. Check your connection and sign in again.';cloud.logout();return}
+  catch(err){console.error(err);$('g-err').textContent='Could not load your save ('+(err.code||err.message)+'). Check your connection and sign in again.';cloud.logout();return}
   gate('off');showMenu()}
  else{if(was){S=DEF();playing=false;paused=false;down=false;$('hud').style.display='none';closeRs();$('reveal').style.display='none';rolling=false}
   $('menu').style.display='none';gate('login')}
