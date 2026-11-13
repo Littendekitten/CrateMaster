@@ -28,6 +28,15 @@ const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:
  tomcatx:{n:'Tomcat',r:'rare',d:11,f:0.07,p:1,s:0.035,a:1,l:0.85}, gunslingerx:{n:'Gunslinger',r:'rare',d:50,f:0.55,p:1,s:0.007,a:0,l:0.8}, neonreaperx:{n:'Neon Reaper',r:'epic',d:13,f:0.067,p:1,s:0.0298,a:1,l:0.85}, stormbringerx:{n:'Stormbringer',r:'epic',d:27,f:0.114,p:1,s:0.0119,a:1,l:1.2},
  thunderclapx:{n:'Thunderclap',r:'epic',d:16,f:0.712,p:8,s:0.0765,a:0,l:1.05}, eagleeyex:{n:'Eagle Eye',r:'epic',d:65,f:0.475,p:1,s:0.0034,a:0,l:1.3}, juggernautx:{n:'Juggernaut',r:'epic',d:22,f:0.076,p:1,s:0.0255,a:1,l:1.4}, dragonbreathx:{n:'Dragonbreath',r:'legendary',d:19,f:0.66,p:8,s:0.063,a:0,l:1.05},
  voidwalkerx:{n:'Void Walker',r:'legendary',d:33,f:0.106,p:1,s:0.0098,a:1,l:1.2}, starfallx:{n:'Starfall',r:'legendary',d:155,f:0.968,p:1,s:0.0,a:0,l:1.5}, chaosenginex:{n:'Chaos Engine',r:'legendary',d:26,f:0.07,p:1,s:0.021,a:1,l:1.4}, judgmentx:{n:'Judgment',r:'legendary',d:70,f:0.484,p:1,s:0.0049,a:0,l:0.8},
+ ricketyrifle2x:{n:'Rickety Rifle',r:'common',d:20,f:.13,p:1,s:.014,a:1,l:1.2}, tinpopperx:{n:'Tin Popper',r:'common',d:28,f:.3,p:1,s:.007,a:0,l:.65}, rustyscatterx:{n:'Rusty Scatter',r:'common',d:10,f:.45,p:6,s:.09,a:1,l:1.0}, stubbyx:{n:'Stubby',r:'common',d:10,f:.075,p:1,s:.034,a:1,l:.85}, hunterboltx:{n:'Hunter Bolt',r:'common',d:85,f:1.1,p:1,s:0,a:0,l:1.5},
+ vandalx:{n:'Vandal',r:'rare',d:24,f:.115,p:1,s:.013,a:1,l:1.2}, scattershotx:{n:'Scattershot',r:'rare',d:12,f:.75,p:8,s:.09,a:0,l:1.1}, duelistx:{n:'Duelist',r:'rare',d:48,f:.5,p:1,s:.007,a:0,l:.8}, hornetx:{n:'Hornet',r:'rare',d:11,f:.068,p:1,s:.034,a:1,l:.85}, marksmanx:{n:'Marksman',r:'rare',d:105,f:1.05,p:1,s:0,a:0,l:1.5},
+ specterx:{n:'Specter',r:'epic',d:26,f:.11,p:1,s:.011,a:1,l:1.25}, blastmasterx:{n:'Blastmaster',r:'epic',d:17,f:.7,p:8,s:.075,a:0,l:1.05}, vipergunx:{n:'Viper Fang',r:'epic',d:13,f:.065,p:1,s:.03,a:1,l:.85}, deadeyex:{n:'Deadeye',r:'epic',d:68,f:.48,p:1,s:.0035,a:0,l:1.3}, bulwarkx:{n:'Bulwark',r:'epic',d:21,f:.075,p:1,s:.025,a:1,l:1.4},
+ cataclysmx:{n:'Cataclysm',r:'legendary',d:160,f:.97,p:1,s:0,a:0,l:1.5}, maelstromx:{n:'Maelstrom',r:'legendary',d:17,f:.06,p:1,s:.024,a:1,l:.85}, wraithx:{n:'Wraith',r:'legendary',d:34,f:.1,p:1,s:.0095,a:1,l:1.2}, doomsdayx:{n:'Doomsday',r:'legendary',d:19,f:.65,p:8,s:.063,a:0,l:1.05}, celestialx:{n:'Celestial',r:'legendary',d:75,f:.45,p:1,s:.003,a:0,l:1.3},
+ pebblepitcherx:{n:'Pebble Pitcher',r:'common',d:25.5,f:0.3,p:1,s:0.006,a:0,l:0.65}, garagegatx:{n:'Garage Gat',r:'common',d:9.3,f:0.07,p:1,s:0.033,a:1,l:0.88}, handcannonjrx:{n:'Hand Cannon Jr',r:'common',d:25.5,f:0.3,p:1,s:0.006,a:0,l:0.65}, pocketsprayx:{n:'Pocket Spray',r:'common',d:9.3,f:0.07,p:1,s:0.033,a:1,l:0.88}, beaterarx:{n:'Beater AR',r:'common',d:20.4,f:0.12,p:1,s:0.012,a:1,l:1.2}, rookiepumpx:{n:'Rookie Pump',r:'common',d:11.0,f:0.7,p:8,s:0.08,a:0,l:1.05},
+ banditx:{n:'Bandit',r:'rare',d:11,f:0.07,p:1,s:0.033,a:1,l:0.88}, trailblazerx:{n:'Trailblazer',r:'rare',d:24,f:0.12,p:1,s:0.012,a:1,l:1.2}, breacherx:{n:'Breacher',r:'rare',d:13,f:0.7,p:8,s:0.08,a:0,l:1.05}, sentinelx:{n:'Sentinel',r:'rare',d:80,f:0.9,p:1,s:0.002,a:0,l:1.45}, outlawx:{n:'Outlaw',r:'rare',d:30,f:0.3,p:1,s:0.006,a:0,l:0.65}, twisterx:{n:'Twister',r:'rare',d:15,f:0.38,p:6,s:0.06,a:1,l:1.0}, patriotx:{n:'Patriot',r:'rare',d:24,f:0.12,p:1,s:0.012,a:1,l:1.2},
+ grimx:{n:'Grim',r:'epic',d:27.6,f:0.12,p:1,s:0.012,a:1,l:1.2}, ironhidex:{n:'Ironhide',r:'epic',d:20.7,f:0.07,p:1,s:0.024,a:1,l:1.4}, havocx:{n:'Havoc',r:'epic',d:17.2,f:0.38,p:6,s:0.06,a:1,l:1.0}, nighthawkx:{n:'Nighthawk',r:'epic',d:92.0,f:0.9,p:1,s:0.002,a:0,l:1.45}, barragex:{n:'Barrage',r:'epic',d:12.6,f:0.07,p:1,s:0.033,a:1,l:0.88}, steelstormx:{n:'Steelstorm',r:'epic',d:20.7,f:0.07,p:1,s:0.024,a:1,l:1.4}, ricochetx:{n:'Ricochet',r:'epic',d:34.5,f:0.3,p:1,s:0.006,a:0,l:0.65},
+ annihilatorx:{n:'Annihilator',r:'legendary',d:23.4,f:0.07,p:1,s:0.024,a:1,l:1.4}, seraphx:{n:'Seraph',r:'legendary',d:104.0,f:0.9,p:1,s:0.002,a:0,l:1.45}, hellfirex:{n:'Hellfire',r:'legendary',d:19.5,f:0.38,p:6,s:0.06,a:1,l:1.0}, leviathanx:{n:'Leviathan',r:'legendary',d:16.9,f:0.7,p:8,s:0.08,a:0,l:1.05}, nebulax:{n:'Nebula',r:'legendary',d:31.2,f:0.12,p:1,s:0.012,a:1,l:1.2}, harpyx:{n:'Harpy',r:'legendary',d:14.3,f:0.07,p:1,s:0.033,a:1,l:0.88}, megalithx:{n:'Megalith',r:'legendary',d:104.0,f:0.9,p:1,s:0.002,a:0,l:1.45}, pandemoniumx:{n:'Pandemonium',r:'legendary',d:19.5,f:0.38,p:6,s:0.06,a:1,l:1.0},
+ tinkerx:{n:'Tinker Tommy',r:'common',d:9.4,f:.07,p:1,s:.033,a:1,l:.88}, skirmisherx:{n:'Skirmisher',r:'rare',d:24,f:.12,p:1,s:.012,a:1,l:1.2},
  candycornx:{n:'Candy Corn Blaster',r:'common',d:11,f:.07,p:1,s:.035,a:1,l:.9,x:'spooky'},
  pumpkinsmasherx:{n:'Pumpkin Smasher',r:'rare',d:15,f:.7,p:9,s:.085,a:0,l:1.1,x:'spooky'},
  witchfirex:{n:'Witchfire',r:'epic',d:28,f:.11,p:1,s:.01,a:1,l:1.25,x:'spooky'},
@@ -38,7 +47,7 @@ const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:
  arcadearx:{n:'Arcade AR',r:'epic',d:27,f:.11,p:1,s:.01,a:1,l:1.25,x:'og',px:1},
  gameoverx:{n:'Game Over',r:'legendary',d:180,f:1.15,p:1,s:0,a:0,l:1.6,x:'og',px:1},
  finalbossx:{n:'Final Boss',r:'legendary',d:15,f:.045,p:1,s:.03,a:1,l:1.5,x:'og',px:1}};
-const SKINS={default:{n:'Factory Gray',r:'common',c:0x777b88},neon:{n:'Neon Green',r:'common',c:0x39ff14},crimson:{n:'Crimson',r:'rare',c:0xdc143c},ice:{n:'Glacier',r:'epic',c:0x66ccff},gold:{n:'Midas Gold',r:'legendary',c:0xffd23f},void:{n:'Void Purple',r:'legendary',c:0x8a2be2}};
+const SKINS={default:{n:'Factory Gray',r:'common',c:0x777b88},neon:{n:'Neon Green',r:'common',c:0x39ff14},crimson:{n:'Crimson',r:'rare',c:0xdc143c},ice:{n:'Glacier',r:'epic',c:0x66ccff},gold:{n:'Midas Gold',r:'legendary',c:0xffd23f},void:{n:'Void Purple',r:'legendary',c:0x8a2be2},sakura:{n:'Sakura Pink',r:'common',c:0xff9ecb},ember:{n:'Ember Orange',r:'rare',c:0xff6a00},ocean:{n:'Deep Ocean',r:'rare',c:0x1e6fff},shadow:{n:'Shadow Black',r:'epic',c:0x22222e},aurora:{n:'Aurora',r:'legendary',c:0x00ffc8},snow:{n:'Snowfall White',r:'common',c:0xf2f6ff},mint:{n:'Mint',r:'common',c:0x7dffb3},sunshine:{n:'Sunshine',r:'common',c:0xffe45c},violet:{n:'Violet',r:'rare',c:0x9b5cff},cobalt:{n:'Cobalt',r:'rare',c:0x0047ab},blaze:{n:'Blaze',r:'epic',c:0xff3b1f},toxic:{n:'Toxic Waste',r:'epic',c:0xb6ff00},magma:{n:'Magma',r:'legendary',c:0xff4500},galaxy:{n:'Galaxy',r:'legendary',c:0x3a1c9e},diamond:{n:'Diamond',r:'legendary',c:0xb9f2ff}};
 const CR={basic:{n:'Basic Crate',col:'#ff8a1f',cost:100,w:[60,28,10,2]},elite:{n:'Elite Crate',col:'#b45cff',cost:300,w:[0,50,35,15]},legend:{n:'Legendary Crate',col:'#ffb81f',cost:1000,w:[0,0,25,75]}};
 const LIM={spooky:{n:'Spooky Crate',col:'#ff6a00',cost:500,w:[40,30,20,10],ltd:1},og:{n:'OG Crate',col:'#39ff14',cost:500,w:[35,30,25,10],ltd:1}};
 let limOn={};
@@ -100,7 +109,7 @@ function menu(){
  const grp={};S.guns.forEach(id=>{if(GUNS[id])grp[id]=(grp[id]||0)+1});
  $('inv').innerHTML=Object.keys(grp).map(id=>{const G=GUNS[id],n=grp[id],hs=S.hot.map((g,i)=>g==id?i+1:0).filter(Boolean);return `<div class="wcard ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${n>1?`<i class="cnt">×${n}</i>`:''}${gunSvg(id,sk)}<b>${G.n}</b>${LT(G)}<small>${G.r}</small><div class="bars">${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}</div><button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${hs.length?'Slot '+hs.join(',')+' · '+(hs.includes(hsel+1)?'in '+(hsel+1):(hs.length<n?'add to ':'move to ')+(hsel+1)):'Put in slot '+(hsel+1)}</button></div>`}).join('');
  applyCw();
- $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).sort(sSort).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
+ $('skins').innerHTML=[...new Set(S.skins)].filter(id=>SKINS[id]).sort(sSort).map(id=>{const K=SKINS[id],own=true,n=cnt(S.skins,id);return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}${n>1?' ×'+n:''}<small>${own?K.r:'locked'}</small></button>`}).join('');
  if(document.activeElement!==$('o-nick'))$('o-nick').value=S.nick||'';$('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
  if(typeof renderTrade=='function')renderTrade();
  if(tab=='lb')renderLb();
@@ -113,8 +122,8 @@ function openCrate(k){
  const rar=RK[pick(c.w)],pool=[];
  for(const g in GUNS)if(g!='pistol'&&GUNS[g].r==rar&&(!GUNS[g].x||GUNS[g].x==k)){pool.push(['guns',g]);if(GUNS[g].x)pool.push(['guns',g])}
  for(const q in SKINS)if(q!='default'&&SKINS[q].r==rar)pool.push(['skins',q]);
- const [t,id]=pool[Math.random()*pool.length|0],it=(t=='guns'?GUNS:SKINS)[id],dup=S[t].includes(id),bk=Math.round(c.cost*.4);
- if(t=='skins'&&dup)S.coins+=bk;else{S[t].push(id);if(t=='guns'){S.hot=fixHot(S.hot,S.guns);if(!dup){const e=S.hot.indexOf('');if(e>=0)S.hot[e]=id}}}
+ const [t,id]=pool[Math.random()*pool.length|0],it=(t=='guns'?GUNS:SKINS)[id],dup=S[t].includes(id),bk=0;
+ {S[t].push(id);if(t=='guns'){S.hot=fixHot(S.hot,S.guns);if(!dup){const e=S.hot.indexOf('');if(e>=0)S.hot[e]=id}}}
  save();$('coins').textContent=S.coins.toLocaleString();
  const rv=$('reveal');rv.style.display='flex';rv.className='';
  rv.innerHTML=`<div class="shake" style="--c:${c.col}"><div class="cbox" style="transform:scale(2)"></div></div>`;beep(180,.8,'sawtooth',.06);
@@ -131,7 +140,7 @@ function openCrate(k){
    strip.classList.add('done');rv.className='hit';const sk=$('skip');if(sk)sk.remove();
    beep(rar=='legendary'?880:rar=='epic'?660:440,.5,'triangle',.09);
    setTimeout(()=>{rv.className='r-'+rar;
-    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2>${LT(it)}<p>${dup?(t=='guns'?'Duplicate · you now own ×'+cnt(S.guns,id):'Duplicate · +'+bk+' <i class="coin"></i> back'):'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
+    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2>${LT(it)}<p>${dup?(t=='guns'?'Duplicate · you now own ×'+cnt(S.guns,id):'Duplicate · you now own ×'+cnt(S.skins,id)):'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
   setTimeout(()=>{strip.style.transition='transform 6.5s cubic-bezier(.08,.6,.12,1)';strip.style.transform=`translateX(${-tx}px)`;tick()},60);
   strip.addEventListener('transitionend',()=>fin(false),{once:true});
   $('skip').onclick=()=>fin(true);
@@ -142,8 +151,8 @@ function rollItem(c,k){
  const rar=RK[pick(c.w)],pool=[];
  for(const g in GUNS)if(g!='pistol'&&GUNS[g].r==rar&&(!GUNS[g].x||GUNS[g].x==k)){pool.push(['guns',g]);if(GUNS[g].x)pool.push(['guns',g])}
  for(const q in SKINS)if(q!='default'&&SKINS[q].r==rar)pool.push(['skins',q]);
- const [t,id]=pool[Math.random()*pool.length|0],it=(t=='guns'?GUNS:SKINS)[id],dup=S[t].includes(id),bk=Math.round(c.cost*.4);
- if(t=='skins'&&dup)S.coins+=bk;else{S[t].push(id);if(t=='guns'&&!dup){S.hot=fixHot(S.hot,S.guns);const e=S.hot.indexOf('');if(e>=0)S.hot[e]=id}}
+ const [t,id]=pool[Math.random()*pool.length|0],it=(t=='guns'?GUNS:SKINS)[id],dup=S[t].includes(id),bk=0;
+ {S[t].push(id);if(t=='guns'&&!dup){S.hot=fixHot(S.hot,S.guns);const e=S.hot.indexOf('');if(e>=0)S.hot[e]=id}}
  return{t,id,it,rar,dup,bk}}
 function openTen(k){
  if(rolling)return;if(window.tradeLock){toast('Finish your trade first');return}const c=allCR()[k];if(!c){toast('This crate is no longer available');menu();return}
@@ -158,7 +167,7 @@ function openTen(k){
  const summary=()=>{
   const sorted=[...res].sort((x,y)=>RK.indexOf(y.rar)-RK.indexOf(x.rar));
   rv.className='r-'+RK[best];
-  rv.innerHTML=`<div class="beam"></div><div class="tenp"><h2>${c.n} ×10</h2><div class="teng">${sorted.map(r=>`<div class="tc" style="--c:${R[r.rar]}">${r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`}<b>${r.it.n}</b>${LT(r.it)}<small>${r.rar}</small><em>${r.t=='guns'?(r.dup?'×'+cnt(S.guns,r.id):'NEW'):(r.dup?'+'+r.bk+' back':'NEW')}</em></div>`).join('')}</div>${back?`<p class="note">Duplicate skins refunded <i class="coin"></i>${back}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
+  rv.innerHTML=`<div class="beam"></div><div class="tenp"><h2>${c.n} ×10</h2><div class="teng">${sorted.map(r=>`<div class="tc" style="--c:${R[r.rar]}">${r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`}<b>${r.it.n}</b>${LT(r.it)}<small>${r.rar}</small><em>${r.t=='guns'?(r.dup?'×'+cnt(S.guns,r.id):'NEW'):(r.dup?'×'+cnt(S.skins,r.id):'NEW')}</em></div>`).join('')}</div>${back?`<p class="note">Duplicate skins refunded <i class="coin"></i>${back}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
   beep(RK[best]=='legendary'?880:660,.5,'triangle',.09)};
  setTimeout(()=>{
   const W=54,N=64,STEP=84,vws=[],txs=[],fins=[];let doneN=0,tickRaf,last=-1,allDone=false;
@@ -191,7 +200,7 @@ function openHundred(k){
  const rv=$('reveal');rv.style.display='flex';rv.className='';
  rv.innerHTML=`<div class="shake" style="--c:${c.col}"><div class="cbox" style="transform:scale(2)"></div></div>`;beep(180,.8,'sawtooth',.06);
  setTimeout(()=>{rv.className='r-'+RK[best];
-  rv.innerHTML=`<div class="beam"></div><div class="tenp"><h2>${c.n} ×100</h2><p class="note">${RK.slice().reverse().map(q=>{const n=res.filter(r=>r.rar==q).length;return n?`<span style="color:${R[q]}">${n} ${q}</span>`:''}).filter(Boolean).join(' · ')}</p><div class="teng">${list.map(r=>`<div class="tc" style="--c:${R[r.rar]}"><span class="cnt2">×${r.n}</span>${r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`}<b>${r.it.n}</b>${LT(r.it)}<small>${r.rar}</small><em>${r.t=='guns'?'you own ×'+cnt(S.guns,r.id):(r.back?'+'+r.back+' back':'NEW')}</em></div>`).join('')}</div>${back?`<p class="note">Duplicate skins refunded <i class="coin"></i>${back}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
+  rv.innerHTML=`<div class="beam"></div><div class="tenp"><h2>${c.n} ×100</h2><p class="note">${RK.slice().reverse().map(q=>{const n=res.filter(r=>r.rar==q).length;return n?`<span style="color:${R[q]}">${n} ${q}</span>`:''}).filter(Boolean).join(' · ')}</p><div class="teng">${list.map(r=>`<div class="tc" style="--c:${R[r.rar]}"><span class="cnt2">×${r.n}</span>${r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`}<b>${r.it.n}</b>${LT(r.it)}<small>${r.rar}</small><em>${r.t=='guns'?'you own ×'+cnt(S.guns,r.id):(r.n>1||r.dup?'you own ×'+cnt(S.skins,r.id):'NEW')}</em></div>`).join('')}</div>${back?`<p class="note">Duplicate skins refunded <i class="coin"></i>${back}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
   beep(RK[best]=='legendary'?880:660,.5,'triangle',.09)},1100)}
 function hset(i){hsel=i;menu()}
 let lb=null,lbErr='',lbAt=0;
@@ -494,7 +503,7 @@ addEventListener('blur',()=>{for(const k in keys)keys[k]=false;down=false;if(pla
 const DEF=()=>({coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true,nick:'',hot:['pistol']});
 function clean(d){const o=DEF();['coins','best','kills','xp','runs'].forEach(k=>o[k]=Math.max(0,Math.floor(+d[k]||0)));
  if(Array.isArray(d.guns))o.guns=['pistol',...d.guns.filter(g=>GUNS[g]&&g!='pistol')];
- if(Array.isArray(d.skins))o.skins=[...new Set(['default',...d.skins.filter(k=>SKINS[k])])];
+ if(Array.isArray(d.skins)){o.skins=d.skins.filter(k=>SKINS[k]);if(!o.skins.includes('default'))o.skins.unshift('default')}
  if(o.guns.includes(d.gun))o.gun=d.gun;if(o.skins.includes(d.skin))o.skin=d.skin;
  if(d.sens>0)o.sens=+d.sens;if(d.vol>=0&&d.vol<=1)o.vol=+d.vol;o.bloom=d.bloom!==false;o.nick=cleanNick(d.username);
  if(Array.isArray(d.hotbar)){o.hot=d.hotbar.slice(0,5).map(g=>GUNS[g]?g:'')}else o.hot=o.guns.slice(0,5);
