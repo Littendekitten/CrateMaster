@@ -118,3 +118,7 @@ nav{display:flex;gap:6px;margin:16px 0;border-bottom:1px solid #2f3a62}
 @media(max-width:700px){.hb{width:60px}.hb b{display:none}}
 
 .crate.ltd{position:relative}.crate .tag{position:absolute;top:10px;right:10px;background:var(--c);color:#150a00;font-weight:800;font-size:11px;letter-spacing:1px;padding:3px 8px;border-radius:20px}
+
+.ltag{display:inline-block;background:#ff6a00;color:#190a00;font-weight:800;font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:10px;margin:3px 0;line-height:1.2;font-style:normal}
+.wcard,.hs,.hb{position:relative}.rcard .ltag{font-size:11px;padding:3px 10px;margin:0 0 6px}.rc .ltag{font-size:9px}
+.hb .ltag{position:absolute;right:3px;top:3px;font-size:7px;padding:1px 4px;margin:0}
