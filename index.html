@@ -1,1 +1,26 @@
-
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CrateMaster</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<canvas id="c"></canvas>
+<div id="hud"><div id="xh"></div><div id="hm">✕</div><div id="info"></div><div id="wpn"></div><div id="hpw"><div id="hp"></div></div><div id="flash"></div><div id="msg"></div></div>
+<div id="menu"><div class="box">
+<h1>CRATE<span>MASTER</span></h1>
+<p id="sub" style="color:var(--m)">Fight the bots. Earn coins. Crack crates.</p>
+<div class="row"><button class="big" id="play" onclick="go()">Play</button><div class="coin">🪙 <b id="coins"></b></div></div>
+<h2>Crates</h2><div class="row" id="crates"></div><div id="res"></div>
+<h2>Inventory</h2><div id="inv"></div>
+<p class="hint">WASD move · Shift sprint · Mouse aim · Click shoot · 1–5 switch gun · Esc pause. If the mouse doesn’t lock, hold click and drag, or use the arrow keys to look. Desktop recommended.</p>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/GammaCorrectionShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="app.js"></script>
+</body></html>
