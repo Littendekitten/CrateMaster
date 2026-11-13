@@ -189,7 +189,7 @@ function burst(pos,n,ci,spd){for(let i=0;i<n;i++){const m=new THREE.Mesh(pg,pmat
 /* ---------- game state ---------- */
 const P=new THREE.Vector3(0,0,0),rc=new THREE.Raycaster(),bots=[],tr=[],dead=[],kits=[];
 let playing=false,paused=false,locked=false,fallback=false,down=false;
-let st={c:0,xp:0},yaw=0,pitch=0,hp=100,wave=0,kills=0,toSpawn=0,spT=0,nwT=0,waiting=false,next=0,now=0,kick=0,bob=0,botId=0,hmT=0,fT=0,mT=0,fH=0,swapT=0,jy=0,jv=0,landT=0;
+let st={c:0,xp:0},yaw=0,pitch=0,hp=100,wave=0,kills=0,toSpawn=0,spT=0,nwT=0,waiting=false,next=0,now=0,kick=0,bob=0,botId=0,hmT=0,fT=0,mT=0,fH=0,swapT=0,jy=0,jv=0,landT=0,tR=0,sA=0;
 const keys={};
 function say(t){const m=$('msg');m.textContent=t;m.classList.remove('pop');void m.offsetWidth;m.classList.add('pop')}
 function hud(){$('hw').textContent=wave;$('hb').textContent=bots.length+toSpawn;$('hk').textContent=kills;$('hc').textContent=S.coins;$('hpn').textContent=Math.max(0,Math.ceil(hp));$('hp').style.width=Math.max(0,hp)+'%';$('hpw').classList.toggle('low',hp<35)}
@@ -348,10 +348,10 @@ function update(dt){
  if(jy>0||jv!==0){jv-=22*dt;jy+=jv*dt;if(jy<=0){jy=0;if(jv<-6){landT=Math.min(1,-jv/12);beep(110,.08,'sine',.05)}jv=0}}
  landT=Math.max(0,landT-dt*5);
  cam.position.set(P.x+(Math.random()-.5)*fT*.15,1.6+jy+(jy>0?0:Math.sin(bob)*.04)-landT*.12+(Math.random()-.5)*fT*.1,P.z);cam.rotation.set(pitch,yaw,0);
- kick=Math.max(0,kick-dt*.6);swapT=Math.max(0,swapT-dt*4);const mv=(f||r)?1:0,spr=keys.ShiftLeft&&mv;
- gun.position.set(.33+Math.cos(bob*.5)*.012*mv+(spr?.01:0),-.31+Math.abs(Math.sin(bob))*.012*mv-swapT*.35-(spr?.015:0)-jv*.006+landT*.05,-.5+kick);
- gun.rotation.x=kick*2+swapT*.9+(spr?.08:0);gun.rotation.y=(spr?.05:0)+Math.cos(bob*.5)*.015*mv;gun.rotation.z=Math.sin(bob*.5)*.02*mv-r*.04;
- cam.rotation.z=-r*.018+(Math.random()-.5)*fT*.03;cam.position.y+=fH*.03*Math.sin(now*30);fH=Math.max(0,fH-dt*3);
+ kick=Math.max(0,kick-dt*.6);swapT=Math.max(0,swapT-dt*4);const mv=(f||r)?1:0,spr=keys.ShiftLeft&&mv;const kk=1-Math.exp(-dt*7);tR+=(r-tR)*kk;sA+=((spr?1:0)-sA)*kk;
+ gun.position.set(.33+Math.cos(bob*.5)*.012*mv+sA*.0025,-.31+Math.abs(Math.sin(bob))*.012*mv-swapT*.35-sA*.004-jv*.006+landT*.05,-.5+kick);
+ gun.rotation.x=kick*2+swapT*.9+sA*.02;gun.rotation.y=sA*.0125+Math.cos(bob*.5)*.015*mv;gun.rotation.z=Math.sin(bob*.5)*.02*mv-tR*.01;
+ cam.rotation.z=-tR*.0045+(Math.random()-.5)*fT*.03;cam.position.y+=fH*.03*Math.sin(now*30);fH=Math.max(0,fH-dt*3);
  if(down&&GUNS[S.gun].a)shoot();
  /* spawning & waves */
  if(toSpawn>0){spT-=dt;if(spT<=0){spawnBot();toSpawn--;spT=.8}}
