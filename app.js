@@ -9,9 +9,27 @@ const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:
  mac:{n:'Mac-10',r:'common',d:10,f:.07,p:1,s:.04,a:1,l:.75},sawed:{n:'Sawed-Off',r:'common',d:11,f:.9,p:6,s:.12,a:0,l:.8},
  scout:{n:'Scout Rifle',r:'rare',d:40,f:.4,p:1,s:.003,a:0,l:1.25},pump:{n:'Riot Pump',r:'rare',d:15,f:.65,p:9,s:.08,a:0,l:1.15},
  blaster:{n:'Plasma Blaster',r:'epic',d:30,f:.16,p:1,s:.01,a:1,l:1.1},marksman:{n:'Viper Marksman',r:'epic',d:85,f:.8,p:1,s:.001,a:0,l:1.45},
- doom:{n:'Doomsday Cannon',r:'legendary',d:22,f:.9,p:14,s:.07,a:0,l:1.3},reaper:{n:'Reaper AR',r:'legendary',d:34,f:.09,p:1,s:.008,a:1,l:1.3}};
+ doom:{n:'Doomsday Cannon',r:'legendary',d:22,f:.9,p:14,s:.07,a:0,l:1.3},reaper:{n:'Reaper AR',r:'legendary',d:34,f:.09,p:1,s:.008,a:1,l:1.3},
+ rustbucketx:{n:'Rustbucket',r:'common',d:27,f:0.315,p:1,s:0.0066,a:0,l:0.65}, alleycatx:{n:'Alley Cat',r:'common',d:9,f:0.074,p:1,s:0.0385,a:1,l:0.85}, patchworkx:{n:'Patchwork',r:'common',d:19,f:0.126,p:1,s:0.0154,a:1,l:1.2}, dustdevilx:{n:'Dustdevil',r:'common',d:11,f:0.788,p:8,s:0.099,a:0,l:1.05},
+ tinstarx:{n:'Tin Star',r:'common',d:40,f:0.578,p:1,s:0.0077,a:0,l:0.8}, pocketrocketx:{n:'Pocket Rocket',r:'common',d:9,f:0.074,p:1,s:0.0385,a:1,l:0.85}, oldfaithfulx:{n:'Old Faithful',r:'common',d:27,f:0.315,p:1,s:0.0066,a:0,l:0.65}, junkyardarx:{n:'Junkyard AR',r:'common',d:19,f:0.126,p:1,s:0.0154,a:1,l:1.2},
+ gutterblasterx:{n:'Gutter Blaster',r:'common',d:9,f:0.42,p:6,s:0.088,a:1,l:1.0}, hobohunterx:{n:'Hobo Hunter',r:'common',d:45,f:0.525,p:1,s:0.0044,a:0,l:1.3}, pipedreamx:{n:'Pipe Dream',r:'common',d:11,f:0.788,p:8,s:0.099,a:0,l:1.05}, sparkplugx:{n:'Spark Plug',r:'common',d:9,f:0.074,p:1,s:0.0385,a:1,l:0.85},
+ steelrainx:{n:'Steel Rain',r:'rare',d:11,f:0.07,p:1,s:0.035,a:1,l:0.85}, nightfallx:{n:'Nightfall',r:'rare',d:55,f:0.5,p:1,s:0.004,a:0,l:1.3}, bulldogx:{n:'Bulldog',r:'rare',d:11,f:0.4,p:6,s:0.08,a:1,l:1.0}, cobrax:{n:'Cobra',r:'rare',d:33,f:0.3,p:1,s:0.006,a:0,l:0.65},
+ hammerheadx:{n:'Hammerhead',r:'rare',d:13,f:0.75,p:8,s:0.09,a:0,l:1.05}, rangerarx:{n:'Ranger AR',r:'rare',d:23,f:0.12,p:1,s:0.014,a:1,l:1.2}, wraithsmgx:{n:'Wraith SMG',r:'rare',d:11,f:0.07,p:1,s:0.035,a:1,l:0.85}, galeforcex:{n:'Gale Force',r:'rare',d:23,f:0.12,p:1,s:0.014,a:1,l:1.2},
+ lockjawx:{n:'Lockjaw',r:'rare',d:50,f:0.55,p:1,s:0.007,a:0,l:0.8}, pathfinderx:{n:'Pathfinder',r:'rare',d:55,f:0.5,p:1,s:0.004,a:0,l:1.3}, stingerx:{n:'Stinger',r:'rare',d:33,f:0.3,p:1,s:0.006,a:0,l:0.65}, backdraftx:{n:'Backdraft',r:'rare',d:11,f:0.4,p:6,s:0.08,a:1,l:1.0},
+ ironcladlmgx:{n:'Ironclad LMG',r:'rare',d:19,f:0.08,p:1,s:0.03,a:1,l:1.4}, valkyriex:{n:'Valkyrie',r:'epic',d:27,f:0.114,p:1,s:0.0119,a:1,l:1.2}, tempestx:{n:'Tempest',r:'epic',d:13,f:0.067,p:1,s:0.0298,a:1,l:0.85}, bansheex:{n:'Banshee',r:'epic',d:130,f:1.045,p:1,s:0.0,a:0,l:1.5},
+ hellhoundx:{n:'Hellhound',r:'epic',d:13,f:0.38,p:6,s:0.068,a:1,l:1.0}, archammerx:{n:'Arc Hammer',r:'epic',d:58,f:0.522,p:1,s:0.0059,a:0,l:0.8}, gravediggerx:{n:'Gravedigger',r:'epic',d:16,f:0.712,p:8,s:0.0765,a:0,l:1.05}, phantomx:{n:'Phantom',r:'epic',d:65,f:0.475,p:1,s:0.0034,a:0,l:1.3},
+ cyclonelmgx:{n:'Cyclone LMG',r:'epic',d:22,f:0.076,p:1,s:0.0255,a:1,l:1.4}, voltaicx:{n:'Voltaic',r:'epic',d:27,f:0.114,p:1,s:0.0119,a:1,l:1.2}, dragonflyx:{n:'Dragonfly',r:'epic',d:13,f:0.067,p:1,s:0.0298,a:1,l:0.85}, obsidianx:{n:'Obsidian',r:'epic',d:130,f:1.045,p:1,s:0.0,a:0,l:1.5},
+ warlordx:{n:'Warlord',r:'epic',d:22,f:0.076,p:1,s:0.0255,a:1,l:1.4}, sirenx:{n:'Siren',r:'epic',d:39,f:0.285,p:1,s:0.0051,a:0,l:0.65}, excaliburx:{n:'Excalibur',r:'legendary',d:78,f:0.44,p:1,s:0.0028,a:0,l:1.3}, ragnarokx:{n:'Ragnarok',r:'legendary',d:19,f:0.66,p:8,s:0.063,a:0,l:1.05},
+ supernovax:{n:'Supernova',r:'legendary',d:33,f:0.106,p:1,s:0.0098,a:1,l:1.2}, oblivionx:{n:'Oblivion',r:'legendary',d:155,f:0.968,p:1,s:0.0,a:0,l:1.5}, hydrax:{n:'Hydra',r:'legendary',d:16,f:0.352,p:6,s:0.056,a:1,l:1.0}, zeuscannonx:{n:'Zeus Cannon',r:'legendary',d:70,f:0.484,p:1,s:0.0049,a:0,l:0.8},
+ apexpredatorx:{n:'Apex Predator',r:'legendary',d:16,f:0.062,p:1,s:0.0245,a:1,l:0.85}, titanlmgx:{n:'Titan LMG',r:'legendary',d:26,f:0.07,p:1,s:0.021,a:1,l:1.4}, eclipsex:{n:'Eclipse',r:'legendary',d:78,f:0.44,p:1,s:0.0028,a:0,l:1.3}, wyrmfangx:{n:'Wyrmfang',r:'legendary',d:46,f:0.264,p:1,s:0.0042,a:0,l:0.65},
+ singularityx:{n:'Singularity',r:'legendary',d:155,f:0.968,p:1,s:0.0,a:0,l:1.5}, armageddonx:{n:'Armageddon',r:'legendary',d:16,f:0.352,p:6,s:0.056,a:1,l:1.0},
+ dumpsterfirex:{n:'Dumpster Fire',r:'common',d:9,f:0.42,p:6,s:0.088,a:1,l:1.0}, scrapsniperx:{n:'Scrap Sniper',r:'common',d:90,f:1.155,p:1,s:0.0,a:0,l:1.5}, bentbarrelx:{n:'Bent Barrel',r:'common',d:19,f:0.126,p:1,s:0.0154,a:1,l:1.2}, budgetlmgx:{n:'Budget LMG',r:'common',d:15,f:0.084,p:1,s:0.033,a:1,l:1.4},
+ peashooterx:{n:'Peashooter',r:'common',d:27,f:0.315,p:1,s:0.0066,a:0,l:0.65}, longbowx:{n:'Longbow',r:'rare',d:110,f:1.1,p:1,s:0,a:0,l:1.5}, riotcontrolx:{n:'Riot Control',r:'rare',d:11,f:0.4,p:6,s:0.08,a:1,l:1.0}, falconx:{n:'Falcon',r:'rare',d:23,f:0.12,p:1,s:0.014,a:1,l:1.2},
+ tomcatx:{n:'Tomcat',r:'rare',d:11,f:0.07,p:1,s:0.035,a:1,l:0.85}, gunslingerx:{n:'Gunslinger',r:'rare',d:50,f:0.55,p:1,s:0.007,a:0,l:0.8}, neonreaperx:{n:'Neon Reaper',r:'epic',d:13,f:0.067,p:1,s:0.0298,a:1,l:0.85}, stormbringerx:{n:'Stormbringer',r:'epic',d:27,f:0.114,p:1,s:0.0119,a:1,l:1.2},
+ thunderclapx:{n:'Thunderclap',r:'epic',d:16,f:0.712,p:8,s:0.0765,a:0,l:1.05}, eagleeyex:{n:'Eagle Eye',r:'epic',d:65,f:0.475,p:1,s:0.0034,a:0,l:1.3}, juggernautx:{n:'Juggernaut',r:'epic',d:22,f:0.076,p:1,s:0.0255,a:1,l:1.4}, dragonbreathx:{n:'Dragonbreath',r:'legendary',d:19,f:0.66,p:8,s:0.063,a:0,l:1.05},
+ voidwalkerx:{n:'Void Walker',r:'legendary',d:33,f:0.106,p:1,s:0.0098,a:1,l:1.2}, starfallx:{n:'Starfall',r:'legendary',d:155,f:0.968,p:1,s:0.0,a:0,l:1.5}, chaosenginex:{n:'Chaos Engine',r:'legendary',d:26,f:0.07,p:1,s:0.021,a:1,l:1.4}, judgmentx:{n:'Judgment',r:'legendary',d:70,f:0.484,p:1,s:0.0049,a:0,l:0.8}};
 const SKINS={default:{n:'Factory Gray',r:'common',c:0x777b88},neon:{n:'Neon Green',r:'common',c:0x39ff14},crimson:{n:'Crimson',r:'rare',c:0xdc143c},ice:{n:'Glacier',r:'epic',c:0x66ccff},gold:{n:'Midas Gold',r:'legendary',c:0xffd23f},void:{n:'Void Purple',r:'legendary',c:0x8a2be2}};
-const CR={basic:{n:'Basic Crate',col:'#ff8a1f',cost:100,w:[60,28,10,2]},elite:{n:'Elite Crate',col:'#b45cff',cost:300,w:[0,50,35,15]}};
+const CR={basic:{n:'Basic Crate',col:'#ff8a1f',cost:100,w:[60,28,10,2]},elite:{n:'Elite Crate',col:'#b45cff',cost:300,w:[0,50,35,15]},legend:{n:'Legendary Crate',col:'#ffb81f',cost:1000,w:[0,0,25,75]}};
 let S={coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true,nick:''};
 
 const save=()=>{if(window.cloud&&cloud.user)cloud.save(S)};
@@ -163,7 +181,7 @@ function burst(pos,n,ci,spd){for(let i=0;i<n;i++){const m=new THREE.Mesh(pg,pmat
 /* ---------- game state ---------- */
 const P=new THREE.Vector3(0,0,0),rc=new THREE.Raycaster(),bots=[],tr=[],dead=[],kits=[];
 let playing=false,paused=false,locked=false,fallback=false,down=false;
-let st={c:0,xp:0},yaw=0,pitch=0,hp=100,wave=0,kills=0,toSpawn=0,spT=0,nwT=0,waiting=false,next=0,now=0,kick=0,bob=0,botId=0,hmT=0,fT=0,mT=0,fH=0,swapT=0;
+let st={c:0,xp:0},yaw=0,pitch=0,hp=100,wave=0,kills=0,toSpawn=0,spT=0,nwT=0,waiting=false,next=0,now=0,kick=0,bob=0,botId=0,hmT=0,fT=0,mT=0,fH=0,swapT=0,jy=0,jv=0,landT=0;
 const keys={};
 function say(t){const m=$('msg');m.textContent=t;m.classList.remove('pop');void m.offsetWidth;m.classList.add('pop')}
 function hud(){$('hw').textContent=wave;$('hb').textContent=bots.length+toSpawn;$('hk').textContent=kills;$('hc').textContent=S.coins;$('hpn').textContent=Math.max(0,Math.ceil(hp));$('hp').style.width=Math.max(0,hp)+'%';$('hpw').classList.toggle('low',hp<35)}
@@ -225,7 +243,7 @@ function spawnBot(){
  sc.add(g);bots.push(g)}
 function startWave(){wave++;spawnKits();toSpawn=3+wave*2;waiting=false;say('Wave '+wave);hud()}
 function play(){if(!cu)return;
- bots.forEach(b=>sc.remove(b));bots.length=0;dead.forEach(b=>sc.remove(b));dead.length=0;clearKits();swapT=0;
+ bots.forEach(b=>sc.remove(b));bots.length=0;dead.forEach(b=>sc.remove(b));dead.length=0;clearKits();swapT=0;jy=jv=landT=0;
  st={c:S.coins,xp:S.xp||0};P.set(0,0,0);yaw=pitch=0;hp=100;wave=0;kills=0;nwT=0;playing=true;paused=false;
  $('menu').style.display='none';$('hud').style.display='block';applyGun();startWave();lock()}
 function lock(){try{const p=cv.requestPointerLock();if(p&&p.catch)p.catch(()=>fallback=true)}catch(e){fallback=true}}
@@ -261,10 +279,13 @@ function update(dt){
  const f=(keys.KeyW?1:0)-(keys.KeyS?1:0),r=(keys.KeyD?1:0)-(keys.KeyA?1:0),l=Math.hypot(f,r)||1,sp=(keys.ShiftLeft?10:7)*dt;
  P.x+=(-Math.sin(yaw)*f+Math.cos(yaw)*r)/l*sp;P.z+=(-Math.cos(yaw)*f-Math.sin(yaw)*r)/l*sp;collide(P,.4);
  if(f||r)bob+=dt*10;cam.fov+=((keys.ShiftLeft&&(f||r)?82:75)-cam.fov)*Math.min(1,dt*8);cam.updateProjectionMatrix();
- cam.position.set(P.x+(Math.random()-.5)*fT*.15,1.6+Math.sin(bob)*.04+(Math.random()-.5)*fT*.1,P.z);cam.rotation.set(pitch,yaw,0);
+ if(keys.Space&&jy===0&&jv===0){jv=7.6;beep(300,.08,'sine',.03)}
+ if(jy>0||jv!==0){jv-=22*dt;jy+=jv*dt;if(jy<=0){jy=0;if(jv<-6){landT=Math.min(1,-jv/12);beep(110,.08,'sine',.05)}jv=0}}
+ landT=Math.max(0,landT-dt*5);
+ cam.position.set(P.x+(Math.random()-.5)*fT*.15,1.6+jy+(jy>0?0:Math.sin(bob)*.04)-landT*.12+(Math.random()-.5)*fT*.1,P.z);cam.rotation.set(pitch,yaw,0);
  kick=Math.max(0,kick-dt*.6);swapT=Math.max(0,swapT-dt*4);const mv=(f||r)?1:0,spr=keys.ShiftLeft&&mv;
- gun.position.set(.33+Math.cos(bob*.5)*.012*mv+(spr?.02:0),-.31+Math.abs(Math.sin(bob))*.012*mv-swapT*.35-(spr?.04:0),-.5+kick);
- gun.rotation.x=kick*2+swapT*.9+(spr?.25:0);gun.rotation.y=(spr?.15:0)+Math.cos(bob*.5)*.015*mv;gun.rotation.z=Math.sin(bob*.5)*.02*mv-r*.04;
+ gun.position.set(.33+Math.cos(bob*.5)*.012*mv+(spr?.01:0),-.31+Math.abs(Math.sin(bob))*.012*mv-swapT*.35-(spr?.015:0)-jv*.006+landT*.05,-.5+kick);
+ gun.rotation.x=kick*2+swapT*.9+(spr?.08:0);gun.rotation.y=(spr?.05:0)+Math.cos(bob*.5)*.015*mv;gun.rotation.z=Math.sin(bob*.5)*.02*mv-r*.04;
  cam.rotation.z=-r*.018+(Math.random()-.5)*fT*.03;cam.position.y+=fH*.03*Math.sin(now*30);fH=Math.max(0,fH-dt*3);
  if(down&&GUNS[S.gun].a)shoot();
  /* spawning & waves */
