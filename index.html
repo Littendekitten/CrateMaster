@@ -19,12 +19,13 @@
 
 <div id="menu"><div class="shell">
  <header><div class="logo">CRATE<span>MASTER</span></div><div id="chip"></div><div class="pill"><i class="coin"></i><b id="coins">0</b></div></header>
- <nav><button class="tab" data-t="play" onclick="setTab('play')">Play</button><button class="tab" data-t="crates" onclick="setTab('crates')">Crates</button><button class="tab" data-t="locker" onclick="setTab('locker')">Locker</button><button class="tab" data-t="trade" onclick="setTab('trade')">Trade</button><button class="tab" data-t="opt" onclick="setTab('opt')">Options</button></nav>
+ <nav><button class="tab" data-t="play" onclick="setTab('play')">Play</button><button class="tab" data-t="crates" onclick="setTab('crates')">Crates</button><button class="tab" data-t="locker" onclick="setTab('locker')">Locker</button><button class="tab" data-t="trade" onclick="setTab('trade')">Trade</button><button class="tab" data-t="lb" onclick="setTab('lb')">Ranks</button><button class="tab" data-t="opt" onclick="setTab('opt')">Options</button></nav>
  <section class="pane" id="p-play"><div class="hero"><h1>Survive the bot waves</h1><p id="sub">Fight the bots. Earn coins. Crack crates.</p><div class="row"><button class="big" id="play" onclick="go()">PLAY</button><button id="endrun" onclick="endRun()" style="display:none">End run</button></div></div>
   <div class="stats" id="stats"></div>
   <p class="hint">WASD move · Shift sprint · Mouse aim · Click shoot · 1–5 switch hotbar slot · Esc pause. If the mouse doesn’t lock, hold click and drag, or use the arrow keys to look.</p></section>
  <section class="pane" id="p-crates"><div class="row crates" id="crates"></div></section>
  <section class="pane" id="p-locker"><h3>Hotbar</h3><p class="hint" style="margin:0 0 8px">Pick a slot, then press “Put in slot” on a gun. Duplicates can fill several slots. Keys 1–5 switch guns in game.</p><div class="hotl" id="hotl"></div><h3>Weapons</h3><div class="row" style="margin:0 0 10px"><label class="note" for="cw">Card size</label><input type="range" id="cw" min="100" max="260" step="10" value="150" oninput="setCw(this.value)" style="width:200px;accent-color:var(--a)"></div><div class="g" id="inv"></div><h3>Skins</h3><div class="g" id="skins"></div></section>
+ <section class="pane" id="p-lb"><div id="lb"></div></section>
  <section class="pane" id="p-trade"><div id="trade"></div></section>
  <section class="pane" id="p-opt"><div class="opt nick"><label>Username<small>Shown instead of your Google name. Leave empty to use your account name.</small></label><div class="nr"><input type="text" id="o-nick" maxlength="16" placeholder="Pick a username" autocomplete="off" onkeydown="if(event.key==='Enter')saveNick()"><button class="sm" onclick="saveNick()">Save</button></div></div>
   <div class="opt"><label>Mouse sensitivity <b id="v-sens"></b></label><input type="range" id="o-sens" min=".3" max="3" step=".1" oninput="opt()"></div>
