@@ -93,7 +93,7 @@ function menu(){
  document.querySelectorAll('.pane').forEach(p=>p.style.display=p.id=='p-'+tab?'block':'none');
  $('play').textContent=playing&&paused?'RESUME':'PLAY';$('endrun').style.display=playing&&paused?'inline-block':'none';
  $('stats').innerHTML=[['Best wave',S.best||0],['Total kills',S.kills||0],['Runs',S.runs||0],['Level',lv]].map(a=>`<div><b>${a[1]}</b>${a[0]}</div>`).join('');
- $('crates').innerHTML=Object.entries(allCR()).map(([k,c])=>{return `<div class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><button class="big" onclick="openCrate('${k}')">OPEN · 🪙 ${c.cost}</button></div>`}).join('');
+ $('crates').innerHTML=Object.entries(allCR()).map(([k,c])=>{return `<div class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><button class="big" onclick="openCrate('${k}')">OPEN · <i class="coin"></i>${c.cost}</button></div>`}).join('');
  const sk=hexc(SKINS[S.skin].c);
  S.hot=fixHot(S.hot,S.guns);
  $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b>${LT(G)}<small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
@@ -130,7 +130,7 @@ function openCrate(k){
    strip.classList.add('done');rv.className='hit';const sk=$('skip');if(sk)sk.remove();
    beep(rar=='legendary'?880:rar=='epic'?660:440,.5,'triangle',.09);
    setTimeout(()=>{rv.className='r-'+rar;
-    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2>${LT(it)}<p>${dup?(t=='guns'?'Duplicate · you now own ×'+cnt(S.guns,id):'Duplicate · +'+bk+' 🪙 back'):'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
+    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2>${LT(it)}<p>${dup?(t=='guns'?'Duplicate · you now own ×'+cnt(S.guns,id):'Duplicate · +'+bk+' <i class="coin"></i> back'):'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
   setTimeout(()=>{strip.style.transition='transform 6.5s cubic-bezier(.08,.6,.12,1)';strip.style.transform=`translateX(${-tx}px)`;tick()},60);
   strip.addEventListener('transitionend',()=>fin(false),{once:true});
   $('skip').onclick=()=>fin(true);
