@@ -100,3 +100,5 @@ nav{display:flex;gap:6px;margin:16px 0;border-bottom:1px solid #2f3a62}
 .strip.done .rc:not(.win){opacity:.22;filter:grayscale(.6);transition:opacity .5s}
 #reveal.hit:after{content:"";position:absolute;inset:0;background:#fff;pointer-events:none;animation:ff .7s forwards}@keyframes ff{from{opacity:.85}to{opacity:0}}
 #skip{position:absolute;bottom:14%}
+
+.note{color:var(--m);font-size:14px}
