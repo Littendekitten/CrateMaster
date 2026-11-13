@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsAccount(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function validHotbar() {
+      return request.resource.data.hotbar is list
+        && request.resource.data.hotbar.size() == 5
+        && (request.resource.data.hotbar[0] == '' || request.resource.data.hotbar[0] in resource.data.guns)
+        && (request.resource.data.hotbar[1] == '' || request.resource.data.hotbar[1] in resource.data.guns)
+        && (request.resource.data.hotbar[2] == '' || request.resource.data.hotbar[2] in resource.data.guns)
+        && (request.resource.data.hotbar[3] == '' || request.resource.data.hotbar[3] in resource.data.guns)
+        && (request.resource.data.hotbar[4] == '' || request.resource.data.hotbar[4] in resource.data.guns);
+    }
+
+    // Player saves are created and economically updated by the trusted Render
+    // server using Firebase Admin SDK. The browser may only edit preferences,
+    // equipped items that the player already owns, and their display name.
+    match /users/{uid} {
+      allow read: if ownsAccount(uid);
+      allow create, delete: if false;
+      allow update: if ownsAccount(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'gun', 'skin', 'hotbar', 'sens', 'vol', 'bloom',
+          'username', 'displayName', 'updated'
+        ])
+        && request.resource.data.updated == request.time
+        && request.resource.data.gun is string
+        && request.resource.data.gun in resource.data.guns
+        && request.resource.data.skin is string
+        && request.resource.data.skin in resource.data.skins
+        && validHotbar()
+        && request.resource.data.sens is number
+        && request.resource.data.sens >= 0.3
+        && request.resource.data.sens <= 3
+        && request.resource.data.vol is number
+        && request.resource.data.vol >= 0
+        && request.resource.data.vol <= 1
+        && request.resource.data.bloom is bool
+        && request.resource.data.username is string
+        && request.resource.data.username.size() <= 16
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() <= 256;
+    }
+
+    // Crate availability is public to signed-in players, but only the owner
+    // can change it in the Firebase Console / trusted Admin SDK.
+    match /{collectionName}/{documentId} {
+      allow read: if signedIn() && collectionName == 'Limited Crates';
+      allow write: if false;
+    }
+
+    // Economy action receipts are private server records; clients cannot read
+    // or modify them. All unmatched documents are denied by default.
+  }
+}
