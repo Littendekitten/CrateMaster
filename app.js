@@ -50,6 +50,7 @@ const cleanNick=s=>String(s||'').replace(/[<>&"'`]/g,'').replace(/\s+/g,' ').tri
 const shown=()=>S.nick||(cu&&cu.name)||'Player';
 let hsel=0;
 function fixHot(h,own){h=(h||[]).slice(0,5);while(h.length<5)h.push('');h=h.map((g,i)=>g&&own.includes(g)&&GUNS[g]&&h.indexOf(g)==i?g:'');return h}
+const LT=g=>g&&g.x?'<span class="ltag">LIMITED</span>':'';
 const hexc=c=>'#'+c.toString(16).padStart(6,'0'),lvOf=x=>Math.floor(Math.sqrt((x||0)/60))+1;
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
 function feed(t){const d=document.createElement('div');d.textContent=t;$('feed').appendChild(d);setTimeout(()=>d.remove(),1600)}
@@ -73,8 +74,8 @@ function menu(){
  $('crates').innerHTML=Object.entries(allCR()).map(([k,c])=>{return `<div class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><button class="big" onclick="openCrate('${k}')">OPEN · 🪙 ${c.cost}</button></div>`}).join('');
  const sk=hexc(SKINS[S.skin].c);
  S.hot=fixHot(S.hot,S.guns);
- $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b><small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
- $('inv').innerHTML=S.guns.filter(id=>GUNS[id]).map(id=>{const G=GUNS[id],own=true;return `<div class="wcard ${own?'':'lock'} ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${gunSvg(id,own?sk:'#555')}<b>${G.n}</b><small>${own?G.r:'🔒 locked'}</small>${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}${own?`<button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${S.hot.includes(id)?'Slot '+(S.hot.indexOf(id)+1)+' · move to '+(hsel+1):'Put in slot '+(hsel+1)}</button>`:''}</div>`}).join('');
+ $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b>${LT(G)}<small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
+ $('inv').innerHTML=S.guns.filter(id=>GUNS[id]).map(id=>{const G=GUNS[id],own=true;return `<div class="wcard ${own?'':'lock'} ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${gunSvg(id,own?sk:'#555')}<b>${G.n}</b>${LT(G)}<small>${own?G.r:'🔒 locked'}</small>${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}${own?`<button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${S.hot.includes(id)?'Slot '+(S.hot.indexOf(id)+1)+' · move to '+(hsel+1):'Put in slot '+(hsel+1)}</button>`:''}</div>`}).join('');
  $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
  if(document.activeElement!==$('o-nick'))$('o-nick').value=S.nick||'';$('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
 }
@@ -100,11 +101,11 @@ function openCrate(k){
   const fin=skip=>{if(done)return;done=true;cancelAnimationFrame(raf);
    if(skip){strip.style.transition='none';strip.style.transform=`translateX(${-tx}px)`}
    const wc=strip.children[W];wc.classList.add('win');
-   wc.innerHTML=(t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`)+`<small>${it.n}</small>`;
+   wc.innerHTML=(t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`)+`<small>${it.n}</small>${LT(it)}`;
    strip.classList.add('done');rv.className='hit';const sk=$('skip');if(sk)sk.remove();
    beep(rar=='legendary'?880:rar=='epic'?660:440,.5,'triangle',.09);
    setTimeout(()=>{rv.className='r-'+rar;
-    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2><p>${dup?'Duplicate · +'+bk+' 🪙 back':'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
+    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2>${LT(it)}<p>${dup?'Duplicate · +'+bk+' 🪙 back':'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
   setTimeout(()=>{strip.style.transition='transform 6.5s cubic-bezier(.08,.6,.12,1)';strip.style.transform=`translateX(${-tx}px)`;tick()},60);
   strip.addEventListener('transitionend',()=>fin(false),{once:true});
   $('skip').onclick=()=>fin(true);
@@ -170,7 +171,7 @@ const glowTex=ctex(64,64,(g,w,h)=>{const r=g.createRadialGradient(32,32,1,32,32,
 const flashM=new THREE.Mesh(new THREE.PlaneGeometry(.55,.55),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,opacity:0}));
 flashM.position.set(.33,-.29,-1.15);cam.add(flashM);
 const mLight=new THREE.PointLight(0xffb050,0,9);mLight.position.set(.33,-.24,-1.1);cam.add(mLight);
-function drawHot(){const el=$('hotbar');if(!el)return;el.innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hb ${g&&g==S.gun?'on':''} ${G?'':'em'}" style="--c:${G?R[G.r]:'#555'}"><em>${i+1}</em>${G?`${gunSvg(g,'#9aa4c4')}<b>${G.n}</b>`:''}</div>`}).join('')}
+function drawHot(){const el=$('hotbar');if(!el)return;el.innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hb ${g&&g==S.gun?'on':''} ${G?'':'em'}" style="--c:${G?R[G.r]:'#555'}"><em>${i+1}</em>${G?`${gunSvg(g,'#9aa4c4')}<b>${G.n}</b>${LT(G)}`:''}</div>`}).join('')}
 function applyGun(){const G=GUNS[S.gun];swapT=1;drawHot();gm.color.setHex(SKINS[S.skin].c);gun.scale.z=G.l;$('wpn').innerHTML=`${G.n}<br><small style="color:${R[G.r]}">${SKINS[S.skin].n}</small>`}
 /* decor */
 const emb=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshBasicMaterial({map:ctex(512,512,(g)=>{g.strokeStyle='#ff8a1f';g.lineWidth=10;g.shadowColor='#ff8a1f';g.shadowBlur=24;g.beginPath();g.arc(256,256,200,0,6.283);g.stroke();g.lineWidth=5;g.strokeRect(166,166,180,180);g.font='bold 54px system-ui';g.textAlign='center';g.fillStyle='#ff8a1f';g.fillText('CM',256,275)}),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
