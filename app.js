@@ -17,7 +17,7 @@ function feed(t){const d=document.createElement('div');d.textContent=t;$('feed')
 function setTab(t){tab=t;menu()}
 function showMenu(){$('sub').textContent='Fight the bots. Earn coins. Crack crates.';menu();$('menu').style.display='flex'}
 function closeRs(){$('results').style.display='none'}
-function closeRv(){$('reveal').style.display='none';menu()}
+function closeRv(){$('reveal').style.display='none';rolling=false;menu()}
 function endRun(){if(playing&&paused)over()}
 function opt(){S.sens=+$('o-sens').value;S.vol=+$('o-vol').value;S.bloom=$('o-bloom').checked;$('v-sens').textContent=S.sens.toFixed(1);save()}
 const gunSvg=(id,col)=>{const l=GUNS[id].l,w=60+l*70;return `<svg viewBox="0 0 220 90"><rect x="20" y="30" width="${w}" height="20" rx="5" fill="${col}"/><rect x="${20+w}" y="35" width="${20+l*10}" height="9" fill="#14161d"/><rect x="30" y="50" width="16" height="32" rx="4" fill="#14161d" transform="rotate(14 38 50)"/><rect x="${w-10}" y="50" width="14" height="14" fill="#14161d"/><rect x="24" y="35" width="${w-8}" height="3" fill="#38e1ff"/></svg>`};
@@ -32,25 +32,41 @@ function menu(){
  $('stats').innerHTML=[['Best wave',S.best||0],['Total kills',S.kills||0],['Runs',S.runs||0],['Level',lv]].map(a=>`<div><b>${a[1]}</b>${a[0]}</div>`).join('');
  $('crates').innerHTML=Object.keys(CR).map(k=>{const c=CR[k];return `<div class="crate" style="--c:${c.col}"><div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><button class="big" onclick="openCrate('${k}')">OPEN · 🪙 ${c.cost}</button></div>`}).join('');
  const sk=hexc(SKINS[S.skin].c);
- $('inv').innerHTML=Object.keys(GUNS).map(id=>{const G=GUNS[id],own=S.guns.includes(id);return `<div class="wcard ${own?'':'lock'} ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${gunSvg(id,own?sk:'#555')}<b>${G.n}</b><small>${own?G.r:'🔒 locked'}</small>${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}${own?`<button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button>`:''}</div>`}).join('');
- $('skins').innerHTML=Object.keys(SKINS).map(id=>{const K=SKINS[id],own=S.skins.includes(id);return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
+ $('inv').innerHTML=S.guns.filter(id=>GUNS[id]).map(id=>{const G=GUNS[id],own=true;return `<div class="wcard ${own?'':'lock'} ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${gunSvg(id,own?sk:'#555')}<b>${G.n}</b><small>${own?G.r:'🔒 locked'}</small>${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}${own?`<button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button>`:''}</div>`}).join('');
+ $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
  $('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
 }
+let rolling=false;
 function openCrate(k){
- const c=CR[k];if(S.coins<c.cost){toast('Not enough coins - win some in a match!');return}
- S.coins-=c.cost;
- let x=Math.random()*100,i=0;for(;i<3;i++){if((x-=c.w[i])<0)break}
- const rar=RK[i],pool=[];
+ if(rolling)return;const c=CR[k];if(S.coins<c.cost){toast('Not enough coins - win some in a match!');return}
+ rolling=true;S.coins-=c.cost;
+ const pick=w=>{let x=Math.random()*100,i=0;for(;i<3;i++){if((x-=w[i])<0)break}return i};
+ const rar=RK[pick(c.w)],pool=[];
  for(const g in GUNS)if(g!='pistol'&&GUNS[g].r==rar)pool.push(['guns',g]);
  for(const q in SKINS)if(q!='default'&&SKINS[q].r==rar)pool.push(['skins',q]);
  const [t,id]=pool[Math.random()*pool.length|0],it=(t=='guns'?GUNS:SKINS)[id],dup=S[t].includes(id),bk=Math.round(c.cost*.4);
  if(dup)S.coins+=bk;else S[t].push(id);
  save();$('coins').textContent=S.coins.toLocaleString();
  const rv=$('reveal');rv.style.display='flex';rv.className='';
- rv.innerHTML=`<div class="shake" style="--c:${c.col}"><div class="cbox" style="transform:scale(2)"></div></div>`;beep(180,.9,'sawtooth',.06);
- setTimeout(()=>{rv.className='r-'+rar;
-  rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2><p>${dup?'Duplicate · +'+bk+' 🪙 back':'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`;
-  beep(rar=='legendary'?880:rar=='epic'?660:440,.5,'triangle',.08)},1100);
+ rv.innerHTML=`<div class="shake" style="--c:${c.col}"><div class="cbox" style="transform:scale(2)"></div></div>`;beep(180,.8,'sawtooth',.06);
+ setTimeout(()=>{
+  const W=54,N=64,cards=[];for(let i=0;i<N;i++)cards.push(RK[pick(c.w)]);cards[W]=rar;if(rar!='legendary'&&Math.random()<.6)cards[W+1]='legendary';
+  rv.innerHTML=`<div class="rtitle">OPENING ${c.n.toUpperCase()}</div><div class="roll"><div class="marker"></div><div class="strip" id="strip">${cards.map(r=>`<div class="rc" style="--c:${R[r]}"><b>?</b><small>${r}</small></div>`).join('')}</div></div><button class="link" id="skip">Skip</button>`;
+  const strip=$('strip'),vw=strip.parentElement.clientWidth,tx=W*140+65+(Math.random()*80-40)-vw/2;
+  let done=false,last=-1,raf;
+  const tick=()=>{const x=-new DOMMatrixReadOnly(getComputedStyle(strip).transform).m41,i=Math.floor((x+vw/2)/140);if(i!=last){last=i;beep(260+(i%5)*25,.03,'square',.03)}if(!done)raf=requestAnimationFrame(tick)};
+  const fin=skip=>{if(done)return;done=true;cancelAnimationFrame(raf);
+   if(skip){strip.style.transition='none';strip.style.transform=`translateX(${-tx}px)`}
+   const wc=strip.children[W];wc.classList.add('win');
+   wc.innerHTML=(t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`)+`<small>${it.n}</small>`;
+   strip.classList.add('done');rv.className='hit';const sk=$('skip');if(sk)sk.remove();
+   beep(rar=='legendary'?880:rar=='epic'?660:440,.5,'triangle',.09);
+   setTimeout(()=>{rv.className='r-'+rar;
+    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2><p>${dup?'Duplicate · +'+bk+' 🪙 back':'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
+  setTimeout(()=>{strip.style.transition='transform 6.5s cubic-bezier(.08,.6,.12,1)';strip.style.transform=`translateX(${-tx}px)`;tick()},60);
+  strip.addEventListener('transitionend',()=>fin(false),{once:true});
+  $('skip').onclick=()=>fin(true);
+ },900);
 }
 function eq(t,id){if(t=='guns')S.gun=id;else S.skin=id;save();menu();applyGun()}
 const rd=$('radar'),rg=rd.getContext('2d');
