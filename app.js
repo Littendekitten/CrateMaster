@@ -27,9 +27,18 @@ const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:
  peashooterx:{n:'Peashooter',r:'common',d:27,f:0.315,p:1,s:0.0066,a:0,l:0.65}, longbowx:{n:'Longbow',r:'rare',d:110,f:1.1,p:1,s:0,a:0,l:1.5}, riotcontrolx:{n:'Riot Control',r:'rare',d:11,f:0.4,p:6,s:0.08,a:1,l:1.0}, falconx:{n:'Falcon',r:'rare',d:23,f:0.12,p:1,s:0.014,a:1,l:1.2},
  tomcatx:{n:'Tomcat',r:'rare',d:11,f:0.07,p:1,s:0.035,a:1,l:0.85}, gunslingerx:{n:'Gunslinger',r:'rare',d:50,f:0.55,p:1,s:0.007,a:0,l:0.8}, neonreaperx:{n:'Neon Reaper',r:'epic',d:13,f:0.067,p:1,s:0.0298,a:1,l:0.85}, stormbringerx:{n:'Stormbringer',r:'epic',d:27,f:0.114,p:1,s:0.0119,a:1,l:1.2},
  thunderclapx:{n:'Thunderclap',r:'epic',d:16,f:0.712,p:8,s:0.0765,a:0,l:1.05}, eagleeyex:{n:'Eagle Eye',r:'epic',d:65,f:0.475,p:1,s:0.0034,a:0,l:1.3}, juggernautx:{n:'Juggernaut',r:'epic',d:22,f:0.076,p:1,s:0.0255,a:1,l:1.4}, dragonbreathx:{n:'Dragonbreath',r:'legendary',d:19,f:0.66,p:8,s:0.063,a:0,l:1.05},
- voidwalkerx:{n:'Void Walker',r:'legendary',d:33,f:0.106,p:1,s:0.0098,a:1,l:1.2}, starfallx:{n:'Starfall',r:'legendary',d:155,f:0.968,p:1,s:0.0,a:0,l:1.5}, chaosenginex:{n:'Chaos Engine',r:'legendary',d:26,f:0.07,p:1,s:0.021,a:1,l:1.4}, judgmentx:{n:'Judgment',r:'legendary',d:70,f:0.484,p:1,s:0.0049,a:0,l:0.8}};
+ voidwalkerx:{n:'Void Walker',r:'legendary',d:33,f:0.106,p:1,s:0.0098,a:1,l:1.2}, starfallx:{n:'Starfall',r:'legendary',d:155,f:0.968,p:1,s:0.0,a:0,l:1.5}, chaosenginex:{n:'Chaos Engine',r:'legendary',d:26,f:0.07,p:1,s:0.021,a:1,l:1.4}, judgmentx:{n:'Judgment',r:'legendary',d:70,f:0.484,p:1,s:0.0049,a:0,l:0.8},
+ candycornx:{n:'Candy Corn Blaster',r:'common',d:11,f:.07,p:1,s:.035,a:1,l:.9,x:'spooky'},
+ pumpkinsmasherx:{n:'Pumpkin Smasher',r:'rare',d:15,f:.7,p:9,s:.085,a:0,l:1.1,x:'spooky'},
+ witchfirex:{n:'Witchfire',r:'epic',d:28,f:.11,p:1,s:.01,a:1,l:1.25,x:'spooky'},
+ ghoulgatlingx:{n:'Ghoul Gatling',r:'legendary',d:17,f:.05,p:1,s:.03,a:1,l:1.5,x:'spooky'},
+ headlesshorsemanx:{n:'Headless Horseman',r:'legendary',d:175,f:1.2,p:1,s:0,a:0,l:1.6,x:'spooky'}};
 const SKINS={default:{n:'Factory Gray',r:'common',c:0x777b88},neon:{n:'Neon Green',r:'common',c:0x39ff14},crimson:{n:'Crimson',r:'rare',c:0xdc143c},ice:{n:'Glacier',r:'epic',c:0x66ccff},gold:{n:'Midas Gold',r:'legendary',c:0xffd23f},void:{n:'Void Purple',r:'legendary',c:0x8a2be2}};
 const CR={basic:{n:'Basic Crate',col:'#ff8a1f',cost:100,w:[60,28,10,2]},elite:{n:'Elite Crate',col:'#b45cff',cost:300,w:[0,50,35,15]},legend:{n:'Legendary Crate',col:'#ffb81f',cost:1000,w:[0,0,25,75]}};
+const LIM={spooky:{n:'Spooky Crate',col:'#ff6a00',cost:500,w:[40,30,20,10],ltd:1}};
+let limOn={};
+const allCR=()=>{const o={...CR};for(const k in LIM){const d=limOn[k];if(d&&d.enabled===true)o[k]={...LIM[k],cost:+d.cost>0?+d.cost:LIM[k].cost}}return o};
+async function refreshLim(){try{if(window.cloud&&cloud.user&&cloud.limited){limOn=await cloud.limited();if(!rolling&&(!playing||paused))menu()}}catch(e){console.warn('limited crates',e)}}
 let S={coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true,nick:'',hot:['pistol']};
 
 const save=()=>{if(window.cloud&&cloud.user)cloud.save(S)};
@@ -44,7 +53,7 @@ function fixHot(h,own){h=(h||[]).slice(0,5);while(h.length<5)h.push('');h=h.map(
 const hexc=c=>'#'+c.toString(16).padStart(6,'0'),lvOf=x=>Math.floor(Math.sqrt((x||0)/60))+1;
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
 function feed(t){const d=document.createElement('div');d.textContent=t;$('feed').appendChild(d);setTimeout(()=>d.remove(),1600)}
-function setTab(t){tab=t;menu()}
+function setTab(t){tab=t;menu();if(t=='crates')refreshLim()}
 function showMenu(){$('sub').textContent='Fight the bots. Earn coins. Crack crates.';menu();$('menu').style.display='flex'}
 function closeRs(){$('results').style.display='none'}
 function closeRv(){$('reveal').style.display='none';rolling=false;menu()}
@@ -61,7 +70,7 @@ function menu(){
  document.querySelectorAll('.pane').forEach(p=>p.style.display=p.id=='p-'+tab?'block':'none');
  $('play').textContent=playing&&paused?'RESUME':'PLAY';$('endrun').style.display=playing&&paused?'inline-block':'none';
  $('stats').innerHTML=[['Best wave',S.best||0],['Total kills',S.kills||0],['Runs',S.runs||0],['Level',lv]].map(a=>`<div><b>${a[1]}</b>${a[0]}</div>`).join('');
- $('crates').innerHTML=Object.keys(CR).map(k=>{const c=CR[k];return `<div class="crate" style="--c:${c.col}"><div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><button class="big" onclick="openCrate('${k}')">OPEN · 🪙 ${c.cost}</button></div>`}).join('');
+ $('crates').innerHTML=Object.entries(allCR()).map(([k,c])=>{return `<div class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><button class="big" onclick="openCrate('${k}')">OPEN · 🪙 ${c.cost}</button></div>`}).join('');
  const sk=hexc(SKINS[S.skin].c);
  S.hot=fixHot(S.hot,S.guns);
  $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b><small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
@@ -71,11 +80,11 @@ function menu(){
 }
 let rolling=false;
 function openCrate(k){
- if(rolling)return;const c=CR[k];if(S.coins<c.cost){toast('Not enough coins - win some in a match!');return}
+ if(rolling)return;const c=allCR()[k];if(!c){toast('This crate is no longer available');menu();return}if(S.coins<c.cost){toast('Not enough coins - win some in a match!');return}
  rolling=true;S.coins-=c.cost;
  const pick=w=>{let x=Math.random()*100,i=0;for(;i<3;i++){if((x-=w[i])<0)break}return i};
  const rar=RK[pick(c.w)],pool=[];
- for(const g in GUNS)if(g!='pistol'&&GUNS[g].r==rar)pool.push(['guns',g]);
+ for(const g in GUNS)if(g!='pistol'&&GUNS[g].r==rar&&(!GUNS[g].x||GUNS[g].x==k)){pool.push(['guns',g]);if(GUNS[g].x)pool.push(['guns',g])}
  for(const q in SKINS)if(q!='default'&&SKINS[q].r==rar)pool.push(['skins',q]);
  const [t,id]=pool[Math.random()*pool.length|0],it=(t=='guns'?GUNS:SKINS)[id],dup=S[t].includes(id),bk=Math.round(c.cost*.4);
  if(dup)S.coins+=bk;else{S[t].push(id);if(t=='guns'){S.hot=fixHot(S.hot,S.guns);const e=S.hot.indexOf('');if(e>=0)S.hot[e]=id}}
@@ -402,7 +411,7 @@ addEventListener('cm-auth',async e=>{const was=cu;cu=e.detail;gateDone=true;
  if(cu){
   try{const d=await cloud.load();if(d)S=clean(d);else{S=DEF();cloud.save(S,true)}sync='synced'}
   catch(err){console.error(err);$('g-err').textContent='Could not load your save ('+(err.code||err.message)+'). Check your connection and sign in again.';cloud.logout();return}
-  gate('off');showMenu()}
+  gate('off');showMenu();refreshLim()}
  else{if(was){S=DEF();playing=false;paused=false;down=false;$('hud').style.display='none';closeRs();$('reveal').style.display='none';rolling=false}
   $('menu').style.display='none';gate('login')}
  applyGun();menu()});
