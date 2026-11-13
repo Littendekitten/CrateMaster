@@ -34,10 +34,14 @@ function endTrade(tr, why) {
     if (u && u.trade === tr.id) { u.trade = null; send(u.ws, { t: 'cancelled', id: tr.id, why }); }
   }
 }
+const cnt = (arr, id) => arr.reduce((n, x) => n + (x === id ? 1 : 0), 0);
+const removeMulti = (arr, items) => { const r = [...arr]; for (const g of items) { const i = r.indexOf(g); if (i >= 0) r.splice(i, 1); } return r; };
+const hasAll = (own, items) => [...new Set(items)].every(g => cnt(items, g) <= cnt(own, g));
 const fixDoc = (D, ng, recv) => {
   let h = Array.isArray(D.hotbar) ? D.hotbar.slice(0, 5) : [];
   while (h.length < 5) h.push('');
-  h = h.map(g => (g && ng.includes(g) ? g : ''));
+  const used = {};
+  h = h.map(g => { if (!g) return ''; used[g] = (used[g] || 0) + 1; return used[g] <= cnt(ng, g) ? g : ''; });
   for (const g of recv) { if (h.includes(g)) continue; const i = h.indexOf(''); if (i >= 0) h[i] = g; }
   return { guns: ng, hotbar: h, gun: ng.includes(D.gun) ? D.gun : 'pistol' };
 };
@@ -51,9 +55,9 @@ async function execute(tr) {
       const A = sa.data(), B = sb.data(), ga = A.guns || [], gb = B.guns || [];
       const oa = tr.offers[tr.a], ob = tr.offers[tr.b];
       if (!oa.length && !ob.length) throw new Error('Nothing to trade');
-      if (oa.some(g => !ga.includes(g)) || ob.some(g => !gb.includes(g))) throw new Error('A player no longer owns an offered gun');
-      const remA = ga.filter(g => !oa.includes(g)), remB = gb.filter(g => !ob.includes(g));
-      if (ob.some(g => remA.includes(g)) || oa.some(g => remB.includes(g))) throw new Error('A player already owns one of the offered guns');
+      if (oa.includes('pistol') || ob.includes('pistol')) throw new Error('The starter pistol cannot be traded');
+      if (!hasAll(ga, oa) || !hasAll(gb, ob)) throw new Error('A player no longer owns an offered gun');
+      const remA = removeMulti(ga, oa), remB = removeMulti(gb, ob);
       t.update(ra, { ...fixDoc(A, [...remA, ...ob], ob), updated: FV.serverTimestamp() });
       t.update(rb, { ...fixDoc(B, [...remB, ...oa], oa), updated: FV.serverTimestamp() });
     });
@@ -105,10 +109,10 @@ async function onMsg(ws, m) {
   }
   if (!tr.active || tr.busy) return;
   if (m.t === 'offer') {
-    const g = Array.isArray(m.guns) ? [...new Set(m.guns.map(String))].slice(0, 8) : [];
+    const g = Array.isArray(m.guns) ? m.guns.map(String).slice(0, 8) : [];
     if (g.includes('pistol')) return send(ws, { t: 'err', m: 'The starter pistol cannot be traded' });
     const own = await ownedGuns(uid);
-    if (g.some(x => !own.includes(x))) return send(ws, { t: 'err', m: 'You do not own one of those guns' });
+    if (!hasAll(own, g)) return send(ws, { t: 'err', m: 'You do not own one of those guns' });
     tr.offers[uid] = g; tr.ready[tr.a] = tr.ready[tr.b] = false;
     return pushState(tr);
   }
