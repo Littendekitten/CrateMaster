@@ -1,16 +1,22 @@
 const $=id=>document.getElementById(id);
 const R={common:'#9aa4c4',rare:'#3b9cff',epic:'#b45cff',legendary:'#ffb81f'};
 const RK=['common','rare','epic','legendary'];
-const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:'Viper SMG',r:'common',d:11,f:.08,p:1,s:.03,a:1,l:.9},shotgun:{n:'Boomstick',r:'rare',d:13,f:.8,p:8,s:.09,a:0,l:1.1},rifle:{n:'Striker AR',r:'epic',d:24,f:.13,p:1,s:.012,a:1,l:1.2},sniper:{n:'Longshot',r:'legendary',d:110,f:1.1,p:1,s:0,a:0,l:1.5}};
+const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:'Viper SMG',r:'common',d:11,f:.08,p:1,s:.03,a:1,l:.9},shotgun:{n:'Boomstick',r:'rare',d:13,f:.8,p:8,s:.09,a:0,l:1.1},rifle:{n:'Striker AR',r:'epic',d:24,f:.13,p:1,s:.012,a:1,l:1.2},sniper:{n:'Longshot',r:'legendary',d:110,f:1.1,p:1,s:0,a:0,l:1.5},
+ revolver:{n:'Deputy',r:'common',d:42,f:.5,p:1,s:.008,a:0,l:.7},scrapper:{n:'Scrapper',r:'common',d:8,f:.06,p:1,s:.05,a:1,l:.65},
+ carbine:{n:'Burst Carbine',r:'rare',d:19,f:.1,p:1,s:.018,a:1,l:1.1},dmr:{n:'Hunter DMR',r:'rare',d:58,f:.55,p:1,s:.004,a:0,l:1.3},
+ lmg:{n:'Thunder LMG',r:'epic',d:21,f:.08,p:1,s:.03,a:1,l:1.4},ripper:{n:'Ripper',r:'epic',d:11,f:.38,p:7,s:.08,a:1,l:1.0},
+ rail:{n:'Railgun',r:'legendary',d:170,f:1.4,p:1,s:0,a:0,l:1.6},minigun:{n:'Inferno Minigun',r:'legendary',d:15,f:.045,p:1,s:.035,a:1,l:1.5}};
 const SKINS={default:{n:'Factory Gray',r:'common',c:0x777b88},neon:{n:'Neon Green',r:'common',c:0x39ff14},crimson:{n:'Crimson',r:'rare',c:0xdc143c},ice:{n:'Glacier',r:'epic',c:0x66ccff},gold:{n:'Midas Gold',r:'legendary',c:0xffd23f},void:{n:'Void Purple',r:'legendary',c:0x8a2be2}};
 const CR={basic:{n:'Basic Crate',col:'#ff8a1f',cost:100,w:[60,28,10,2]},elite:{n:'Elite Crate',col:'#b45cff',cost:300,w:[0,50,35,15]}};
-let S={coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true};
+let S={coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true,nick:''};
 
 const save=()=>{if(window.cloud&&cloud.user)cloud.save(S)};
 let AC;function beep(f,d,t,v){try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t||'square';o.frequency.value=f;g.gain.value=(v||.04)*(S.vol==null?1:S.vol);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
 
 /* ---------- menu / shop / locker ---------- */
 let tab='play',cu=null,sync='',gateDone=false;
+const cleanNick=s=>String(s||'').replace(/[<>&"'`]/g,'').replace(/\s+/g,' ').trim().slice(0,16);
+const shown=()=>S.nick||(cu&&cu.name)||'Player';
 const hexc=c=>'#'+c.toString(16).padStart(6,'0'),lvOf=x=>Math.floor(Math.sqrt((x||0)/60))+1;
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
 function feed(t){const d=document.createElement('div');d.textContent=t;$('feed').appendChild(d);setTimeout(()=>d.remove(),1600)}
@@ -19,13 +25,14 @@ function showMenu(){$('sub').textContent='Fight the bots. Earn coins. Crack crat
 function closeRs(){$('results').style.display='none'}
 function closeRv(){$('reveal').style.display='none';rolling=false;menu()}
 function endRun(){if(playing&&paused)over()}
+function saveNick(){const v=cleanNick($('o-nick').value);S.nick=v;$('o-nick').value=v;save();menu();toast(v?'Username saved: '+v:'Username cleared - showing your account name')}
 function opt(){S.sens=+$('o-sens').value;S.vol=+$('o-vol').value;S.bloom=$('o-bloom').checked;$('v-sens').textContent=S.sens.toFixed(1);save()}
 const gunSvg=(id,col)=>{const l=GUNS[id].l,w=60+l*70;return `<svg viewBox="0 0 220 90"><rect x="20" y="30" width="${w}" height="20" rx="5" fill="${col}"/><rect x="${20+w}" y="35" width="${20+l*10}" height="9" fill="#14161d"/><rect x="30" y="50" width="16" height="32" rx="4" fill="#14161d" transform="rotate(14 38 50)"/><rect x="${w-10}" y="50" width="14" height="14" fill="#14161d"/><rect x="24" y="35" width="${w-8}" height="3" fill="#38e1ff"/></svg>`};
 const stat=(n,v)=>`<div class="bar"><em>${n}</em><i><u style="width:${Math.max(4,Math.min(100,v))}%"></u></i></div>`;
 function menu(){
  const xp=S.xp||0,lv=lvOf(xp),lo=60*(lv-1)**2,hi=60*lv*lv;
  $('coins').textContent=S.coins.toLocaleString();
- $('chip').innerHTML=`<div class="av">${(cu&&cu.name||'G')[0].toUpperCase()}</div><div class="who"><b>${cu?cu.name:'Player'}</b><small>LV ${lv} · ${sync||'synced'}</small><div class="xp"><i style="width:${Math.round((xp-lo)/(hi-lo)*100)}%"></i></div></div><button class="sm" onclick="cloud.logout()">Sign out</button>`;
+ $('chip').innerHTML=`<div class="av">${shown()[0].toUpperCase()}</div><div class="who"><b>${shown()}</b><small>LV ${lv} · ${sync||'synced'}</small><div class="xp"><i style="width:${Math.round((xp-lo)/(hi-lo)*100)}%"></i></div></div><button class="sm" onclick="cloud.logout()">Sign out</button>`;
  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.t==tab));
  document.querySelectorAll('.pane').forEach(p=>p.style.display=p.id=='p-'+tab?'block':'none');
  $('play').textContent=playing&&paused?'RESUME':'PLAY';$('endrun').style.display=playing&&paused?'inline-block':'none';
@@ -34,7 +41,7 @@ function menu(){
  const sk=hexc(SKINS[S.skin].c);
  $('inv').innerHTML=S.guns.filter(id=>GUNS[id]).map(id=>{const G=GUNS[id],own=true;return `<div class="wcard ${own?'':'lock'} ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${gunSvg(id,own?sk:'#555')}<b>${G.n}</b><small>${own?G.r:'🔒 locked'}</small>${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}${own?`<button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button>`:''}</div>`}).join('');
  $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
- $('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
+ if(document.activeElement!==$('o-nick'))$('o-nick').value=S.nick||'';$('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
 }
 let rolling=false;
 function openCrate(k){
@@ -247,12 +254,12 @@ addEventListener('keyup',e=>keys[e.code]=false);
 
 /* ---------- main loop ---------- */
 /* ---------- cloud (Firebase auth + Firestore) + mandatory login gate ---------- */
-const DEF=()=>({coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true});
+const DEF=()=>({coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true,nick:''});
 function clean(d){const o=DEF();['coins','best','kills','xp','runs'].forEach(k=>o[k]=Math.max(0,Math.floor(+d[k]||0)));
  if(Array.isArray(d.guns))o.guns=[...new Set(['pistol',...d.guns.filter(g=>GUNS[g])])];
  if(Array.isArray(d.skins))o.skins=[...new Set(['default',...d.skins.filter(k=>SKINS[k])])];
  if(o.guns.includes(d.gun))o.gun=d.gun;if(o.skins.includes(d.skin))o.skin=d.skin;
- if(d.sens>0)o.sens=+d.sens;if(d.vol>=0&&d.vol<=1)o.vol=+d.vol;o.bloom=d.bloom!==false;return o}
+ if(d.sens>0)o.sens=+d.sens;if(d.vol>=0&&d.vol<=1)o.vol=+d.vol;o.bloom=d.bloom!==false;o.nick=cleanNick(d.username);return o}
 function gate(st){$('gate').style.display=st=='off'?'none':'flex';$('g-load').style.display=st=='load'?'block':'none';$('g-btns').style.display=st=='login'?'flex':'none'}
 function signIn(){$('g-err').textContent='';if(!window.cloud){$('g-err').textContent='Login is unavailable right now. Check your connection and reload the page.';return}
  cloud.login().catch(e=>{$('g-err').textContent='Sign-in failed: '+(e.code||e.message)})}
