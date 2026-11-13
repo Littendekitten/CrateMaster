@@ -102,3 +102,5 @@ nav{display:flex;gap:6px;margin:16px 0;border-bottom:1px solid #2f3a62}
 #skip{position:absolute;bottom:14%}
 
 .note{color:var(--m);font-size:14px}
+
+.opt.nick label{display:block}.opt.nick small{display:block;color:var(--m);font-size:12px;font-weight:500;margin-top:2px}.nr{display:flex;gap:8px}.nr input{width:180px;background:#0006;border:1px solid #2f3a62;border-radius:8px;padding:8px 10px;color:inherit;font:inherit}
