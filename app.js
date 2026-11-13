@@ -152,10 +152,31 @@ function openTen(k){
  const res=[];for(let i=0;i<10;i++)res.push(rollItem(c,k));
  save();$('coins').textContent=S.coins.toLocaleString();
  const sk=hexc(SKINS[S.skin].c),back=res.reduce((n,r)=>n+(r.t=='skins'&&r.dup?r.bk:0),0),best=res.reduce((b,r)=>Math.max(b,RK.indexOf(r.rar)),0);
- const sorted=[...res].sort((x,y)=>RK.indexOf(y.rar)-RK.indexOf(x.rar));
- const rv=$('reveal');rv.style.display='flex';rv.className='r-'+RK[best];
- rv.innerHTML=`<div class="beam"></div><div class="tenp"><h2>${c.n} ×10</h2><div class="teng">${sorted.map(r=>`<div class="tc" style="--c:${R[r.rar]}">${r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`}<b>${r.it.n}</b>${LT(r.it)}<small>${r.rar}</small><em>${r.t=='guns'?(r.dup?'×'+cnt(S.guns,r.id):'NEW'):(r.dup?'+'+r.bk+' back':'NEW')}</em></div>`).join('')}</div>${back?`<p class="note">Duplicate skins refunded <i class="coin"></i>${back}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
- beep(RK[best]=='legendary'?880:660,.5,'triangle',.09)}
+ const pickR=w=>{let x=Math.random()*100,i=0;for(;i<3;i++){if((x-=w[i])<0)break}return i};
+ const rv=$('reveal');rv.style.display='flex';rv.className='';
+ rv.innerHTML=`<div class="shake" style="--c:${c.col}"><div class="cbox" style="transform:scale(2)"></div></div>`;beep(180,.8,'sawtooth',.06);
+ const summary=()=>{
+  const sorted=[...res].sort((x,y)=>RK.indexOf(y.rar)-RK.indexOf(x.rar));
+  rv.className='r-'+RK[best];
+  rv.innerHTML=`<div class="beam"></div><div class="tenp"><h2>${c.n} ×10</h2><div class="teng">${sorted.map(r=>`<div class="tc" style="--c:${R[r.rar]}">${r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`}<b>${r.it.n}</b>${LT(r.it)}<small>${r.rar}</small><em>${r.t=='guns'?(r.dup?'×'+cnt(S.guns,r.id):'NEW'):(r.dup?'+'+r.bk+' back':'NEW')}</em></div>`).join('')}</div>${back?`<p class="note">Duplicate skins refunded <i class="coin"></i>${back}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
+  beep(RK[best]=='legendary'?880:660,.5,'triangle',.09)};
+ setTimeout(()=>{
+  const W=54,N=64,STEP=84,vws=[],txs=[],fins=[];let doneN=0,tickRaf,last=-1,allDone=false;
+  const rolls=res.map((r,n)=>{const cards=[];for(let k=0;k<N;k++)cards.push(RK[pickR(c.w)]);cards[W]=r.rar;if(r.rar!='legendary'&&Math.random()<.6)cards[W+1]='legendary';
+   return `<div class="roll mini"><div class="marker"></div><div class="strip" id="st${n}">${cards.map(q=>`<div class="rc" style="--c:${R[q]}"><b>?</b><small>${q}</small></div>`).join('')}</div></div>`}).join('');
+  rv.innerHTML=`<div class="r10wrap"><div class="rtitle">OPENING ${c.n.toUpperCase()} ×10</div><div class="rolls10">${rolls}</div><button class="link" id="skip">Skip</button></div>`;
+  const strips=res.map((r,n)=>$('st'+n));
+  strips.forEach((s,n)=>{vws[n]=s.parentElement.clientWidth;txs[n]=W*STEP+39+(Math.random()*40-20)-vws[n]/2});
+  const finish=(n,skip)=>{if(fins[n])return;fins[n]=true;const s=strips[n],r=res[n];
+   if(skip){s.style.transition='none';s.style.transform=`translateX(${-txs[n]}px)`}
+   const wc=s.children[W];wc.classList.add('win');wc.style.setProperty('--c',R[r.rar]);
+   wc.innerHTML=(r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`)+`<small>${r.it.n}</small>`;
+   s.classList.add('done');
+   if(++doneN==10&&!allDone){allDone=true;cancelAnimationFrame(tickRaf);const b=$('skip');if(b)b.remove();rv.className='hit';beep(RK[best]=='legendary'?880:660,.5,'triangle',.09);setTimeout(summary,1500)}};
+  const tick=()=>{const x=-new DOMMatrixReadOnly(getComputedStyle(strips[0]).transform).m41,i=Math.floor((x+vws[0]/2)/STEP);if(i!=last){last=i;beep(260+(i%5)*25,.03,'square',.03)}if(!allDone)tickRaf=requestAnimationFrame(tick)};
+  setTimeout(()=>{strips.forEach((s,n)=>{s.style.transition=`transform ${5.6+n*.15}s cubic-bezier(.08,.6,.12,1)`;s.style.transform=`translateX(${-txs[n]}px)`;s.addEventListener('transitionend',e=>{if(e.target===s)finish(n,false)})});tick()},60);
+  $('skip').onclick=()=>strips.forEach((s,n)=>finish(n,true));
+ },900)}
 function hset(i){hsel=i;menu()}
 let lb=null,lbErr='',lbAt=0;
 const lbUrl=()=>(typeof TRADE_URL=='string'?TRADE_URL:'').replace(/^ws/,'http')+'/leaderboard';
