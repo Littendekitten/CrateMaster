@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cratemaster-server
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node index.js
+    plan: free
+    envVars:
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
+      - key: FIREBASE_DATABASE_URL
+        sync: false
