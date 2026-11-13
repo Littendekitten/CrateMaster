@@ -98,7 +98,7 @@ function menu(){
  S.hot=fixHot(S.hot,S.guns);
  $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b>${LT(G)}<small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
  const grp={};S.guns.forEach(id=>{if(GUNS[id])grp[id]=(grp[id]||0)+1});
- $('inv').innerHTML=Object.keys(grp).sort(gSort).map(id=>{const G=GUNS[id],n=grp[id],hs=S.hot.map((g,i)=>g==id?i+1:0).filter(Boolean);return `<div class="wcard ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${n>1?`<i class="cnt">×${n}</i>`:''}${gunSvg(id,sk)}<b>${G.n}</b>${LT(G)}<small>${G.r}</small><div class="bars">${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}</div><button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${hs.length?'Slot '+hs.join(',')+' · '+(hs.includes(hsel+1)?'in '+(hsel+1):(hs.length<n?'add to ':'move to ')+(hsel+1)):'Put in slot '+(hsel+1)}</button></div>`}).join('');
+ $('inv').innerHTML=Object.keys(grp).map(id=>{const G=GUNS[id],n=grp[id],hs=S.hot.map((g,i)=>g==id?i+1:0).filter(Boolean);return `<div class="wcard ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${n>1?`<i class="cnt">×${n}</i>`:''}${gunSvg(id,sk)}<b>${G.n}</b>${LT(G)}<small>${G.r}</small><div class="bars">${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}</div><button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${hs.length?'Slot '+hs.join(',')+' · '+(hs.includes(hsel+1)?'in '+(hsel+1):(hs.length<n?'add to ':'move to ')+(hsel+1)):'Put in slot '+(hsel+1)}</button></div>`}).join('');
  applyCw();
  $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).sort(sSort).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
  if(document.activeElement!==$('o-nick'))$('o-nick').value=S.nick||'';$('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
@@ -177,6 +177,7 @@ function openTen(k){
   setTimeout(()=>{strips.forEach((s,n)=>{s.style.transition=`transform ${5.6+n*.15}s cubic-bezier(.08,.6,.12,1)`;s.style.transform=`translateX(${-txs[n]}px)`;s.addEventListener('transitionend',e=>{if(e.target===s)finish(n,false)})});tick()},60);
   $('skip').onclick=()=>strips.forEach((s,n)=>finish(n,true));
  },900)}
+function sortInv(){S.guns.sort(gSort);save();menu();toast('Weapons sorted: rarity, then power')}
 function hset(i){hsel=i;menu()}
 let lb=null,lbErr='',lbAt=0;
 const lbUrl=()=>(typeof TRADE_URL=='string'?TRADE_URL:'').replace(/^ws/,'http')+'/leaderboard';
