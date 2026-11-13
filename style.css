@@ -29,3 +29,5 @@ button:hover{border-color:var(--a)}
 .it small{display:block;font-size:11px;text-transform:uppercase}
 .reveal{margin-top:12px;padding:14px;border:2px solid;border-radius:12px;font-size:20px;font-weight:700;text-align:center}
 .hint{color:var(--m);font-size:13px;margin-top:20px}
+
+#auth{margin-top:14px;color:var(--m);font-size:14px}
