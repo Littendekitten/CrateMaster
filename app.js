@@ -93,7 +93,7 @@ function menu(){
  document.querySelectorAll('.pane').forEach(p=>p.style.display=p.id=='p-'+tab?'block':'none');
  $('play').textContent=playing&&paused?'RESUME':'PLAY';$('endrun').style.display=playing&&paused?'inline-block':'none';
  $('stats').innerHTML=[['Best wave',S.best||0],['Total kills',S.kills||0],['Runs',S.runs||0],['Level',lv]].map(a=>`<div><b>${a[1]}</b>${a[0]}</div>`).join('');
- $('crates').innerHTML=Object.entries(allCR()).map(([k,c])=>{return `<div class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><div class="cbtns"><button class="big" onclick="openCrate('${k}')">OPEN · <i class="coin"></i>${c.cost}</button><button class="big ten" onclick="openTen('${k}')">OPEN ×10 · <i class="coin"></i>${c.cost*10}</button></div></div>`}).join('');
+ $('crates').innerHTML=Object.entries(allCR()).map(([k,c])=>{return `<div class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><div class="cbtns"><button class="big" onclick="openCrate('${k}')">OPEN · <i class="coin"></i>${c.cost}</button><button class="big ten" onclick="openTen('${k}')">OPEN ×10 · <i class="coin"></i>${c.cost*10}</button><button class="big hund" onclick="openHundred('${k}')">OPEN ×100 · <i class="coin"></i>${c.cost*100}</button></div></div>`}).join('');
  const sk=hexc(SKINS[S.skin].c);
  S.hot=fixHot(S.hot,S.guns);
  $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b>${LT(G)}<small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
@@ -178,6 +178,21 @@ function openTen(k){
   $('skip').onclick=()=>strips.forEach((s,n)=>finish(n,true));
  },900)}
 function sortInv(){S.guns.sort(gSort);save();menu();toast('Weapons sorted: rarity, then power')}
+function openHundred(k){
+ if(rolling)return;if(window.tradeLock){toast('Finish your trade first');return}const c=allCR()[k];if(!c){toast('This crate is no longer available');menu();return}
+ const cost=c.cost*100;if(S.coins<cost){toast('Not enough coins for 100 crates');return}
+ if(!confirm('Open 100 '+c.n+' crates for '+cost.toLocaleString()+' coins?'))return;
+ rolling=true;S.coins-=cost;
+ const res=[];for(let i=0;i<100;i++)res.push(rollItem(c,k));
+ save();$('coins').textContent=S.coins.toLocaleString();
+ const sk=hexc(SKINS[S.skin].c),G={};
+ res.forEach(r=>{const key=r.t+':'+r.id;(G[key]=G[key]||{...r,n:0,back:0}).n++;if(r.t=='skins'&&r.dup)G[key].back+=r.bk});
+ const list=Object.values(G).sort((x,y)=>RK.indexOf(y.rar)-RK.indexOf(x.rar)),back=list.reduce((n,r)=>n+r.back,0),best=RK.indexOf(list[0].rar);
+ const rv=$('reveal');rv.style.display='flex';rv.className='';
+ rv.innerHTML=`<div class="shake" style="--c:${c.col}"><div class="cbox" style="transform:scale(2)"></div></div>`;beep(180,.8,'sawtooth',.06);
+ setTimeout(()=>{rv.className='r-'+RK[best];
+  rv.innerHTML=`<div class="beam"></div><div class="tenp"><h2>${c.n} ×100</h2><p class="note">${RK.slice().reverse().map(q=>{const n=res.filter(r=>r.rar==q).length;return n?`<span style="color:${R[q]}">${n} ${q}</span>`:''}).filter(Boolean).join(' · ')}</p><div class="teng">${list.map(r=>`<div class="tc" style="--c:${R[r.rar]}"><span class="cnt2">×${r.n}</span>${r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`}<b>${r.it.n}</b>${LT(r.it)}<small>${r.rar}</small><em>${r.t=='guns'?'you own ×'+cnt(S.guns,r.id):(r.back?'+'+r.back+' back':'NEW')}</em></div>`).join('')}</div>${back?`<p class="note">Duplicate skins refunded <i class="coin"></i>${back}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
+  beep(RK[best]=='legendary'?880:660,.5,'triangle',.09)},1100)}
 function hset(i){hsel=i;menu()}
 let lb=null,lbErr='',lbAt=0;
 const lbUrl=()=>(typeof TRADE_URL=='string'?TRADE_URL:'').replace(/^ws/,'http')+'/leaderboard';
