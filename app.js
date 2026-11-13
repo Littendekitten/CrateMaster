@@ -67,7 +67,7 @@ const LT=g=>g&&g.x?'<span class="ltag">LIMITED</span>':'';
 const hexc=c=>'#'+c.toString(16).padStart(6,'0'),lvOf=x=>Math.floor(Math.sqrt((x||0)/60))+1;
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
 function feed(t){const d=document.createElement('div');d.textContent=t;$('feed').appendChild(d);setTimeout(()=>d.remove(),1600)}
-function setTab(t){tab=t;menu();if(t=='crates')refreshLim()}
+function setTab(t){tab=t;menu();if(t=='crates')refreshLim();if(t=='lb')loadLb()}
 function showMenu(){$('sub').textContent='Fight the bots. Earn coins. Crack crates.';menu();$('menu').style.display='flex'}
 function closeRs(){$('results').style.display='none'}
 function closeRv(){$('reveal').style.display='none';rolling=false;menu()}
@@ -93,7 +93,7 @@ function menu(){
  document.querySelectorAll('.pane').forEach(p=>p.style.display=p.id=='p-'+tab?'block':'none');
  $('play').textContent=playing&&paused?'RESUME':'PLAY';$('endrun').style.display=playing&&paused?'inline-block':'none';
  $('stats').innerHTML=[['Best wave',S.best||0],['Total kills',S.kills||0],['Runs',S.runs||0],['Level',lv]].map(a=>`<div><b>${a[1]}</b>${a[0]}</div>`).join('');
- $('crates').innerHTML=Object.entries(allCR()).map(([k,c])=>{return `<div class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><button class="big" onclick="openCrate('${k}')">OPEN · <i class="coin"></i>${c.cost}</button></div>`}).join('');
+ $('crates').innerHTML=Object.entries(allCR()).map(([k,c])=>{return `<div class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div><div class="cbtns"><button class="big" onclick="openCrate('${k}')">OPEN · <i class="coin"></i>${c.cost}</button><button class="big ten" onclick="openTen('${k}')">OPEN ×10 · <i class="coin"></i>${c.cost*10}</button></div></div>`}).join('');
  const sk=hexc(SKINS[S.skin].c);
  S.hot=fixHot(S.hot,S.guns);
  $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b>${LT(G)}<small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
@@ -103,6 +103,7 @@ function menu(){
  $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).sort(sSort).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
  if(document.activeElement!==$('o-nick'))$('o-nick').value=S.nick||'';$('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
  if(typeof renderTrade=='function')renderTrade();
+ if(tab=='lb')renderLb();
 }
 let rolling=false;
 function openCrate(k){
@@ -136,7 +137,34 @@ function openCrate(k){
   $('skip').onclick=()=>fin(true);
  },900);
 }
+function rollItem(c,k){
+ const pick=w=>{let x=Math.random()*100,i=0;for(;i<3;i++){if((x-=w[i])<0)break}return i};
+ const rar=RK[pick(c.w)],pool=[];
+ for(const g in GUNS)if(g!='pistol'&&GUNS[g].r==rar&&(!GUNS[g].x||GUNS[g].x==k)){pool.push(['guns',g]);if(GUNS[g].x)pool.push(['guns',g])}
+ for(const q in SKINS)if(q!='default'&&SKINS[q].r==rar)pool.push(['skins',q]);
+ const [t,id]=pool[Math.random()*pool.length|0],it=(t=='guns'?GUNS:SKINS)[id],dup=S[t].includes(id),bk=Math.round(c.cost*.4);
+ if(t=='skins'&&dup)S.coins+=bk;else{S[t].push(id);if(t=='guns'&&!dup){S.hot=fixHot(S.hot,S.guns);const e=S.hot.indexOf('');if(e>=0)S.hot[e]=id}}
+ return{t,id,it,rar,dup,bk}}
+function openTen(k){
+ if(rolling)return;if(window.tradeLock){toast('Finish your trade first');return}const c=allCR()[k];if(!c){toast('This crate is no longer available');menu();return}
+ const cost=c.cost*10;if(S.coins<cost){toast('Not enough coins for 10 crates');return}
+ rolling=true;S.coins-=cost;
+ const res=[];for(let i=0;i<10;i++)res.push(rollItem(c,k));
+ save();$('coins').textContent=S.coins.toLocaleString();
+ const sk=hexc(SKINS[S.skin].c),back=res.reduce((n,r)=>n+(r.t=='skins'&&r.dup?r.bk:0),0),best=res.reduce((b,r)=>Math.max(b,RK.indexOf(r.rar)),0);
+ const sorted=[...res].sort((x,y)=>RK.indexOf(y.rar)-RK.indexOf(x.rar));
+ const rv=$('reveal');rv.style.display='flex';rv.className='r-'+RK[best];
+ rv.innerHTML=`<div class="beam"></div><div class="tenp"><h2>${c.n} ×10</h2><div class="teng">${sorted.map(r=>`<div class="tc" style="--c:${R[r.rar]}">${r.t=='guns'?gunSvg(r.id,sk):`<div class="swc" style="background:${hexc(r.it.c)}"></div>`}<b>${r.it.n}</b>${LT(r.it)}<small>${r.rar}</small><em>${r.t=='guns'?(r.dup?'×'+cnt(S.guns,r.id):'NEW'):(r.dup?'+'+r.bk+' back':'NEW')}</em></div>`).join('')}</div>${back?`<p class="note">Duplicate skins refunded <i class="coin"></i>${back}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
+ beep(RK[best]=='legendary'?880:660,.5,'triangle',.09)}
 function hset(i){hsel=i;menu()}
+let lb=null,lbErr='',lbAt=0;
+const lbUrl=()=>(typeof TRADE_URL=='string'?TRADE_URL:'').replace(/^ws/,'http')+'/leaderboard';
+function loadLb(){if(Date.now()-lbAt<15000&&lb)return;lbAt=Date.now();lbErr='';
+ fetch(lbUrl()).then(r=>r.json()).then(d=>{lb=d;renderLb()}).catch(()=>{lbErr='Could not reach the server (it may be waking up) - try again in a moment.';renderLb()})}
+function renderLb(){const el=$('lb');if(!el)return;
+ const esc2=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ if(!lb){el.innerHTML=`<p class="hint">${lbErr||'Loading leaderboard…'}</p>`;return}
+ el.innerHTML=`<div class="lbh"><span>#</span><span>Player</span><span>Best wave</span><span>Kills</span></div>`+(lb.length?lb.map((p,i)=>`<div class="lbr ${cu&&p.uid==cu.uid?'me':''}"><span>${i+1}</span><span>${esc2(p.name)}</span><span>${p.best}</span><span>${p.kills}</span></div>`).join(''):'<p class="hint">No scores yet.</p>')+`<p class="hint">${lbErr?esc2(lbErr)+' · ':''}Ranked by best wave, then total kills. <button class="sm" onclick="lbAt=0;loadLb()">Refresh</button></p>`}
 function hclr(i){S.hot[i]='';if(curSlot==i)curSlot=-1;save();menu();applyGun()}
 function toSlot(id){S.hot=fixHot(S.hot,S.guns);const at=hsel;
  if(S.hot[at]!=id){const o=S.hot.indexOf(id);
