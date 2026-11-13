@@ -6,12 +6,12 @@ const SKINS={default:{n:'Factory Gray',r:'common',c:0x777b88},neon:{n:'Neon Gree
 const CR={basic:{n:'Basic Crate',cost:100,w:[60,28,10,2]},elite:{n:'Elite Crate',cost:300,w:[0,50,35,15]}};
 let S={coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default'};
 try{const j=localStorage.getItem('cratemaster');if(j)S=Object.assign(S,JSON.parse(j))}catch(e){}
-const save=()=>{try{localStorage.setItem('cratemaster',JSON.stringify(S))}catch(e){}};
+const save=()=>{try{localStorage.setItem('cratemaster',JSON.stringify(S))}catch(e){}if(window.cloud&&cloud.user)cloud.save(S)};
 let AC;function beep(f,d,t,v){try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t||'square';o.frequency.value=f;g.gain.value=v||.04;g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
 
 /* ---------- menu / shop ---------- */
 function menu(){
- $('coins').textContent=S.coins;
+ $('coins').textContent=S.coins;renderAuth();
  $('crates').innerHTML=Object.keys(CR).map(k=>{const c=CR[k];return `<div class="crate"><b>${c.n}</b><small>${RK.map((r,i)=>c.w[i]?`<span style="color:${R[r]}">${r} ${c.w[i]}%</span>`:'').join(' · ')}</small><button onclick="openCrate('${k}')">Open · 🪙 ${c.cost}</button></div>`}).join('');
  const card=(t,o,id,list,cur)=>`<button class="it ${list.includes(id)?'own':''} ${cur==id?'on':''}" style="--c:${R[o.r]}" ${list.includes(id)?`onclick="eq('${t}','${id}')"`:'disabled'}>${o.n}<small>${list.includes(id)?o.r:'locked'}</small></button>`;
  $('inv').innerHTML='<h3>Guns</h3><div class="g">'+Object.keys(GUNS).map(id=>card('guns',GUNS[id],id,S.guns,S.gun)).join('')+'</div><h3>Skins</h3><div class="g">'+Object.keys(SKINS).map(id=>card('skins',SKINS[id],id,S.skins,S.skin)).join('')+'</div>';
@@ -203,6 +203,24 @@ addEventListener('keydown',e=>{keys[e.code]=true;
 addEventListener('keyup',e=>keys[e.code]=false);
 
 /* ---------- main loop ---------- */
+/* ---------- cloud (Firebase auth + Firestore) ---------- */
+let cu=null,sync='';
+const DEF=()=>({coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default'});
+function clean(d){const o=DEF();o.coins=Math.max(0,Math.floor(+d.coins||0));
+ if(Array.isArray(d.guns))o.guns=[...new Set(['pistol',...d.guns.filter(g=>GUNS[g])])];
+ if(Array.isArray(d.skins))o.skins=[...new Set(['default',...d.skins.filter(k=>SKINS[k])])];
+ if(o.guns.includes(d.gun))o.gun=d.gun;if(o.skins.includes(d.skin))o.skin=d.skin;return o}
+function renderAuth(){const a=$('auth');if(!a)return;
+ a.innerHTML=cu?`<span>☁️ ${cu.name||'Player'} · ${sync||'synced'}</span><button onclick="cloud.logout()">Sign out</button>`:`<button onclick="signIn()">Sign in with Google</button><span>Save your progress to the cloud</span>`}
+function signIn(){if(!window.cloud){$('auth').textContent='Cloud unavailable (offline or blocked).';return}
+ cloud.login().catch(e=>{$('auth').textContent='Sign-in failed: '+(e.code||e.message)})}
+addEventListener('cm-auth',async e=>{const was=cu;cu=e.detail;
+ if(cu){try{const d=await cloud.load();if(d)S=clean(d);else cloud.save(S,true);sync='synced'}catch(err){console.error(err);sync='sync error'}}
+ else if(was){S=DEF()}
+ try{localStorage.setItem('cratemaster',JSON.stringify(S))}catch(x){}
+ applyGun();menu()});
+addEventListener('cm-sync',e=>{sync=e.detail=='ok'?'saved':'save failed';renderAuth()});
+
 let last=performance.now();
 function loop(t){requestAnimationFrame(loop);const dt=Math.min((t-last)/1000,.05);last=t;now=t/1000;for(const r of rings)r.rotation.z+=dt*(r.k?-1.2:1.2);dust.rotation.y+=dt*.02;
  if(playing&&!paused)update(dt);
