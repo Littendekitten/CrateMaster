@@ -56,7 +56,7 @@ nav{display:flex;gap:6px;margin:16px 0;border-bottom:1px solid #2f3a62}
 .odds{margin:10px 0 16px;text-align:left;font-size:14px}.odds div{display:grid;grid-template-columns:78px 1fr 40px;gap:8px;align-items:center;margin:4px 0}.odds span{text-transform:capitalize}
 .odds i,.bar i{height:6px;background:#0007;border-radius:3px;overflow:hidden;display:block}.odds u,.bar u{display:block;height:100%}.odds em{font-style:normal;color:var(--m);text-align:right}
 .g{display:flex;gap:12px;flex-wrap:wrap}
-.wcard{width:200px;background:var(--p);border:1px solid var(--c);border-radius:14px;padding:12px;box-shadow:0 0 18px color-mix(in srgb,var(--c) 22%,transparent)}
+.wcard{width:var(--cw,150px);background:var(--p);border:1px solid var(--c);border-radius:14px;padding:12px;box-shadow:0 0 18px color-mix(in srgb,var(--c) 22%,transparent)}
 .wcard.on{background:linear-gradient(160deg,var(--p),color-mix(in srgb,var(--c) 28%,var(--p)))}.wcard.lock{opacity:.5}
 .wcard svg{width:100%;height:60px}.wcard b{display:block}.wcard small{color:var(--c);text-transform:uppercase;font-size:11px;letter-spacing:1px}
 .wcard button{width:100%;margin-top:8px}.bar{display:grid;grid-template-columns:42px 1fr;gap:6px;align-items:center;margin:5px 0;font-size:11px;color:var(--m)}.bar em{font-style:normal}.bar u{background:var(--c1)}
@@ -128,3 +128,11 @@ nav{display:flex;gap:6px;margin:16px 0;border-bottom:1px solid #2f3a62}
 .tl{display:flex;flex-wrap:wrap;gap:6px;min-height:38px}.tl em{color:var(--m);font-size:13px}
 .tg{background:var(--p);border:1px solid var(--c);border-radius:10px;padding:6px 10px;font-size:13px}.tg[onclick]{cursor:pointer}.tg b{display:block}.tg small{display:block;color:var(--c);text-transform:uppercase;font-size:10px;letter-spacing:1px}
 .tg.sel{background:color-mix(in srgb,var(--c) 28%,var(--p));box-shadow:0 0 0 2px var(--c)}
+
+/* locker: resizable cards, duplicate count */
+#inv{--cw:150px}
+.wcard{padding:10px;font-size:calc(var(--cw,150px) / 11.5)}
+.wcard b{font-size:1.1em}.wcard small{font-size:.8em}
+.wcard button{font-size:max(11px,.85em);padding:5px 6px}
+.wcard .cnt{position:absolute;right:8px;top:6px;font-style:normal;font-family:Orbitron,sans-serif;font-weight:800;font-size:12px;color:#150a00;background:var(--c);padding:1px 7px;border-radius:10px}
+#inv.tiny .bars{display:none}#inv.tiny .wcard svg{height:44px}
