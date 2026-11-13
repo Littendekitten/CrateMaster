@@ -5,12 +5,12 @@ const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:
 const SKINS={default:{n:'Factory Gray',r:'common',c:0x777b88},neon:{n:'Neon Green',r:'common',c:0x39ff14},crimson:{n:'Crimson',r:'rare',c:0xdc143c},ice:{n:'Glacier',r:'epic',c:0x66ccff},gold:{n:'Midas Gold',r:'legendary',c:0xffd23f},void:{n:'Void Purple',r:'legendary',c:0x8a2be2}};
 const CR={basic:{n:'Basic Crate',col:'#ff8a1f',cost:100,w:[60,28,10,2]},elite:{n:'Elite Crate',col:'#b45cff',cost:300,w:[0,50,35,15]}};
 let S={coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true};
-try{const j=localStorage.getItem('cratemaster');if(j)S=Object.assign(S,JSON.parse(j))}catch(e){}
-const save=()=>{try{localStorage.setItem('cratemaster',JSON.stringify(S))}catch(e){}if(window.cloud&&cloud.user)cloud.save(S)};
+
+const save=()=>{if(window.cloud&&cloud.user)cloud.save(S)};
 let AC;function beep(f,d,t,v){try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t||'square';o.frequency.value=f;g.gain.value=(v||.04)*(S.vol==null?1:S.vol);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
 
 /* ---------- menu / shop / locker ---------- */
-let tab='play',cu=null,sync='',isGuest=false,gateDone=false;
+let tab='play',cu=null,sync='',gateDone=false;
 const hexc=c=>'#'+c.toString(16).padStart(6,'0'),lvOf=x=>Math.floor(Math.sqrt((x||0)/60))+1;
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
 function feed(t){const d=document.createElement('div');d.textContent=t;$('feed').appendChild(d);setTimeout(()=>d.remove(),1600)}
@@ -25,7 +25,7 @@ const stat=(n,v)=>`<div class="bar"><em>${n}</em><i><u style="width:${Math.max(4
 function menu(){
  const xp=S.xp||0,lv=lvOf(xp),lo=60*(lv-1)**2,hi=60*lv*lv;
  $('coins').textContent=S.coins.toLocaleString();
- $('chip').innerHTML=`<div class="av">${(cu&&cu.name||'G')[0].toUpperCase()}</div><div class="who"><b>${cu?cu.name:'Guest'}</b><small>LV ${lv} · ${cu?(sync||'synced'):'local save'}</small><div class="xp"><i style="width:${Math.round((xp-lo)/(hi-lo)*100)}%"></i></div></div>${cu?'<button class="sm" onclick="cloud.logout()">Sign out</button>':'<button class="sm" onclick="showGate()">Sign in</button>'}`;
+ $('chip').innerHTML=`<div class="av">${(cu&&cu.name||'G')[0].toUpperCase()}</div><div class="who"><b>${cu?cu.name:'Player'}</b><small>LV ${lv} · ${sync||'synced'}</small><div class="xp"><i style="width:${Math.round((xp-lo)/(hi-lo)*100)}%"></i></div></div><button class="sm" onclick="cloud.logout()">Sign out</button>`;
  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.t==tab));
  document.querySelectorAll('.pane').forEach(p=>p.style.display=p.id=='p-'+tab?'block':'none');
  $('play').textContent=playing&&paused?'RESUME':'PLAY';$('endrun').style.display=playing&&paused?'inline-block':'none';
@@ -169,7 +169,7 @@ function spawnBot(){
  const an=Math.random()*6.283;g.position.set(Math.cos(an)*24,0,Math.sin(an)*24);collide(g.position,.6);
  sc.add(g);bots.push(g)}
 function startWave(){wave++;toSpawn=3+wave*2;waiting=false;say('Wave '+wave);hud()}
-function play(){
+function play(){if(!cu)return;
  bots.forEach(b=>sc.remove(b));bots.length=0;
  st={c:S.coins,xp:S.xp||0};P.set(0,0,0);yaw=pitch=0;hp=100;wave=0;kills=0;nwT=0;playing=true;paused=false;
  $('menu').style.display='none';$('hud').style.display='block';applyGun();startWave();lock()}
@@ -246,23 +246,26 @@ addEventListener('keydown',e=>{keys[e.code]=true;
 addEventListener('keyup',e=>keys[e.code]=false);
 
 /* ---------- main loop ---------- */
-/* ---------- cloud (Firebase auth + Firestore) + login gate ---------- */
-const DEF=()=>({coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:S.sens||1,vol:S.vol==null?1:S.vol,bloom:S.bloom!==false});
+/* ---------- cloud (Firebase auth + Firestore) + mandatory login gate ---------- */
+const DEF=()=>({coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true});
 function clean(d){const o=DEF();['coins','best','kills','xp','runs'].forEach(k=>o[k]=Math.max(0,Math.floor(+d[k]||0)));
  if(Array.isArray(d.guns))o.guns=[...new Set(['pistol',...d.guns.filter(g=>GUNS[g])])];
  if(Array.isArray(d.skins))o.skins=[...new Set(['default',...d.skins.filter(k=>SKINS[k])])];
- if(o.guns.includes(d.gun))o.gun=d.gun;if(o.skins.includes(d.skin))o.skin=d.skin;return o}
+ if(o.guns.includes(d.gun))o.gun=d.gun;if(o.skins.includes(d.skin))o.skin=d.skin;
+ if(d.sens>0)o.sens=+d.sens;if(d.vol>=0&&d.vol<=1)o.vol=+d.vol;o.bloom=d.bloom!==false;return o}
 function gate(st){$('gate').style.display=st=='off'?'none':'flex';$('g-load').style.display=st=='load'?'block':'none';$('g-btns').style.display=st=='login'?'flex':'none'}
-function showGate(){isGuest=false;$('menu').style.display='none';gate('login')}
-function guest(){isGuest=true;gate('off');showMenu()}
-function signIn(){$('g-err').textContent='';if(!window.cloud){$('g-err').textContent='Cloud login is unavailable right now (offline or blocked). You can play as a guest.';return}
+function signIn(){$('g-err').textContent='';if(!window.cloud){$('g-err').textContent='Login is unavailable right now. Check your connection and reload the page.';return}
  cloud.login().catch(e=>{$('g-err').textContent='Sign-in failed: '+(e.code||e.message)})}
 addEventListener('cm-auth',async e=>{const was=cu;cu=e.detail;gateDone=true;
- if(cu){try{const d=await cloud.load();if(d)S=clean(d);else cloud.save(S,true);sync='synced'}catch(err){console.error(err);sync='sync error'}gate('off');showMenu()}
- else{if(was){S=DEF();isGuest=false;playing=false;paused=false;$('hud').style.display='none'}if(!isGuest){$('menu').style.display='none';gate('login')}}
- try{localStorage.setItem('cratemaster',JSON.stringify(S))}catch(x){}applyGun();menu()});
+ if(cu){
+  try{const d=await cloud.load();if(d)S=clean(d);else{S=DEF();cloud.save(S,true)}sync='synced'}
+  catch(err){console.error(err);$('g-err').textContent='Could not load your save. Check your connection and sign in again.';cloud.logout();return}
+  gate('off');showMenu()}
+ else{if(was){S=DEF();playing=false;paused=false;down=false;$('hud').style.display='none';closeRs();$('reveal').style.display='none';rolling=false}
+  $('menu').style.display='none';gate('login')}
+ applyGun();menu()});
 addEventListener('cm-sync',e=>{sync=e.detail=='ok'?'saved':'save failed';if(!playing||paused)menu()});
-gate('load');setTimeout(()=>{if(!gateDone){gate('login');if(!window.cloud)$('g-err').textContent='Cloud login is unavailable right now. You can still play as a guest.'}},4500);
+gate('load');setTimeout(()=>{if(!gateDone){gate('login');$('g-err').textContent=window.cloud?'Still connecting… try signing in.':'Login is unavailable right now. Check your connection and reload the page.'}},4500);
 
 let last=performance.now();
 function loop(t){requestAnimationFrame(loop);const dt=Math.min((t-last)/1000,.05);last=t;now=t/1000;for(const r of rings)r.rotation.z+=dt*(r.k?-1.2:1.2);dust.rotation.y+=dt*.02;
