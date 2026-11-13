@@ -1,6 +1,6 @@
 // Online trading client: talks to the Render server (WebSocket); online players come from Realtime Database presence.
 // >>> Set this to your Render service URL (wss://...) <<<
-const TRADE_URL='wss://YOUR-SERVICE.onrender.com';
+const TRADE_URL='wss://cratemaster.onrender.com';
 
 let tws=null,tUp=false,tOnline={},tInv=null,tTrade=null,tMsg='',tRetry=0,tUnsub=null,tTimer=null;
 window.tradeLock=false;
