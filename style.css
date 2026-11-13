@@ -137,6 +137,5 @@ nav{display:flex;gap:6px;margin:16px 0;border-bottom:1px solid #2f3a62}
 .wcard .cnt{position:absolute;right:8px;top:6px;font-style:normal;font-family:Orbitron,sans-serif;font-weight:800;font-size:12px;color:#150a00;background:var(--c);padding:1px 7px;border-radius:10px}
 #inv.tiny .bars{display:none}#inv.tiny .wcard svg{height:44px}
 
-/* coin icon: the 🪙 emoji written as a CSS escape (encoding-proof), drawn with the Chromebook/Noto emoji font */
-.coin{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji","Twemoji Mozilla",sans-serif;font-style:normal;font-weight:400;margin:0 .25em 0 0}
-.coin::before{content:"\1FA99"}
+/* coin icon: drawn with CSS, so it never depends on an emoji font */
+.coin{display:inline-block;width:.85em;height:.85em;margin:0 .3em 0 0;vertical-align:-.1em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0,#ffd23f 45%,#d99a00);border:2px solid #b87a00;box-shadow:inset 0 0 0 2px #ffe680aa;font-style:normal}
