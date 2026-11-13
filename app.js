@@ -134,8 +134,8 @@ gp(B(.012,.012,.36),glow,.044,.03,-.02);gp(B(.012,.012,.36),glow,-.044,.03,-.02)
 cam.add(gun);
 const glowTex=ctex(64,64,(g,w,h)=>{const r=g.createRadialGradient(32,32,1,32,32,32);r.addColorStop(0,'#fff');r.addColorStop(.25,'#ffd070');r.addColorStop(1,'#ff800000');g.fillStyle=r;g.fillRect(0,0,w,h)});
 const flashM=new THREE.Mesh(new THREE.PlaneGeometry(.55,.55),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,opacity:0}));
-flashM.position.set(.25,-.2,-1.15);cam.add(flashM);
-const mLight=new THREE.PointLight(0xffb050,0,9);mLight.position.set(.25,-.15,-1.1);cam.add(mLight);
+flashM.position.set(.33,-.29,-1.15);cam.add(flashM);
+const mLight=new THREE.PointLight(0xffb050,0,9);mLight.position.set(.33,-.24,-1.1);cam.add(mLight);
 function applyGun(){const G=GUNS[S.gun];swapT=1;gm.color.setHex(SKINS[S.skin].c);gun.scale.z=G.l;$('wpn').innerHTML=`${G.n}<br><small style="color:${R[G.r]}">${SKINS[S.skin].n}</small>`}
 /* decor */
 const emb=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshBasicMaterial({map:ctex(512,512,(g)=>{g.strokeStyle='#ff8a1f';g.lineWidth=10;g.shadowColor='#ff8a1f';g.shadowBlur=24;g.beginPath();g.arc(256,256,200,0,6.283);g.stroke();g.lineWidth=5;g.strokeRect(166,166,180,180);g.font='bold 54px system-ui';g.textAlign='center';g.fillStyle='#ff8a1f';g.fillText('CM',256,275)}),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
@@ -242,7 +242,7 @@ const tg=new THREE.BoxGeometry(.025,.025,1);function tracer(a,b,col){const l=new
 function shoot(){
  if(now<next)return;const G=GUNS[S.gun];next=now+G.f;kick=.09;flashM.material.opacity=1;flashM.rotation.z=Math.random()*6;mLight.intensity=4;
  beep(S.gun=='sniper'?120:S.gun=='shotgun'?90:240,.08,'square',.05);
- const mz=cam.localToWorld(new THREE.Vector3(.25,-.2,-1));
+ const mz=cam.localToWorld(new THREE.Vector3(.33,-.29,-1));
  const targets=solid.concat(...bots.map(b=>b.parts));
  for(let i=0;i<G.p;i++){
   rc.far=100;rc.setFromCamera(new THREE.Vector2((Math.random()-.5)*G.s*4,(Math.random()-.5)*G.s*4),cam);
@@ -263,8 +263,8 @@ function update(dt){
  if(f||r)bob+=dt*10;cam.fov+=((keys.ShiftLeft&&(f||r)?82:75)-cam.fov)*Math.min(1,dt*8);cam.updateProjectionMatrix();
  cam.position.set(P.x+(Math.random()-.5)*fT*.15,1.6+Math.sin(bob)*.04+(Math.random()-.5)*fT*.1,P.z);cam.rotation.set(pitch,yaw,0);
  kick=Math.max(0,kick-dt*.6);swapT=Math.max(0,swapT-dt*4);const mv=(f||r)?1:0,spr=keys.ShiftLeft&&mv;
- gun.position.set(.25+Math.cos(bob*.5)*.012*mv+(spr?-.04:0),-.22+Math.abs(Math.sin(bob))*.012*mv-swapT*.35-(spr?.04:0),-.5+kick);
- gun.rotation.x=kick*2+swapT*.9+(spr?.25:0);gun.rotation.y=(spr?.35:0)+Math.cos(bob*.5)*.015*mv;gun.rotation.z=Math.sin(bob*.5)*.02*mv-r*.04;
+ gun.position.set(.33+Math.cos(bob*.5)*.012*mv+(spr?.02:0),-.31+Math.abs(Math.sin(bob))*.012*mv-swapT*.35-(spr?.04:0),-.5+kick);
+ gun.rotation.x=kick*2+swapT*.9+(spr?.25:0);gun.rotation.y=(spr?.15:0)+Math.cos(bob*.5)*.015*mv;gun.rotation.z=Math.sin(bob*.5)*.02*mv-r*.04;
  cam.rotation.z=-r*.018+(Math.random()-.5)*fT*.03;cam.position.y+=fH*.03*Math.sin(now*30);fH=Math.max(0,fH-dt*3);
  if(down&&GUNS[S.gun].a)shoot();
  /* spawning & waves */
