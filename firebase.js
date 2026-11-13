@@ -1,7 +1,7 @@
 // CrateMaster cloud layer: Google login + Firestore saves (Firebase modular SDK from CDN)
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {getFirestore,doc,getDoc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {getFirestore,doc,getDoc,setDoc,serverTimestamp,collection,getDocs} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyACzBobwY_e-qXhwisbLjAz0H623UcW_Ds",
@@ -24,6 +24,8 @@ window.cloud={
   get user(){return user},
   login:()=>signInWithPopup(auth,new GoogleAuthProvider()),
   logout:()=>signOut(auth),
+  // Firestore collection "Limited Crates": one doc per crate (doc id = crate key, e.g. "spooky"), field enabled:true/false
+  async limited(){const s=await getDocs(collection(db,"Limited Crates"));const o={};s.forEach(d=>o[d.id]=d.data());return o},
   async load(){const s=await getDoc(ref());return s.exists()?s.data():null},
   // debounced save; pass now=true to write immediately
   save(S,now){
