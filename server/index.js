@@ -11,7 +11,24 @@ admin.initializeApp({
 });
 const fs = admin.firestore(), rtdb = admin.database(), FV = admin.firestore.FieldValue;
 
-const server = http.createServer((q, r) => { r.writeHead(200); r.end('CrateMaster server ok'); });
+let lbCache = { at: 0, data: [] };
+async function leaderboard() {
+  if (Date.now() - lbCache.at < 30000) return lbCache.data;
+  const snap = await fs.collection('users').orderBy('best', 'desc').limit(25).get();
+  const data = [];
+  snap.forEach(d => { const x = d.data(); if ((x.best || 0) > 0) data.push({ uid: d.id, name: cleanName(x.username), best: x.best | 0, kills: x.kills | 0 }); });
+  data.sort((a, b) => b.best - a.best || b.kills - a.kills);
+  lbCache = { at: Date.now(), data };
+  return data;
+}
+const server = http.createServer(async (q, r) => {
+  if (q.url && q.url.split('?')[0] === '/leaderboard') {
+    try { const d = await leaderboard(); r.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }); r.end(JSON.stringify(d)); }
+    catch (e) { console.error(e); r.writeHead(500, { 'Access-Control-Allow-Origin': '*' }); r.end('[]'); }
+    return;
+  }
+  r.writeHead(200); r.end('CrateMaster server ok');
+});
 const wss = new WebSocketServer({ server, maxPayload: 8192 });
 
 const users = new Map();   // uid -> { ws, name, trade }
