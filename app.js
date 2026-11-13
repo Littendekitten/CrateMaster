@@ -54,7 +54,12 @@ let tab='play',cu=null,sync='',gateDone=false;
 const cleanNick=s=>String(s||'').replace(/[<>&"'`]/g,'').replace(/\s+/g,' ').trim().slice(0,16);
 const shown=()=>S.nick||(cu&&cu.name)||'Player';
 let hsel=0;
-function fixHot(h,own){h=(h||[]).slice(0,5);while(h.length<5)h.push('');h=h.map((g,i)=>g&&own.includes(g)&&GUNS[g]&&h.indexOf(g)==i?g:'');return h}
+const cnt=(arr,id)=>{let n=0;for(const x of arr)if(x==id)n++;return n};
+let curSlot=-1;
+const csz=()=>{try{return +localStorage.getItem('cm_cw')||150}catch(e){return 150}};
+function setCw(v){try{localStorage.setItem('cm_cw',v)}catch(e){}applyCw()}
+function applyCw(){const v=csz(),g=$('inv');if(g){g.style.setProperty('--cw',v+'px');g.classList.toggle('tiny',v<140)}const r=$('cw');if(r&&+r.value!=v)r.value=v}
+function fixHot(h,own){h=(h||[]).slice(0,5);while(h.length<5)h.push('');const used={};return h.map(g=>{if(!g||!GUNS[g])return '';used[g]=(used[g]||0)+1;return used[g]<=cnt(own,g)?g:''})}
 const gScore=g=>g.d*g.p/g.f;
 const gSort=(x,y)=>{const A=GUNS[x],B=GUNS[y];return (!!B.x-!!A.x)||(RK.indexOf(B.r)-RK.indexOf(A.r))||(gScore(B)-gScore(A))};
 const sSort=(x,y)=>RK.indexOf(SKINS[y].r)-RK.indexOf(SKINS[x].r);
@@ -92,7 +97,9 @@ function menu(){
  const sk=hexc(SKINS[S.skin].c);
  S.hot=fixHot(S.hot,S.guns);
  $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b>${LT(G)}<small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
- $('inv').innerHTML=S.guns.filter(id=>GUNS[id]).sort(gSort).map(id=>{const G=GUNS[id],own=true;return `<div class="wcard ${own?'':'lock'} ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${gunSvg(id,own?sk:'#555')}<b>${G.n}</b>${LT(G)}<small>${own?G.r:'🔒 locked'}</small>${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}${own?`<button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${S.hot.includes(id)?'Slot '+(S.hot.indexOf(id)+1)+' · move to '+(hsel+1):'Put in slot '+(hsel+1)}</button>`:''}</div>`}).join('');
+ const grp={};S.guns.forEach(id=>{if(GUNS[id])grp[id]=(grp[id]||0)+1});
+ $('inv').innerHTML=Object.keys(grp).sort(gSort).map(id=>{const G=GUNS[id],n=grp[id],hs=S.hot.map((g,i)=>g==id?i+1:0).filter(Boolean);return `<div class="wcard ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${n>1?`<i class="cnt">×${n}</i>`:''}${gunSvg(id,sk)}<b>${G.n}</b>${LT(G)}<small>${G.r}</small><div class="bars">${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}</div><button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${hs.length?'Slot '+hs.join(',')+' · '+(hs.includes(hsel+1)?'in '+(hsel+1):(hs.length<n?'add to ':'move to ')+(hsel+1)):'Put in slot '+(hsel+1)}</button></div>`}).join('');
+ applyCw();
  $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).sort(sSort).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
  if(document.activeElement!==$('o-nick'))$('o-nick').value=S.nick||'';$('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
  if(typeof renderTrade=='function')renderTrade();
@@ -106,7 +113,7 @@ function openCrate(k){
  for(const g in GUNS)if(g!='pistol'&&GUNS[g].r==rar&&(!GUNS[g].x||GUNS[g].x==k)){pool.push(['guns',g]);if(GUNS[g].x)pool.push(['guns',g])}
  for(const q in SKINS)if(q!='default'&&SKINS[q].r==rar)pool.push(['skins',q]);
  const [t,id]=pool[Math.random()*pool.length|0],it=(t=='guns'?GUNS:SKINS)[id],dup=S[t].includes(id),bk=Math.round(c.cost*.4);
- if(dup)S.coins+=bk;else{S[t].push(id);if(t=='guns'){S.hot=fixHot(S.hot,S.guns);const e=S.hot.indexOf('');if(e>=0)S.hot[e]=id}}
+ if(t=='skins'&&dup)S.coins+=bk;else{S[t].push(id);if(t=='guns'){S.hot=fixHot(S.hot,S.guns);if(!dup){const e=S.hot.indexOf('');if(e>=0)S.hot[e]=id}}}
  save();$('coins').textContent=S.coins.toLocaleString();
  const rv=$('reveal');rv.style.display='flex';rv.className='';
  rv.innerHTML=`<div class="shake" style="--c:${c.col}"><div class="cbox" style="transform:scale(2)"></div></div>`;beep(180,.8,'sawtooth',.06);
@@ -123,15 +130,19 @@ function openCrate(k){
    strip.classList.add('done');rv.className='hit';const sk=$('skip');if(sk)sk.remove();
    beep(rar=='legendary'?880:rar=='epic'?660:440,.5,'triangle',.09);
    setTimeout(()=>{rv.className='r-'+rar;
-    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2>${LT(it)}<p>${dup?'Duplicate · +'+bk+' 🪙 back':'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
+    rv.innerHTML=`<div class="beam"></div><div class="rcard" style="--c:${R[rar]}"><small>${rar.toUpperCase()} ${t=='guns'?'WEAPON':'SKIN'}</small>${t=='guns'?gunSvg(id,hexc(SKINS[S.skin].c)):`<div class="swc" style="background:${hexc(it.c)}"></div>`}<h2>${it.n}</h2>${LT(it)}<p>${dup?(t=='guns'?'Duplicate · you now own ×'+cnt(S.guns,id):'Duplicate · +'+bk+' 🪙 back'):'NEW ITEM UNLOCKED!'}</p><button class="big" onclick="closeRv()">NICE</button></div>`},1500)};
   setTimeout(()=>{strip.style.transition='transform 6.5s cubic-bezier(.08,.6,.12,1)';strip.style.transform=`translateX(${-tx}px)`;tick()},60);
   strip.addEventListener('transitionend',()=>fin(false),{once:true});
   $('skip').onclick=()=>fin(true);
  },900);
 }
 function hset(i){hsel=i;menu()}
-function hclr(i){S.hot[i]='';save();menu();applyGun()}
-function toSlot(id){S.hot=fixHot(S.hot,S.guns);const o=S.hot.indexOf(id);if(o>=0)S.hot[o]=S.hot[hsel];S.hot[hsel]=id;S.gun=id;const n=S.hot.indexOf('',hsel+1);save();hsel=n>=0&&n!=o?n:hsel;menu();applyGun();toast(GUNS[id].n+' → slot '+(S.hot.indexOf(id)+1))}
+function hclr(i){S.hot[i]='';if(curSlot==i)curSlot=-1;save();menu();applyGun()}
+function toSlot(id){S.hot=fixHot(S.hot,S.guns);const at=hsel;
+ if(S.hot[at]!=id){const o=S.hot.indexOf(id);
+  if(cnt(S.hot,id)>=cnt(S.guns,id)&&o>=0)S.hot[o]=S.hot[at]; // no spare copy: move/swap
+  S.hot[at]=id}
+ S.gun=id;curSlot=at;const n=S.hot.indexOf('',at+1);save();hsel=n>=0?n:hsel;menu();applyGun();toast(GUNS[id].n+' → slot '+(at+1))}
 function eq(t,id){if(t=='guns')S.gun=id;else S.skin=id;save();menu();applyGun()}
 const rd=$('radar'),rg=rd.getContext('2d');
 function radar(){const c=70,k=2.2;rg.clearRect(0,0,140,140);rg.save();rg.translate(c,c);rg.rotate(yaw);
@@ -189,7 +200,7 @@ const glowTex=ctex(64,64,(g,w,h)=>{const r=g.createRadialGradient(32,32,1,32,32,
 const flashM=new THREE.Mesh(new THREE.PlaneGeometry(.55,.55),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,opacity:0}));
 flashM.position.set(.33,-.29,-1.15);cam.add(flashM);
 const mLight=new THREE.PointLight(0xffb050,0,9);mLight.position.set(.33,-.24,-1.1);cam.add(mLight);
-function drawHot(){const el=$('hotbar');if(!el)return;el.innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hb ${g&&g==S.gun?'on':''} ${G?'':'em'}" style="--c:${G?R[G.r]:'#555'}"><em>${i+1}</em>${G?`${gunSvg(g,'#9aa4c4')}<b>${G.n}</b>${LT(G)}`:''}</div>`}).join('')}
+function drawHot(){const el=$('hotbar');if(!el)return;el.innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hb ${g&&g==S.gun&&(curSlot<0||S.hot[curSlot]!=S.gun||curSlot==i)?'on':''} ${G?'':'em'}" style="--c:${G?R[G.r]:'#555'}"><em>${i+1}</em>${G?`${gunSvg(g,'#9aa4c4')}<b>${G.n}</b>${LT(G)}`:''}</div>`}).join('')}
 function applyGun(){const G=GUNS[S.gun];swapT=1;drawHot();gm.color.setHex(SKINS[S.skin].c);gun.scale.z=G.l;$('wpn').innerHTML=`${G.n}<br><small style="color:${R[G.r]}">${SKINS[S.skin].n}</small>`}
 /* decor */
 const emb=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshBasicMaterial({map:ctex(512,512,(g)=>{g.strokeStyle='#ff8a1f';g.lineWidth=10;g.shadowColor='#ff8a1f';g.shadowBlur=24;g.beginPath();g.arc(256,256,200,0,6.283);g.stroke();g.lineWidth=5;g.strokeRect(166,166,180,180);g.font='bold 54px system-ui';g.textAlign='center';g.fillStyle='#ff8a1f';g.fillText('CM',256,275)}),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
@@ -409,7 +420,7 @@ addEventListener('mousedown',e=>{if(!playing||paused||e.button)return;down=true;
 addEventListener('mouseup',()=>down=false);
 addEventListener('keydown',e=>{keys[e.code]=true;
  if(e.code=='Escape')pause();
- if(playing&&!paused&&/^Digit[1-5]$/.test(e.code)){const g=S.hot[+e.code[5]-1];if(g&&GUNS[g]){S.gun=g;applyGun()}}});
+ if(playing&&!paused&&/^Digit[1-5]$/.test(e.code)){const si=+e.code[5]-1,g=S.hot[si];if(g&&GUNS[g]){S.gun=g;curSlot=si;applyGun()}}});
 addEventListener('keyup',e=>keys[e.code]=false);
 addEventListener('blur',()=>{for(const k in keys)keys[k]=false;down=false;if(playing&&!paused)pause()});
 
@@ -417,11 +428,11 @@ addEventListener('blur',()=>{for(const k in keys)keys[k]=false;down=false;if(pla
 /* ---------- cloud (Firebase auth + Firestore) + mandatory login gate ---------- */
 const DEF=()=>({coins:250,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true,nick:'',hot:['pistol']});
 function clean(d){const o=DEF();['coins','best','kills','xp','runs'].forEach(k=>o[k]=Math.max(0,Math.floor(+d[k]||0)));
- if(Array.isArray(d.guns))o.guns=[...new Set(['pistol',...d.guns.filter(g=>GUNS[g])])];
+ if(Array.isArray(d.guns))o.guns=['pistol',...d.guns.filter(g=>GUNS[g]&&g!='pistol')];
  if(Array.isArray(d.skins))o.skins=[...new Set(['default',...d.skins.filter(k=>SKINS[k])])];
  if(o.guns.includes(d.gun))o.gun=d.gun;if(o.skins.includes(d.skin))o.skin=d.skin;
  if(d.sens>0)o.sens=+d.sens;if(d.vol>=0&&d.vol<=1)o.vol=+d.vol;o.bloom=d.bloom!==false;o.nick=cleanNick(d.username);
- if(Array.isArray(d.hotbar)){o.hot=d.hotbar.slice(0,5).map(g=>o.guns.includes(g)&&GUNS[g]?g:'')}else o.hot=o.guns.slice(0,5);
+ if(Array.isArray(d.hotbar)){o.hot=d.hotbar.slice(0,5).map(g=>GUNS[g]?g:'')}else o.hot=o.guns.slice(0,5);
  o.hot=fixHot(o.hot,o.guns);return o}
 function gate(st){$('gate').style.display=st=='off'?'none':'flex';$('g-load').style.display=st=='load'?'block':'none';$('g-btns').style.display=st=='login'?'flex':'none'}
 function signIn(){$('g-err').textContent='';if(!window.cloud){$('g-err').textContent='Login is unavailable right now. Check your connection and reload the page.';return}
