@@ -28,7 +28,7 @@ window.cloud={
   // debounced save; pass now=true to write immediately
   save(S,now){
     if(!user)return;clearTimeout(timer);
-    const run=()=>setDoc(ref(),{coins:S.coins,guns:S.guns,skins:S.skins,gun:S.gun,skin:S.skin,best:S.best||0,kills:S.kills||0,xp:S.xp||0,runs:S.runs||0,sens:S.sens||1,vol:S.vol==null?1:S.vol,bloom:S.bloom!==false,username:S.nick||"",updated:serverTimestamp()},{merge:true})
+    const run=()=>setDoc(ref(),{coins:S.coins,guns:S.guns,skins:S.skins,gun:S.gun,hotbar:S.hot||[],skin:S.skin,best:S.best||0,kills:S.kills||0,xp:S.xp||0,runs:S.runs||0,sens:S.sens||1,vol:S.vol==null?1:S.vol,bloom:S.bloom!==false,username:S.nick||"",updated:serverTimestamp()},{merge:true})
       .then(()=>fire("cm-sync","ok")).catch(e=>{console.error(e);fire("cm-sync","err")});
     if(now)run();else timer=setTimeout(run,800);
   }
