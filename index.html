@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CrateMaster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<canvas id="c"></canvas>
+
+<div id="hud">
+ <div id="xh"><i></i><i></i><i></i><i></i></div><div id="hm">✕</div>
+ <div id="top"><div><small>WAVE</small><b id="hw">1</b></div><div><small>BOTS</small><b id="hb">0</b></div><div><small>KILLS</small><b id="hk">0</b></div><div><small>COINS</small><b id="hc">0</b></div></div>
+ <canvas id="radar" width="140" height="140"></canvas>
+ <div id="feed"></div>
+ <div id="hpw"><div id="hp"></div><span id="hpn">100</span><em>HP</em></div>
+ <div id="hotbar"></div><div id="wpn"></div><div id="flash"></div><div id="msg"></div>
+</div>
+
+<div id="menu"><div class="shell">
+ <header><div class="logo">CRATE<span>MASTER</span></div><div id="chip"></div><div class="pill">🪙 <b id="coins">0</b></div></header>
+ <nav><button class="tab" data-t="play" onclick="setTab('play')">Play</button><button class="tab" data-t="crates" onclick="setTab('crates')">Crates</button><button class="tab" data-t="locker" onclick="setTab('locker')">Locker</button><button class="tab" data-t="trade" onclick="setTab('trade')">Trade</button><button class="tab" data-t="opt" onclick="setTab('opt')">Options</button></nav>
+ <section class="pane" id="p-play"><div class="hero"><h1>Survive the bot waves</h1><p id="sub">Fight the bots. Earn coins. Crack crates.</p><div class="row"><button class="big" id="play" onclick="go()">PLAY</button><button id="endrun" onclick="endRun()" style="display:none">End run</button></div></div>
+  <div class="stats" id="stats"></div>
+  <p class="hint">WASD move · Shift sprint · Mouse aim · Click shoot · 1–5 switch hotbar slot · Esc pause. If the mouse doesn’t lock, hold click and drag, or use the arrow keys to look.</p></section>
+ <section class="pane" id="p-crates"><div class="row crates" id="crates"></div></section>
+ <section class="pane" id="p-locker"><h3>Hotbar</h3><p class="hint" style="margin:0 0 8px">Pick a slot, then press “Put in slot” on a gun. Keys 1–5 switch guns in game.</p><div class="hotl" id="hotl"></div><h3>Weapons</h3><div class="g" id="inv"></div><h3>Skins</h3><div class="g" id="skins"></div></section>
+ <section class="pane" id="p-trade"><div id="trade"></div></section>
+ <section class="pane" id="p-opt"><div class="opt nick"><label>Username<small>Shown instead of your Google name. Leave empty to use your account name.</small></label><div class="nr"><input type="text" id="o-nick" maxlength="16" placeholder="Pick a username" autocomplete="off" onkeydown="if(event.key==='Enter')saveNick()"><button class="sm" onclick="saveNick()">Save</button></div></div>
+  <div class="opt"><label>Mouse sensitivity <b id="v-sens"></b></label><input type="range" id="o-sens" min=".3" max="3" step=".1" oninput="opt()"></div>
+  <div class="opt"><label>Volume</label><input type="range" id="o-vol" min="0" max="1" step=".05" oninput="opt()"></div>
+  <div class="opt"><label>Bloom &amp; screen effects</label><input type="checkbox" id="o-bloom" onchange="opt()"></div></section>
+</div></div>
+
+<div id="gate"><div class="gbox">
+ <div class="logo big2">CRATE<span>MASTER</span></div>
+ <p>Fight the bots. Earn coins. Crack crates.</p>
+ <div id="g-load" class="spin">Checking session…</div>
+ <div id="g-btns"><button class="gbtn" onclick="signIn()"><span class="gg">G</span>Sign in with Google</button><small class="note">You need a Google account to play. Your progress is saved to your account.</small></div>
+ <div id="g-err"></div>
+</div></div>
+
+<div id="reveal"></div>
+<div id="results"><div class="panel" id="rs"></div></div>
+<div id="toasts"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/GammaCorrectionShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="app.js"></script>
+<script src="trade.js"></script>
+<script type="module" src="firebase.js"></script>
+</body></html>
