@@ -32,10 +32,15 @@ const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:
  pumpkinsmasherx:{n:'Pumpkin Smasher',r:'rare',d:15,f:.7,p:9,s:.085,a:0,l:1.1,x:'spooky'},
  witchfirex:{n:'Witchfire',r:'epic',d:28,f:.11,p:1,s:.01,a:1,l:1.25,x:'spooky'},
  ghoulgatlingx:{n:'Ghoul Gatling',r:'legendary',d:17,f:.05,p:1,s:.03,a:1,l:1.5,x:'spooky'},
- headlesshorsemanx:{n:'Headless Horseman',r:'legendary',d:175,f:1.2,p:1,s:0,a:0,l:1.6,x:'spooky'}};
+ headlesshorsemanx:{n:'Headless Horseman',r:'legendary',d:175,f:1.2,p:1,s:0,a:0,l:1.6,x:'spooky'},
+ pixelpistolx:{n:'Pixel Pistol',r:'common',d:30,f:.28,p:1,s:.007,a:0,l:.7,x:'og',px:1},
+ bitblasterx:{n:'8-Bit Blaster',r:'rare',d:11,f:.065,p:1,s:.03,a:1,l:.95,x:'og',px:1},
+ arcadearx:{n:'Arcade AR',r:'epic',d:27,f:.11,p:1,s:.01,a:1,l:1.25,x:'og',px:1},
+ gameoverx:{n:'Game Over',r:'legendary',d:180,f:1.15,p:1,s:0,a:0,l:1.6,x:'og',px:1},
+ finalbossx:{n:'Final Boss',r:'legendary',d:15,f:.045,p:1,s:.03,a:1,l:1.5,x:'og',px:1}};
 const SKINS={default:{n:'Factory Gray',r:'common',c:0x777b88},neon:{n:'Neon Green',r:'common',c:0x39ff14},crimson:{n:'Crimson',r:'rare',c:0xdc143c},ice:{n:'Glacier',r:'epic',c:0x66ccff},gold:{n:'Midas Gold',r:'legendary',c:0xffd23f},void:{n:'Void Purple',r:'legendary',c:0x8a2be2}};
 const CR={basic:{n:'Basic Crate',col:'#ff8a1f',cost:100,w:[60,28,10,2]},elite:{n:'Elite Crate',col:'#b45cff',cost:300,w:[0,50,35,15]},legend:{n:'Legendary Crate',col:'#ffb81f',cost:1000,w:[0,0,25,75]}};
-const LIM={spooky:{n:'Spooky Crate',col:'#ff6a00',cost:500,w:[40,30,20,10],ltd:1}};
+const LIM={spooky:{n:'Spooky Crate',col:'#ff6a00',cost:500,w:[40,30,20,10],ltd:1},og:{n:'OG Crate',col:'#39ff14',cost:500,w:[35,30,25,10],ltd:1}};
 let limOn={};
 const allCR=()=>{const o={...CR};for(const k in LIM){const d=limOn[k];if(d&&d.enabled===true)o[k]={...LIM[k],cost:+d.cost>0?+d.cost:LIM[k].cost}}return o};
 async function refreshLim(){try{if(window.cloud&&cloud.user&&cloud.limited){limOn=await cloud.limited();if(!rolling&&(!playing||paused))menu()}}catch(e){console.warn('limited crates',e)}}
@@ -61,7 +66,16 @@ function closeRv(){$('reveal').style.display='none';rolling=false;menu()}
 function endRun(){if(playing&&paused)over()}
 function saveNick(){const v=cleanNick($('o-nick').value);S.nick=v;$('o-nick').value=v;save();menu();toast(v?'Username saved: '+v:'Username cleared - showing your account name')}
 function opt(){S.sens=+$('o-sens').value;S.vol=+$('o-vol').value;S.bloom=$('o-bloom').checked;$('v-sens').textContent=S.sens.toFixed(1);save()}
-const gunSvg=(id,col)=>{const l=GUNS[id].l,w=60+l*70;return `<svg viewBox="0 0 220 90"><rect x="20" y="30" width="${w}" height="20" rx="5" fill="${col}"/><rect x="${20+w}" y="35" width="${20+l*10}" height="9" fill="#14161d"/><rect x="30" y="50" width="16" height="32" rx="4" fill="#14161d" transform="rotate(14 38 50)"/><rect x="${w-10}" y="50" width="14" height="14" fill="#14161d"/><rect x="24" y="35" width="${w-8}" height="3" fill="#38e1ff"/></svg>`};
+const pixSvg=(id,col)=>{const l=GUNS[id].l,n=Math.round(9+l*7),u=3,r=[];
+ const px=(x,y,w,h,f)=>r.push(`<rect x="${x*u}" y="${y*u}" width="${w*u}" height="${h*u}" fill="${f}"/>`);
+ const k='#14161d',s=col,lt='#ffffff55';
+ px(2,5,n,1,k);px(2,6,n,3,s);px(2,9,n,1,k);px(2,6,n,1,lt); // body
+ px(2+n,6,3+Math.round(l*2),1,k);px(2+n,7,3+Math.round(l*2),1,s); // barrel
+ px(2,6,2,1,k);px(0,7,2,3,k); // stock
+ px(4,10,2,3,k);px(6,13,1,1,k);px(5,9,1,1,s); // grip steps
+ px(n-3,10,2,2,k);px(Math.round(n/2),4,2,1,'#38e1ff');px(n,4,1,1,'#38e1ff'); // mag + sights
+ return `<svg viewBox="0 0 ${(n+10)*u} ${15*u}" shape-rendering="crispEdges" style="image-rendering:pixelated">${r.join('')}</svg>`};
+const gunSvg=(id,col)=>{if(GUNS[id].px)return pixSvg(id,col);const l=GUNS[id].l,w=60+l*70;return `<svg viewBox="0 0 220 90"><rect x="20" y="30" width="${w}" height="20" rx="5" fill="${col}"/><rect x="${20+w}" y="35" width="${20+l*10}" height="9" fill="#14161d"/><rect x="30" y="50" width="16" height="32" rx="4" fill="#14161d" transform="rotate(14 38 50)"/><rect x="${w-10}" y="50" width="14" height="14" fill="#14161d"/><rect x="24" y="35" width="${w-8}" height="3" fill="#38e1ff"/></svg>`};
 const stat=(n,v)=>`<div class="bar"><em>${n}</em><i><u style="width:${Math.max(4,Math.min(100,v))}%"></u></i></div>`;
 function menu(){
  const xp=S.xp||0,lv=lvOf(xp),lo=60*(lv-1)**2,hi=60*lv*lv;
