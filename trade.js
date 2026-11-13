@@ -48,7 +48,8 @@ function tShowInv(){
 function tAnswer(ok){if(!tInv)return;if(ok&&playing&&!paused){toast('End or pause your run first');return}tSend({t:ok?'accept':'decline',id:tInv.id});if(!ok){tInv=null;tShowInv()}}
 function tInvite(uid){if(playing&&!paused)return;tMsg='';tSend({t:'invite',to:uid})}
 function tCancel(){if(tTrade)tSend({t:'cancel',id:tTrade.id})}
-function tToggle(id){if(!tTrade||!tTrade.active)return;const o=tTrade.offers.me,n=o.includes(id)?o.filter(x=>x!=id):[...o,id];if(n.length>8){toast('Max 8 guns per trade');return}tSend({t:'offer',id:tTrade.id,guns:n})}
+function tAdd(id){if(!tTrade||!tTrade.active)return;const o=tTrade.offers.me;if(cnt(o,id)>=cnt(S.guns,id))return;if(o.length>=8){toast('Max 8 guns per trade');return}tSend({t:'offer',id:tTrade.id,guns:[...o,id]})}
+function tRem(id){if(!tTrade||!tTrade.active)return;const o=[...tTrade.offers.me],i=o.indexOf(id);if(i<0)return;o.splice(i,1);tSend({t:'offer',id:tTrade.id,guns:o})}
 function tReadyBtn(){if(!tTrade||!tTrade.active)return;tSend({t:'ready',id:tTrade.id,v:!tTrade.ready.me})}
 
 function renderTrade(){
@@ -57,10 +58,11 @@ function renderTrade(){
  tConnect();
  const status=`<p class="hint">${tUp?'🟢 Connected':'🟡 Connecting to trade server… (it can take up to a minute to wake up)'}${tMsg?' · '+esc(tMsg):''}</p>`;
  if(tTrade&&tTrade.active){
-  const T=tTrade,mine=S.guns.filter(g=>g!='pistol'&&GUNS[g]).sort(gSort);
-  const card=(g,sel,click)=>{const G=GUNS[g]||{n:'?',r:'common'};return `<div class="tg ${sel?'sel':''}" style="--c:${R[G.r]||'#999'}" ${click?`onclick="tToggle('${g}')"`:''}><b>${esc(G.n)}</b>${LT(G)}<small>${G.r}</small></div>`};
-  el.innerHTML=status+`<div class="tw"><div class="tcol"><h4>You offer (${T.offers.me.length})</h4><div class="tl">${T.offers.me.map(g=>card(g,1,0)).join('')||'<em>nothing yet</em>'}</div><h4>Your guns — click to offer</h4><div class="tl">${mine.map(g=>card(g,T.offers.me.includes(g),1)).join('')||'<em>no tradable guns</em>'}</div></div>
-  <div class="tcol"><h4>${esc(T.name)} offers (${T.offers.them.length})</h4><div class="tl">${T.offers.them.map(g=>card(g,0,0)).join('')||'<em>nothing yet</em>'}</div>
+  const T=tTrade,mine=[...new Set(S.guns.filter(g=>g!='pistol'&&GUNS[g]))].sort(gSort);
+  const card=(g,n,sel,click,tot)=>{const G=GUNS[g]||{n:'?',r:'common'};return `<div class="tg ${sel?'sel':''}" style="--c:${R[G.r]||'#999'}" ${click?`onclick="${click}('${g}')"`:''}><b>${esc(G.n)}${n>1?' ×'+n:''}${tot?` <span class="note">(${sel}/${tot} offered)</span>`:''}</b>${LT(G)}<small>${G.r}</small></div>`};
+  const grp=a=>{const m={};a.forEach(g=>m[g]=(m[g]||0)+1);return Object.entries(m)};
+  el.innerHTML=status+`<div class="tw"><div class="tcol"><h4>You offer (${T.offers.me.length})</h4><div class="tl">${grp(T.offers.me).map(([g,n])=>card(g,n,0,'tRem')).join('')||'<em>nothing yet</em>'}</div><h4>Your guns — click to offer one copy (click an offered gun to take it back)</h4><div class="tl">${mine.map(g=>card(g,1,cnt(T.offers.me,g),'tAdd',cnt(S.guns,g))).join('')||'<em>no tradable guns</em>'}</div></div>
+  <div class="tcol"><h4>${esc(T.name)} offers (${T.offers.them.length})</h4><div class="tl">${grp(T.offers.them).map(([g,n])=>card(g,n,0,0)).join('')||'<em>nothing yet</em>'}</div>
   <p class="hint">You: ${T.ready.me?'✅ ready':'⏳ not ready'} · ${esc(T.name)}: ${T.ready.them?'✅ ready':'⏳ not ready'}<br>Changing any offer un-readies both players. The trade happens when both are ready.</p>
   <div class="row"><button class="big" onclick="tReadyBtn()">${T.ready.me?'Unready':'READY'}</button><button onclick="tCancel()">Cancel trade</button></div></div></div>`;
   return}
