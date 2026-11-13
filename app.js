@@ -145,8 +145,8 @@ for(let i=0;i<16;i++){let x,z;do{x=(Math.random()-.5)*50;z=(Math.random()-.5)*50
  const w=1+Math.random()*1.6,d=1+Math.random()*1.6;block(x,z,w,d,2+Math.random()*1.8,i%3?0xdde4ff:0xe6d2ff,i%3?0x38e1ff:0xff3ad0);obs.push({x,z,w,d})}
 const crateT=ctex(128,128,(g,w,h)=>{g.fillStyle='#6b4a2a';g.fillRect(0,0,w,h);for(let i=0;i<40;i++){g.fillStyle=`rgba(0,0,0,${Math.random()*.15})`;g.fillRect(0,Math.random()*h,w,2)}g.strokeStyle='#2a2f3d';g.lineWidth=14;g.strokeRect(7,7,w-14,h-14);g.beginPath();g.moveTo(0,0);g.lineTo(w,h);g.moveTo(w,0);g.lineTo(0,h);g.stroke();g.fillStyle='#ff8a1f';g.fillRect(w/2-12,w/2-12,24,24)});
 for(let i=0;i<6;i++){let x,z;do{x=(Math.random()-.5)*50;z=(Math.random()-.5)*50}while(Math.hypot(x,z)<8);block(x,z,1.1,1.1,2.2,0xffffff,0xff8a1f,crateT);obs.push({x,z,w:1.1,d:1.1})}
-function collide(p,r){p.x=Math.max(-29,Math.min(29,p.x));p.z=Math.max(-29,Math.min(29,p.z));
- for(const o of obs){const dx=p.x-o.x,dz=p.z-o.z,ox=o.w+r-Math.abs(dx),oz=o.d+r-Math.abs(dz);if(ox>0&&oz>0){if(ox<oz)p.x+=ox*(dx<0?-1:1);else p.z+=oz*(dz<0?-1:1)}}}
+function collide(p,r){for(let it=0;it<2;it++){p.x=Math.max(-29,Math.min(29,p.x));p.z=Math.max(-29,Math.min(29,p.z));
+ for(const o of obs){const dx=p.x-o.x,dz=p.z-o.z,ox=o.w+r-Math.abs(dx),oz=o.d+r-Math.abs(dz);if(ox>0&&oz>0){if(ox<oz)p.x+=ox*(dx<0?-1:1);else p.z+=oz*(dz<0?-1:1)}}}}
 
 /* gun viewmodel */
 const gun=new THREE.Group(),gm=new THREE.MeshStandardMaterial({color:0x777b88,metalness:.85,roughness:.28}),
@@ -215,6 +215,61 @@ function animDead(dt){
   if(g.dying>.8){const k=Math.max(.001,1-(g.dying-.8)/.35);g.scale.setScalar(k)}
   if(g.dying>1.15){sc.remove(g);dead.splice(i,1)}}
 }
+/* ---------- bot AI ---------- */
+const AI_ANG=(a,b)=>{let d=b-a;while(d>Math.PI)d-=6.2832;while(d<-Math.PI)d+=6.2832;return d};
+const _f=new THREE.Vector3(),_t=new THREE.Vector3(),_d=new THREE.Vector3();
+function aiLos(g){_f.set(g.position.x,1.5,g.position.z);_d.set(P.x-_f.x,1.5+jy-_f.y,P.z-_f.z);const L=_d.length();_d.normalize();rc.set(_f,_d);rc.far=L;return !rc.intersectObjects(solid,false).length}
+function coverPoint(g){let best=null,bd=1e9;for(const o of obs){const ax=o.x-P.x,az=o.z-P.z,al=Math.hypot(ax,az)||1,px=o.x+ax/al*(Math.max(o.w,o.d)+1.3),pz=o.z+az/al*(Math.max(o.w,o.d)+1.3);
+  if(Math.abs(px)>28||Math.abs(pz)>28)continue;const dd=Math.hypot(px-g.position.x,pz-g.position.z)+Math.hypot(P.x-px,P.z-pz)*-.15;if(dd<bd){bd=dd;best={x:px,z:pz}}}return best}
+function aiBot(g,dt){
+ const R=g.R,px=g.position.x,pz=g.position.z;let dx=P.x-px,dz=P.z-pz;const d=Math.hypot(dx,dz)||1;dx/=d;dz/=d;
+ g.losT-=dt;if(g.losT<=0){g.los=d<45&&aiLos(g);g.losT=.12+Math.random()*.1}
+ g.strT-=dt;if(g.strT<=0){g.side*=-1;g.strT=.8+Math.random()*1.8}
+ g.hit=Math.max(0,g.hit-dt);if(g.hp<g.lastHp)g.hit=.6;g.lastHp=g.hp;
+ let wx=0,wz=0,spd=1;const frac=g.hp/g.mx;
+ // retreat to cover when badly hurt (not rushers)
+ g.noCover=Math.max(0,(g.noCover||0)-dt);if(frac<.35&&g.role!=='rusher'&&d>5&&!g.noCover){if(!g.cover){g.cover=coverPoint(g);g.hideT=0}}else if(frac>=.35)g.cover=null;
+ if(g.cover&&Math.hypot(g.cover.x-px,g.cover.z-pz)>1){const cx=g.cover.x-px,cz=g.cover.z-pz,cl=Math.hypot(cx,cz);wx=cx/cl;wz=cz/cl;spd=1.15}
+ else if(g.cover){ // hiding behind cover, then peek back out
+  g.hideT+=dt;if(g.los||g.hideT>2.5){g.cover=null;g.noCover=4}else{wx=wz=0;spd=0}}
+ else if(!g.los&&d>3){ // no line of sight: go around, slide along the blocker
+  wx=dx*.8-dz*g.side*.6;wz=dz*.8+dx*g.side*.6;spd=1.05}
+ else if(d>R.hi){wx=dx;wz=dz;if(g.role==='rusher'||d>R.hi+8)spd=1.1}
+ else if(d<R.lo){wx=-dx*.9-dz*g.side*.5;wz=-dz*.9+dx*g.side*.5;spd=.9}
+ else{ // strafe, with dodges when the player is aiming at us
+  wx=-dz*g.side;wz=dx*g.side;spd=.7;
+  if(playing&&down){const lx=-Math.sin(yaw),lz=-Math.cos(yaw),al=-(dx*lx+dz*lz);if(al>.97){spd=1.6}}}
+ // obstacle avoidance: repel from nearby blocks, slide around them
+ for(const o of obs){const ax=px-o.x,az=pz-o.z,ex=Math.max(0,Math.abs(ax)-o.w),ez=Math.max(0,Math.abs(az)-o.d),dist=Math.hypot(ex,ez);
+  if(dist<2.4){const k=(1-dist/2.4),rl=Math.hypot(ax,az)||1,rx=ax/rl,rz=az/rl;let tx=-rz,tz=rx;if(tx*wx+tz*wz<0){tx=-tx;tz=-tz}wx+=rx*k*1.5+tx*k*1.3;wz+=rz*k*1.5+tz*k*1.3}}
+ // separation from other bots
+ for(const b of bots){if(b===g)continue;const sx=px-b.position.x,sz=pz-b.position.z,sd=Math.hypot(sx,sz);if(sd<2&&sd>.001){const k=(2-sd)/2;wx+=sx/sd*k*1.6;wz+=sz/sd*k*1.6}}
+ // keep off the arena walls
+ if(Math.abs(px)>26)wx-=Math.sign(px)*.8;if(Math.abs(pz)>26)wz-=Math.sign(pz)*.8;
+ const wl=Math.hypot(wx,wz);if(wl>0){wx/=wl;wz/=wl}else{wx=wz=0}
+ const top=Math.min(6.2,(2.5+wave*.25))*R.spd*spd*(g.hit>0?.7:1);
+ const ac=Math.min(1,dt*6);g.vx+=(wx*top-g.vx)*ac;g.vz+=(wz*top-g.vz)*ac;
+ const ox=g.position.x,oz=g.position.z;g.position.x+=g.vx*dt;g.position.z+=g.vz*dt;collide(g.position,.6);
+ // stuck detection: wiggle out by flipping side
+ const mv=Math.hypot(g.position.x-ox,g.position.z-oz)/Math.max(dt,1e-4);
+ if(top>1&&mv<top*.25){g.stuck+=dt;if(g.stuck>.5){g.side*=-1;g.strT=1.2;g.stuck=0;g.cover=null}}else g.stuck=Math.max(0,g.stuck-dt);
+ // face the player smoothly (or the way we're running when no sight)
+ const want=g.los||d<10?Math.atan2(P.x-px,P.z-pz):(Math.hypot(g.vx,g.vz)>.3?Math.atan2(g.vx,g.vz):g.rotation.y);
+ g.rotation.y+=AI_ANG(g.rotation.y,want)*Math.min(1,dt*9);
+ g.ph+=dt*(Math.hypot(g.vx,g.vz)*1.2);
+ return d}
+function aiShoot(g,dt,d){
+ const R=g.R;g.cd-=dt*(g.los?1:.4);
+ if(g.cd>0||d>=36||!g.los)return;
+ g.cd=(1.0+Math.random()*1.3)*R.cd*Math.max(.55,1-wave*.03);g.rc=1;
+ const from=new THREE.Vector3(g.position.x,1.5,g.position.z),to=new THREE.Vector3(P.x,1.4+jy,P.z);
+ // accuracy drops with distance and when the player is moving / airborne, rises with wave
+ const pm=(keys.KeyW||keys.KeyA||keys.KeyS||keys.KeyD)?.1:0,j=jy>0?.12:0;
+ const acc=Math.max(.12,Math.min(.85,.62-d*.011-pm-j+wave*.012+(g.role==='sniper'?.18:0)));
+ if(Math.random()<acc){tracer(from,to,0xff4040);hurt(Math.round((6+wave)*R.dmg));beep(160,.05,'sawtooth',.03)}
+ else{to.x+=(Math.random()-.5)*2.4;to.y+=(Math.random()-.3)*1.6;to.z+=(Math.random()-.5)*2.4;tracer(from,to,0xff9040)}
+}
+
 /* ---------- medkits ---------- */
 const kitM={w:new THREE.MeshStandardMaterial({color:0xf2f4f8,roughness:.4,emissive:0x223322}),r:new THREE.MeshBasicMaterial({color:0xff2a3a})};
 function clearKits(){kits.forEach(k=>sc.remove(k));kits.length=0}
@@ -245,9 +300,11 @@ function spawnBot(){
  pt(.5,.44,.46,d,0,1.75,0,1);pt(.38,.1,.05,e,0,1.77,.24,1);pt(.04,.3,.04,d,.15,2.1,0,1);pt(.08,.08,.08,e,.15,2.28,0,1);
  pt(.3,.2,.42,m,0,0,0,0,armL);pt(.3,.2,.42,m,0,0,0,0,armR);pt(.2,.8,.22,d,0,-.5,0,0,armL);pt(.2,.8,.22,d,0,-.5,0,0,armR);
  g.legs=[pt(.3,.55,.35,d,-.22,.28,0,0,g),pt(.3,.55,.35,d,.22,.28,0,0,g)];
+ const rr=Math.random(),role=wave<2||rr<.55?'grunt':rr<.78?'rusher':'sniper',RL={grunt:{lo:6,hi:12,spd:1,hp:1,dmg:1,cd:1,col:0xc2302a},rusher:{lo:2.5,hi:6,spd:1.35,hp:.7,dmg:.8,cd:.8,col:0xff7a1a},sniper:{lo:14,hi:22,spd:.8,hp:.8,dmg:1.6,cd:1.7,col:0x9a3cff}}[role];
+ g.role=role;g.R=RL;m.color.setHex(RL.col);g.vx=g.vz=0;g.side=Math.random()<.5?-1:1;g.strT=1+Math.random()*2;g.los=false;g.losT=Math.random()*.2;g.hit=0;g.cover=null;g.stuck=0;g.lx=0;g.lz=0;g.lastHp=0;
  g.body=body;g.headG=headG;g.arms=[armL,armR];g.eyes=e;g.sp=0;g.rc=0;g.dying=0;
- g.mat=m;g.hp=g.mx=50+wave*10;g.bar=new THREE.Group();g.fill=new THREE.Mesh(new THREE.PlaneGeometry(.86,.06),new THREE.MeshBasicMaterial({color:0x3dff7a}));g.fill.position.z=.01;g.bar.add(new THREE.Mesh(new THREE.PlaneGeometry(.9,.1),new THREE.MeshBasicMaterial({color:0x111111})),g.fill);g.bar.position.y=2.55;g.add(g.bar);g.scale.setScalar(.01);g.cd=1.5+Math.random()*2;g.fl=0;g.ph=Math.random()*6;g.id=botId++;
- const an=Math.random()*6.283;g.position.set(Math.cos(an)*24,0,Math.sin(an)*24);collide(g.position,.6);
+ g.mat=m;g.hp=g.mx=Math.round((50+wave*10)*RL.hp);g.bar=new THREE.Group();g.fill=new THREE.Mesh(new THREE.PlaneGeometry(.86,.06),new THREE.MeshBasicMaterial({color:0x3dff7a}));g.fill.position.z=.01;g.bar.add(new THREE.Mesh(new THREE.PlaneGeometry(.9,.1),new THREE.MeshBasicMaterial({color:0x111111})),g.fill);g.bar.position.y=2.55;g.add(g.bar);g.scale.setScalar(.01);g.cd=(1.5+Math.random()*2)*RL.cd;g.fl=0;g.ph=Math.random()*6;g.id=botId++;
+ const an=Math.random()*6.283;g.position.set(Math.cos(an)*24,0,Math.sin(an)*24);collide(g.position,.6);collide(g.position,.6);
  sc.add(g);bots.push(g)}
 function startWave(){wave++;spawnKits();toSpawn=3+wave*2;waiting=false;say('Wave '+wave);hud()}
 function play(){if(!cu)return;
@@ -257,12 +314,12 @@ function play(){if(!cu)return;
 function lock(){try{const p=cv.requestPointerLock();if(p&&p.catch)p.catch(()=>fallback=true)}catch(e){fallback=true}}
 function go(){if(playing&&paused){paused=false;$('menu').style.display='none';lock()}else play()}
 function pause(){if(!playing||paused)return;paused=true;down=false;$('sub').textContent='Paused';menu();$('menu').style.display='flex'}
-function over(){playing=false;down=false;try{document.exitPointerLock()}catch(e){}
+function over(){if(!playing)return;playing=false;down=false;try{document.exitPointerLock()}catch(e){}
  const nb=wave>(S.best||0);S.best=Math.max(S.best||0,wave);S.kills=(S.kills||0)+kills;S.runs=(S.runs||0)+1;save();
  $('hud').style.display='none';
  $('rs').innerHTML=`<h2>DEFEATED</h2><div class="stats"><div><b>${wave}</b>Wave${nb?'<i>NEW BEST</i>':''}</div><div><b>${kills}</b>Kills</div><div><b>+${S.coins-st.c}</b>Coins</div><div><b>+${(S.xp||0)-st.xp}</b>XP</div></div><div class="row" style="justify-content:center"><button class="big" onclick="closeRs();play()">PLAY AGAIN</button><button onclick="closeRs();showMenu()">Menu</button></div>`;
  $('results').style.display='flex'}
-function hurt(d){hp-=d;fT=1;beep(90,.15,'sawtooth',.08);hud();if(hp<=0)over()}
+function hurt(d){if(!playing)return;hp-=d;fT=1;beep(90,.15,'sawtooth',.08);hud();if(hp<=0)over()}
 const tg=new THREE.BoxGeometry(.025,.025,1);function tracer(a,b,col){const l=new THREE.Mesh(tg,new THREE.MeshBasicMaterial({color:col||0xffe9a0}));l.position.copy(a).lerp(b,.5);l.lookAt(b);l.scale.z=a.distanceTo(b);l.life=.07;sc.add(l);tr.push(l)}
 
 function shoot(){
@@ -303,17 +360,10 @@ function update(dt){
  animDead(dt);animKits(dt);
  /* bots */
  for(const g of bots){
-  const dx=P.x-g.position.x,dz=P.z-g.position.z,d=Math.hypot(dx,dz)||1;g.rotation.y=Math.atan2(dx,dz);
-  const s=(2.5+wave*.25)*dt;let mx,mz;
-  if(d>9){mx=dx/d;mz=dz/d}else if(d<5){mx=-dx/d;mz=-dz/d}else{const k=Math.sin(now*1.2+g.id*2)>0?1:-1;mx=-dz/d*k;mz=dx/d*k}
-  g.position.x+=mx*s;g.position.z+=mz*s;collide(g.position,.6);
+  const d=aiBot(g,dt);
   g.fl=Math.max(0,g.fl-dt);g.ph+=dt*7;g.fill.scale.x=Math.max(.001,g.hp/g.mx);g.fill.position.x=-.43*(1-g.fill.scale.x);g.mat.emissive.setHex(g.fl>0?0xaa3322:0);
   animBot(g,dt,d);
-  g.cd-=dt;
-  if(g.cd<=0&&d<30){g.cd=1.1+Math.random()*1.4;g.rc=1;
-   const from=new THREE.Vector3(g.position.x,1.5,g.position.z),dir=new THREE.Vector3(P.x-from.x,.1,P.z-from.z).normalize();
-   rc.set(from,dir);rc.far=d;
-   if(!rc.intersectObjects(solid,false).length&&Math.random()<.45){tracer(from,new THREE.Vector3(P.x,1.5,P.z),0xff4040);hurt(6+wave)}}
+  aiShoot(g,dt,d);
  }
 radar();$('xh').style.setProperty('--sp',(6+kick*40+((keys.KeyW||keys.KeyA||keys.KeyS||keys.KeyD)?6:0))+'px');flashM.material.opacity=Math.max(0,flashM.material.opacity-dt*14);mLight.intensity=Math.max(0,mLight.intensity-dt*40);
  for(let i=pts.length-1;i>=0;i--){const p=pts[i];p.life-=dt;if(p.life<=0){sc.remove(p);pts.splice(i,1);continue}p.v.y-=14*dt;p.position.addScaledVector(p.v,dt);if(p.position.y<.04){p.position.y=.04;p.v.multiplyScalar(.3)}p.scale.setScalar(p.life/p.max)}
@@ -333,6 +383,7 @@ addEventListener('keydown',e=>{keys[e.code]=true;
  if(e.code=='Escape')pause();
  if(playing&&!paused&&/^Digit[1-5]$/.test(e.code)){const g=S.hot[+e.code[5]-1];if(g&&GUNS[g]){S.gun=g;applyGun()}}});
 addEventListener('keyup',e=>keys[e.code]=false);
+addEventListener('blur',()=>{for(const k in keys)keys[k]=false;down=false;if(playing&&!paused)pause()});
 
 /* ---------- main loop ---------- */
 /* ---------- cloud (Firebase auth + Firestore) + mandatory login gate ---------- */
