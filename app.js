@@ -55,6 +55,9 @@ const cleanNick=s=>String(s||'').replace(/[<>&"'`]/g,'').replace(/\s+/g,' ').tri
 const shown=()=>S.nick||(cu&&cu.name)||'Player';
 let hsel=0;
 function fixHot(h,own){h=(h||[]).slice(0,5);while(h.length<5)h.push('');h=h.map((g,i)=>g&&own.includes(g)&&GUNS[g]&&h.indexOf(g)==i?g:'');return h}
+const gScore=g=>g.d*g.p/g.f;
+const gSort=(x,y)=>{const A=GUNS[x],B=GUNS[y];return (!!B.x-!!A.x)||(RK.indexOf(B.r)-RK.indexOf(A.r))||(gScore(B)-gScore(A))};
+const sSort=(x,y)=>RK.indexOf(SKINS[y].r)-RK.indexOf(SKINS[x].r);
 const LT=g=>g&&g.x?'<span class="ltag">LIMITED</span>':'';
 const hexc=c=>'#'+c.toString(16).padStart(6,'0'),lvOf=x=>Math.floor(Math.sqrt((x||0)/60))+1;
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
@@ -89,8 +92,8 @@ function menu(){
  const sk=hexc(SKINS[S.skin].c);
  S.hot=fixHot(S.hot,S.guns);
  $('hotl').innerHTML=S.hot.map((g,i)=>{const G=GUNS[g];return `<div class="hs ${hsel==i?'sel':''}" style="--c:${G?R[G.r]:'#555'}" onclick="hset(${i})"><em>${i+1}</em>${G?`<b>${G.n}</b>${LT(G)}<small>${G.r}</small><button class="x" onclick="event.stopPropagation();hclr(${i})">✕</button>`:'<small>empty</small>'}</div>`}).join('');
- $('inv').innerHTML=S.guns.filter(id=>GUNS[id]).map(id=>{const G=GUNS[id],own=true;return `<div class="wcard ${own?'':'lock'} ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${gunSvg(id,own?sk:'#555')}<b>${G.n}</b>${LT(G)}<small>${own?G.r:'🔒 locked'}</small>${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}${own?`<button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${S.hot.includes(id)?'Slot '+(S.hot.indexOf(id)+1)+' · move to '+(hsel+1):'Put in slot '+(hsel+1)}</button>`:''}</div>`}).join('');
- $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
+ $('inv').innerHTML=S.guns.filter(id=>GUNS[id]).sort(gSort).map(id=>{const G=GUNS[id],own=true;return `<div class="wcard ${own?'':'lock'} ${S.gun==id?'on':''}" style="--c:${R[G.r]}">${gunSvg(id,own?sk:'#555')}<b>${G.n}</b>${LT(G)}<small>${own?G.r:'🔒 locked'}</small>${stat('DMG',G.d*G.p*.9)}${stat('RATE',10/G.f)}${stat('ACC',100-G.s*600)}${own?`<button onclick="eq('guns','${id}')">${S.gun==id?'Equipped':'Equip'}</button><button class="ghost" onclick="toSlot('${id}')">${S.hot.includes(id)?'Slot '+(S.hot.indexOf(id)+1)+' · move to '+(hsel+1):'Put in slot '+(hsel+1)}</button>`:''}</div>`}).join('');
+ $('skins').innerHTML=S.skins.filter(id=>SKINS[id]).sort(sSort).map(id=>{const K=SKINS[id],own=true;return `<button class="sw2 ${own?'':'lock'} ${S.skin==id?'on':''}" style="--c:${R[K.r]}" ${own?`onclick="eq('skins','${id}')"`:'disabled'}><span style="background:${hexc(K.c)}"></span>${K.n}<small>${own?K.r:'locked'}</small></button>`}).join('');
  if(document.activeElement!==$('o-nick'))$('o-nick').value=S.nick||'';$('o-sens').value=S.sens||1;$('o-vol').value=S.vol==null?1:S.vol;$('o-bloom').checked=S.bloom!==false;$('v-sens').textContent=(S.sens||1).toFixed(1);
 }
 let rolling=false;
