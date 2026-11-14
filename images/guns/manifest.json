@@ -1,0 +1,4979 @@
+{
+  "count": 701,
+  "assets": [
+    {
+      "id": "pistol",
+      "file": "pistol.png",
+      "name": "Pistol",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "smg",
+      "file": "smg.png",
+      "name": "Viper SMG",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "shotgun",
+      "file": "shotgun.png",
+      "name": "Boomstick",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "rifle",
+      "file": "rifle.png",
+      "name": "Striker AR",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "sniper",
+      "file": "sniper.png",
+      "name": "Longshot",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "revolver",
+      "file": "revolver.png",
+      "name": "Deputy",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "scrapper",
+      "file": "scrapper.png",
+      "name": "Scrapper",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "carbine",
+      "file": "carbine.png",
+      "name": "Burst Carbine",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "dmr",
+      "file": "dmr.png",
+      "name": "Hunter DMR",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "lmg",
+      "file": "lmg.png",
+      "name": "Thunder LMG",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "ripper",
+      "file": "ripper.png",
+      "name": "Ripper",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "rail",
+      "file": "rail.png",
+      "name": "Railgun",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "minigun",
+      "file": "minigun.png",
+      "name": "Inferno Minigun",
+      "rarity": "legendary",
+      "family": "lmg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "mac",
+      "file": "mac.png",
+      "name": "Mac-10",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "sawed",
+      "file": "sawed.png",
+      "name": "Sawed-Off",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "scout",
+      "file": "scout.png",
+      "name": "Scout Rifle",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "pump",
+      "file": "pump.png",
+      "name": "Riot Pump",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "blaster",
+      "file": "blaster.png",
+      "name": "Plasma Blaster",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "marksman",
+      "file": "marksman.png",
+      "name": "Viper Marksman",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "doom",
+      "file": "doom.png",
+      "name": "Doomsday Cannon",
+      "rarity": "legendary",
+      "family": "shotgun",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "reaper",
+      "file": "reaper.png",
+      "name": "Reaper AR",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "rustbucketx",
+      "file": "rustbucketx.png",
+      "name": "Rustbucket",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "alleycatx",
+      "file": "alleycatx.png",
+      "name": "Alley Cat",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "patchworkx",
+      "file": "patchworkx.png",
+      "name": "Patchwork",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "dustdevilx",
+      "file": "dustdevilx.png",
+      "name": "Dustdevil",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "tinstarx",
+      "file": "tinstarx.png",
+      "name": "Tin Star",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "pocketrocketx",
+      "file": "pocketrocketx.png",
+      "name": "Pocket Rocket",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "oldfaithfulx",
+      "file": "oldfaithfulx.png",
+      "name": "Old Faithful",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "junkyardarx",
+      "file": "junkyardarx.png",
+      "name": "Junkyard AR",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "gutterblasterx",
+      "file": "gutterblasterx.png",
+      "name": "Gutter Blaster",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "hobohunterx",
+      "file": "hobohunterx.png",
+      "name": "Hobo Hunter",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "pipedreamx",
+      "file": "pipedreamx.png",
+      "name": "Pipe Dream",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "sparkplugx",
+      "file": "sparkplugx.png",
+      "name": "Spark Plug",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "steelrainx",
+      "file": "steelrainx.png",
+      "name": "Steel Rain",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "nightfallx",
+      "file": "nightfallx.png",
+      "name": "Nightfall",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "bulldogx",
+      "file": "bulldogx.png",
+      "name": "Bulldog",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "cobrax",
+      "file": "cobrax.png",
+      "name": "Cobra",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "hammerheadx",
+      "file": "hammerheadx.png",
+      "name": "Hammerhead",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "rangerarx",
+      "file": "rangerarx.png",
+      "name": "Ranger AR",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "wraithsmgx",
+      "file": "wraithsmgx.png",
+      "name": "Wraith SMG",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "galeforcex",
+      "file": "galeforcex.png",
+      "name": "Gale Force",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "lockjawx",
+      "file": "lockjawx.png",
+      "name": "Lockjaw",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "pathfinderx",
+      "file": "pathfinderx.png",
+      "name": "Pathfinder",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "stingerx",
+      "file": "stingerx.png",
+      "name": "Stinger",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "backdraftx",
+      "file": "backdraftx.png",
+      "name": "Backdraft",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "ironcladlmgx",
+      "file": "ironcladlmgx.png",
+      "name": "Ironclad LMG",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "valkyriex",
+      "file": "valkyriex.png",
+      "name": "Valkyrie",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "tempestx",
+      "file": "tempestx.png",
+      "name": "Tempest",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "bansheex",
+      "file": "bansheex.png",
+      "name": "Banshee",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "hellhoundx",
+      "file": "hellhoundx.png",
+      "name": "Hellhound",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "archammerx",
+      "file": "archammerx.png",
+      "name": "Arc Hammer",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "gravediggerx",
+      "file": "gravediggerx.png",
+      "name": "Gravedigger",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "phantomx",
+      "file": "phantomx.png",
+      "name": "Phantom",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "cyclonelmgx",
+      "file": "cyclonelmgx.png",
+      "name": "Cyclone LMG",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "voltaicx",
+      "file": "voltaicx.png",
+      "name": "Voltaic",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "dragonflyx",
+      "file": "dragonflyx.png",
+      "name": "Dragonfly",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "obsidianx",
+      "file": "obsidianx.png",
+      "name": "Obsidian",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "warlordx",
+      "file": "warlordx.png",
+      "name": "Warlord",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "sirenx",
+      "file": "sirenx.png",
+      "name": "Siren",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "excaliburx",
+      "file": "excaliburx.png",
+      "name": "Excalibur",
+      "rarity": "legendary",
+      "family": "sniper",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "ragnarokx",
+      "file": "ragnarokx.png",
+      "name": "Ragnarok",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "supernovax",
+      "file": "supernovax.png",
+      "name": "Supernova",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "oblivionx",
+      "file": "oblivionx.png",
+      "name": "Oblivion",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "hydrax",
+      "file": "hydrax.png",
+      "name": "Hydra",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "zeuscannonx",
+      "file": "zeuscannonx.png",
+      "name": "Zeus Cannon",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "apexpredatorx",
+      "file": "apexpredatorx.png",
+      "name": "Apex Predator",
+      "rarity": "legendary",
+      "family": "smg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "titanlmgx",
+      "file": "titanlmgx.png",
+      "name": "Titan LMG",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "eclipsex",
+      "file": "eclipsex.png",
+      "name": "Eclipse",
+      "rarity": "legendary",
+      "family": "sniper",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "wyrmfangx",
+      "file": "wyrmfangx.png",
+      "name": "Wyrmfang",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "singularityx",
+      "file": "singularityx.png",
+      "name": "Singularity",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "armageddonx",
+      "file": "armageddonx.png",
+      "name": "Armageddon",
+      "rarity": "legendary",
+      "family": "shotgun",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "dumpsterfirex",
+      "file": "dumpsterfirex.png",
+      "name": "Dumpster Fire",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "scrapsniperx",
+      "file": "scrapsniperx.png",
+      "name": "Scrap Sniper",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "bentbarrelx",
+      "file": "bentbarrelx.png",
+      "name": "Bent Barrel",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "budgetlmgx",
+      "file": "budgetlmgx.png",
+      "name": "Budget LMG",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "peashooterx",
+      "file": "peashooterx.png",
+      "name": "Peashooter",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "longbowx",
+      "file": "longbowx.png",
+      "name": "Longbow",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "riotcontrolx",
+      "file": "riotcontrolx.png",
+      "name": "Riot Control",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "falconx",
+      "file": "falconx.png",
+      "name": "Falcon",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "tomcatx",
+      "file": "tomcatx.png",
+      "name": "Tomcat",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "gunslingerx",
+      "file": "gunslingerx.png",
+      "name": "Gunslinger",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "neonreaperx",
+      "file": "neonreaperx.png",
+      "name": "Neon Reaper",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "stormbringerx",
+      "file": "stormbringerx.png",
+      "name": "Stormbringer",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "thunderclapx",
+      "file": "thunderclapx.png",
+      "name": "Thunderclap",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "eagleeyex",
+      "file": "eagleeyex.png",
+      "name": "Eagle Eye",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "juggernautx",
+      "file": "juggernautx.png",
+      "name": "Juggernaut",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "dragonbreathx",
+      "file": "dragonbreathx.png",
+      "name": "Dragonbreath",
+      "rarity": "legendary",
+      "family": "shotgun",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "voidwalkerx",
+      "file": "voidwalkerx.png",
+      "name": "Void Walker",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "starfallx",
+      "file": "starfallx.png",
+      "name": "Starfall",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "chaosenginex",
+      "file": "chaosenginex.png",
+      "name": "Chaos Engine",
+      "rarity": "legendary",
+      "family": "energy",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "judgmentx",
+      "file": "judgmentx.png",
+      "name": "Judgment",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "ricketyrifle2x",
+      "file": "ricketyrifle2x.png",
+      "name": "Rickety Rifle",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "tinpopperx",
+      "file": "tinpopperx.png",
+      "name": "Tin Popper",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "rustyscatterx",
+      "file": "rustyscatterx.png",
+      "name": "Rusty Scatter",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "stubbyx",
+      "file": "stubbyx.png",
+      "name": "Stubby",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "hunterboltx",
+      "file": "hunterboltx.png",
+      "name": "Hunter Bolt",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vandalx",
+      "file": "vandalx.png",
+      "name": "Vandal",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "scattershotx",
+      "file": "scattershotx.png",
+      "name": "Scattershot",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "duelistx",
+      "file": "duelistx.png",
+      "name": "Duelist",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "hornetx",
+      "file": "hornetx.png",
+      "name": "Hornet",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "marksmanx",
+      "file": "marksmanx.png",
+      "name": "Marksman",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "specterx",
+      "file": "specterx.png",
+      "name": "Specter",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "blastmasterx",
+      "file": "blastmasterx.png",
+      "name": "Blastmaster",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vipergunx",
+      "file": "vipergunx.png",
+      "name": "Viper Fang",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "deadeyex",
+      "file": "deadeyex.png",
+      "name": "Deadeye",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "bulwarkx",
+      "file": "bulwarkx.png",
+      "name": "Bulwark",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "cataclysmx",
+      "file": "cataclysmx.png",
+      "name": "Cataclysm",
+      "rarity": "legendary",
+      "family": "sniper",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "maelstromx",
+      "file": "maelstromx.png",
+      "name": "Maelstrom",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "wraithx",
+      "file": "wraithx.png",
+      "name": "Wraith",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "doomsdayx",
+      "file": "doomsdayx.png",
+      "name": "Doomsday",
+      "rarity": "legendary",
+      "family": "shotgun",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "celestialx",
+      "file": "celestialx.png",
+      "name": "Celestial",
+      "rarity": "legendary",
+      "family": "sniper",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "pebblepitcherx",
+      "file": "pebblepitcherx.png",
+      "name": "Pebble Pitcher",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "garagegatx",
+      "file": "garagegatx.png",
+      "name": "Garage Gat",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "handcannonjrx",
+      "file": "handcannonjrx.png",
+      "name": "Hand Cannon Jr",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "pocketsprayx",
+      "file": "pocketsprayx.png",
+      "name": "Pocket Spray",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "beaterarx",
+      "file": "beaterarx.png",
+      "name": "Beater AR",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "rookiepumpx",
+      "file": "rookiepumpx.png",
+      "name": "Rookie Pump",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "banditx",
+      "file": "banditx.png",
+      "name": "Bandit",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "trailblazerx",
+      "file": "trailblazerx.png",
+      "name": "Trailblazer",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "breacherx",
+      "file": "breacherx.png",
+      "name": "Breacher",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "sentinelx",
+      "file": "sentinelx.png",
+      "name": "Sentinel",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "outlawx",
+      "file": "outlawx.png",
+      "name": "Outlaw",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "twisterx",
+      "file": "twisterx.png",
+      "name": "Twister",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "patriotx",
+      "file": "patriotx.png",
+      "name": "Patriot",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "grimx",
+      "file": "grimx.png",
+      "name": "Grim",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "ironhidex",
+      "file": "ironhidex.png",
+      "name": "Ironhide",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "havocx",
+      "file": "havocx.png",
+      "name": "Havoc",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "nighthawkx",
+      "file": "nighthawkx.png",
+      "name": "Nighthawk",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "barragex",
+      "file": "barragex.png",
+      "name": "Barrage",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "steelstormx",
+      "file": "steelstormx.png",
+      "name": "Steelstorm",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "ricochetx",
+      "file": "ricochetx.png",
+      "name": "Ricochet",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "annihilatorx",
+      "file": "annihilatorx.png",
+      "name": "Annihilator",
+      "rarity": "legendary",
+      "family": "lmg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "seraphx",
+      "file": "seraphx.png",
+      "name": "Seraph",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "hellfirex",
+      "file": "hellfirex.png",
+      "name": "Hellfire",
+      "rarity": "legendary",
+      "family": "shotgun",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "leviathanx",
+      "file": "leviathanx.png",
+      "name": "Leviathan",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "nebulax",
+      "file": "nebulax.png",
+      "name": "Nebula",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "harpyx",
+      "file": "harpyx.png",
+      "name": "Harpy",
+      "rarity": "legendary",
+      "family": "smg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "megalithx",
+      "file": "megalithx.png",
+      "name": "Megalith",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "pandemoniumx",
+      "file": "pandemoniumx.png",
+      "name": "Pandemonium",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "tinkerx",
+      "file": "tinkerx.png",
+      "name": "Tinker Tommy",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "skirmisherx",
+      "file": "skirmisherx.png",
+      "name": "Skirmisher",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "candycornx",
+      "file": "candycornx.png",
+      "name": "Candy Corn Blaster",
+      "rarity": "limited",
+      "family": "energy",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "pumpkinsmasherx",
+      "file": "pumpkinsmasherx.png",
+      "name": "Pumpkin Smasher",
+      "rarity": "limited",
+      "family": "shotgun",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "witchfirex",
+      "file": "witchfirex.png",
+      "name": "Witchfire",
+      "rarity": "limited",
+      "family": "rifle",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "ghoulgatlingx",
+      "file": "ghoulgatlingx.png",
+      "name": "Ghoul Gatling",
+      "rarity": "limited",
+      "family": "lmg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "headlesshorsemanx",
+      "file": "headlesshorsemanx.png",
+      "name": "Headless Horseman",
+      "rarity": "limited",
+      "family": "sniper",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "pixelpistolx",
+      "file": "pixelpistolx.png",
+      "name": "Pixel Pistol",
+      "rarity": "limited",
+      "family": "pistol",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "bitblasterx",
+      "file": "bitblasterx.png",
+      "name": "8-Bit Blaster",
+      "rarity": "limited",
+      "family": "energy",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "arcadearx",
+      "file": "arcadearx.png",
+      "name": "Arcade AR",
+      "rarity": "limited",
+      "family": "rifle",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "gameoverx",
+      "file": "gameoverx.png",
+      "name": "Game Over",
+      "rarity": "limited",
+      "family": "energy",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "finalbossx",
+      "file": "finalbossx.png",
+      "name": "Final Boss",
+      "rarity": "limited",
+      "family": "energy",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_001_aether_viper",
+      "file": "vault_001_aether_viper.png",
+      "name": "Aether Viper",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_002_aether_warden",
+      "file": "vault_002_aether_warden.png",
+      "name": "Aether Warden",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_003_aether_spectre",
+      "file": "vault_003_aether_spectre.png",
+      "name": "Aether Spectre",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_004_aether_phantom",
+      "file": "vault_004_aether_phantom.png",
+      "name": "Aether Phantom",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_005_aether_sentinel",
+      "file": "vault_005_aether_sentinel.png",
+      "name": "Aether Sentinel",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_006_aether_raptor",
+      "file": "vault_006_aether_raptor.png",
+      "name": "Aether Raptor",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_007_aether_tempest",
+      "file": "vault_007_aether_tempest.png",
+      "name": "Aether Tempest",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_008_aether_marauder",
+      "file": "vault_008_aether_marauder.png",
+      "name": "Aether Marauder",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_009_aether_striker",
+      "file": "vault_009_aether_striker.png",
+      "name": "Aether Striker",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_010_aether_nomad",
+      "file": "vault_010_aether_nomad.png",
+      "name": "Aether Nomad",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_011_aether_catalyst",
+      "file": "vault_011_aether_catalyst.png",
+      "name": "Aether Catalyst",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_012_aether_vanguard",
+      "file": "vault_012_aether_vanguard.png",
+      "name": "Aether Vanguard",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_013_aether_revenant",
+      "file": "vault_013_aether_revenant.png",
+      "name": "Aether Revenant",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_014_aether_starlight",
+      "file": "vault_014_aether_starlight.png",
+      "name": "Aether Starlight",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_015_aether_titan",
+      "file": "vault_015_aether_titan.png",
+      "name": "Aether Titan",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_016_aether_ranger",
+      "file": "vault_016_aether_ranger.png",
+      "name": "Aether Ranger",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_017_aether_outrider",
+      "file": "vault_017_aether_outrider.png",
+      "name": "Aether Outrider",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_018_aether_mirage",
+      "file": "vault_018_aether_mirage.png",
+      "name": "Aether Mirage",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_019_aether_overdrive",
+      "file": "vault_019_aether_overdrive.png",
+      "name": "Aether Overdrive",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_020_aether_nightjar",
+      "file": "vault_020_aether_nightjar.png",
+      "name": "Aether Nightjar",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_021_ashen_viper",
+      "file": "vault_021_ashen_viper.png",
+      "name": "Ashen Viper",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_022_ashen_warden",
+      "file": "vault_022_ashen_warden.png",
+      "name": "Ashen Warden",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_023_ashen_spectre",
+      "file": "vault_023_ashen_spectre.png",
+      "name": "Ashen Spectre",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_024_ashen_phantom",
+      "file": "vault_024_ashen_phantom.png",
+      "name": "Ashen Phantom",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_025_ashen_sentinel",
+      "file": "vault_025_ashen_sentinel.png",
+      "name": "Ashen Sentinel",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_026_ashen_raptor",
+      "file": "vault_026_ashen_raptor.png",
+      "name": "Ashen Raptor",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_027_ashen_tempest",
+      "file": "vault_027_ashen_tempest.png",
+      "name": "Ashen Tempest",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_028_ashen_marauder",
+      "file": "vault_028_ashen_marauder.png",
+      "name": "Ashen Marauder",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_029_ashen_striker",
+      "file": "vault_029_ashen_striker.png",
+      "name": "Ashen Striker",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_030_ashen_nomad",
+      "file": "vault_030_ashen_nomad.png",
+      "name": "Ashen Nomad",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_031_ashen_catalyst",
+      "file": "vault_031_ashen_catalyst.png",
+      "name": "Ashen Catalyst",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_032_ashen_vanguard",
+      "file": "vault_032_ashen_vanguard.png",
+      "name": "Ashen Vanguard",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_033_ashen_revenant",
+      "file": "vault_033_ashen_revenant.png",
+      "name": "Ashen Revenant",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_034_ashen_starlight",
+      "file": "vault_034_ashen_starlight.png",
+      "name": "Ashen Starlight",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_035_ashen_titan",
+      "file": "vault_035_ashen_titan.png",
+      "name": "Ashen Titan",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_036_ashen_ranger",
+      "file": "vault_036_ashen_ranger.png",
+      "name": "Ashen Ranger",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_037_ashen_outrider",
+      "file": "vault_037_ashen_outrider.png",
+      "name": "Ashen Outrider",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_038_ashen_mirage",
+      "file": "vault_038_ashen_mirage.png",
+      "name": "Ashen Mirage",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_039_ashen_overdrive",
+      "file": "vault_039_ashen_overdrive.png",
+      "name": "Ashen Overdrive",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_040_ashen_nightjar",
+      "file": "vault_040_ashen_nightjar.png",
+      "name": "Ashen Nightjar",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_041_atomic_viper",
+      "file": "vault_041_atomic_viper.png",
+      "name": "Atomic Viper",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_042_atomic_warden",
+      "file": "vault_042_atomic_warden.png",
+      "name": "Atomic Warden",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_043_atomic_spectre",
+      "file": "vault_043_atomic_spectre.png",
+      "name": "Atomic Spectre",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_044_atomic_phantom",
+      "file": "vault_044_atomic_phantom.png",
+      "name": "Atomic Phantom",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_045_atomic_sentinel",
+      "file": "vault_045_atomic_sentinel.png",
+      "name": "Atomic Sentinel",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_046_atomic_raptor",
+      "file": "vault_046_atomic_raptor.png",
+      "name": "Atomic Raptor",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_047_atomic_tempest",
+      "file": "vault_047_atomic_tempest.png",
+      "name": "Atomic Tempest",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_048_atomic_marauder",
+      "file": "vault_048_atomic_marauder.png",
+      "name": "Atomic Marauder",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_049_atomic_striker",
+      "file": "vault_049_atomic_striker.png",
+      "name": "Atomic Striker",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_050_atomic_nomad",
+      "file": "vault_050_atomic_nomad.png",
+      "name": "Atomic Nomad",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_051_atomic_catalyst",
+      "file": "vault_051_atomic_catalyst.png",
+      "name": "Atomic Catalyst",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_052_atomic_vanguard",
+      "file": "vault_052_atomic_vanguard.png",
+      "name": "Atomic Vanguard",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_053_atomic_revenant",
+      "file": "vault_053_atomic_revenant.png",
+      "name": "Atomic Revenant",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_054_atomic_starlight",
+      "file": "vault_054_atomic_starlight.png",
+      "name": "Atomic Starlight",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_055_atomic_titan",
+      "file": "vault_055_atomic_titan.png",
+      "name": "Atomic Titan",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_056_atomic_ranger",
+      "file": "vault_056_atomic_ranger.png",
+      "name": "Atomic Ranger",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_057_atomic_outrider",
+      "file": "vault_057_atomic_outrider.png",
+      "name": "Atomic Outrider",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_058_atomic_mirage",
+      "file": "vault_058_atomic_mirage.png",
+      "name": "Atomic Mirage",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_059_atomic_overdrive",
+      "file": "vault_059_atomic_overdrive.png",
+      "name": "Atomic Overdrive",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_060_atomic_nightjar",
+      "file": "vault_060_atomic_nightjar.png",
+      "name": "Atomic Nightjar",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_061_aurora_viper",
+      "file": "vault_061_aurora_viper.png",
+      "name": "Aurora Viper",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_062_aurora_warden",
+      "file": "vault_062_aurora_warden.png",
+      "name": "Aurora Warden",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_063_aurora_spectre",
+      "file": "vault_063_aurora_spectre.png",
+      "name": "Aurora Spectre",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_064_aurora_phantom",
+      "file": "vault_064_aurora_phantom.png",
+      "name": "Aurora Phantom",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_065_aurora_sentinel",
+      "file": "vault_065_aurora_sentinel.png",
+      "name": "Aurora Sentinel",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_066_aurora_raptor",
+      "file": "vault_066_aurora_raptor.png",
+      "name": "Aurora Raptor",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_067_aurora_tempest",
+      "file": "vault_067_aurora_tempest.png",
+      "name": "Aurora Tempest",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_068_aurora_marauder",
+      "file": "vault_068_aurora_marauder.png",
+      "name": "Aurora Marauder",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_069_aurora_striker",
+      "file": "vault_069_aurora_striker.png",
+      "name": "Aurora Striker",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_070_aurora_nomad",
+      "file": "vault_070_aurora_nomad.png",
+      "name": "Aurora Nomad",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_071_aurora_catalyst",
+      "file": "vault_071_aurora_catalyst.png",
+      "name": "Aurora Catalyst",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_072_aurora_vanguard",
+      "file": "vault_072_aurora_vanguard.png",
+      "name": "Aurora Vanguard",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_073_aurora_revenant",
+      "file": "vault_073_aurora_revenant.png",
+      "name": "Aurora Revenant",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_074_aurora_starlight",
+      "file": "vault_074_aurora_starlight.png",
+      "name": "Aurora Starlight",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_075_aurora_titan",
+      "file": "vault_075_aurora_titan.png",
+      "name": "Aurora Titan",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_076_aurora_ranger",
+      "file": "vault_076_aurora_ranger.png",
+      "name": "Aurora Ranger",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_077_aurora_outrider",
+      "file": "vault_077_aurora_outrider.png",
+      "name": "Aurora Outrider",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_078_aurora_mirage",
+      "file": "vault_078_aurora_mirage.png",
+      "name": "Aurora Mirage",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_079_aurora_overdrive",
+      "file": "vault_079_aurora_overdrive.png",
+      "name": "Aurora Overdrive",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_080_aurora_nightjar",
+      "file": "vault_080_aurora_nightjar.png",
+      "name": "Aurora Nightjar",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_081_blackout_viper",
+      "file": "vault_081_blackout_viper.png",
+      "name": "Blackout Viper",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_082_blackout_warden",
+      "file": "vault_082_blackout_warden.png",
+      "name": "Blackout Warden",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_083_blackout_spectre",
+      "file": "vault_083_blackout_spectre.png",
+      "name": "Blackout Spectre",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_084_blackout_phantom",
+      "file": "vault_084_blackout_phantom.png",
+      "name": "Blackout Phantom",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_085_blackout_sentinel",
+      "file": "vault_085_blackout_sentinel.png",
+      "name": "Blackout Sentinel",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_086_blackout_raptor",
+      "file": "vault_086_blackout_raptor.png",
+      "name": "Blackout Raptor",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_087_blackout_tempest",
+      "file": "vault_087_blackout_tempest.png",
+      "name": "Blackout Tempest",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_088_blackout_marauder",
+      "file": "vault_088_blackout_marauder.png",
+      "name": "Blackout Marauder",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_089_blackout_striker",
+      "file": "vault_089_blackout_striker.png",
+      "name": "Blackout Striker",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_090_blackout_nomad",
+      "file": "vault_090_blackout_nomad.png",
+      "name": "Blackout Nomad",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_091_blackout_catalyst",
+      "file": "vault_091_blackout_catalyst.png",
+      "name": "Blackout Catalyst",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_092_blackout_vanguard",
+      "file": "vault_092_blackout_vanguard.png",
+      "name": "Blackout Vanguard",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_093_blackout_revenant",
+      "file": "vault_093_blackout_revenant.png",
+      "name": "Blackout Revenant",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_094_blackout_starlight",
+      "file": "vault_094_blackout_starlight.png",
+      "name": "Blackout Starlight",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_095_blackout_titan",
+      "file": "vault_095_blackout_titan.png",
+      "name": "Blackout Titan",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_096_blackout_ranger",
+      "file": "vault_096_blackout_ranger.png",
+      "name": "Blackout Ranger",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_097_blackout_outrider",
+      "file": "vault_097_blackout_outrider.png",
+      "name": "Blackout Outrider",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_098_blackout_mirage",
+      "file": "vault_098_blackout_mirage.png",
+      "name": "Blackout Mirage",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_099_blackout_overdrive",
+      "file": "vault_099_blackout_overdrive.png",
+      "name": "Blackout Overdrive",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_100_blackout_nightjar",
+      "file": "vault_100_blackout_nightjar.png",
+      "name": "Blackout Nightjar",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_101_bluefire_viper",
+      "file": "vault_101_bluefire_viper.png",
+      "name": "Bluefire Viper",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_102_bluefire_warden",
+      "file": "vault_102_bluefire_warden.png",
+      "name": "Bluefire Warden",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_103_bluefire_spectre",
+      "file": "vault_103_bluefire_spectre.png",
+      "name": "Bluefire Spectre",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_104_bluefire_phantom",
+      "file": "vault_104_bluefire_phantom.png",
+      "name": "Bluefire Phantom",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_105_bluefire_sentinel",
+      "file": "vault_105_bluefire_sentinel.png",
+      "name": "Bluefire Sentinel",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_106_bluefire_raptor",
+      "file": "vault_106_bluefire_raptor.png",
+      "name": "Bluefire Raptor",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_107_bluefire_tempest",
+      "file": "vault_107_bluefire_tempest.png",
+      "name": "Bluefire Tempest",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_108_bluefire_marauder",
+      "file": "vault_108_bluefire_marauder.png",
+      "name": "Bluefire Marauder",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_109_bluefire_striker",
+      "file": "vault_109_bluefire_striker.png",
+      "name": "Bluefire Striker",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_110_bluefire_nomad",
+      "file": "vault_110_bluefire_nomad.png",
+      "name": "Bluefire Nomad",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_111_bluefire_catalyst",
+      "file": "vault_111_bluefire_catalyst.png",
+      "name": "Bluefire Catalyst",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_112_bluefire_vanguard",
+      "file": "vault_112_bluefire_vanguard.png",
+      "name": "Bluefire Vanguard",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_113_bluefire_revenant",
+      "file": "vault_113_bluefire_revenant.png",
+      "name": "Bluefire Revenant",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_114_bluefire_starlight",
+      "file": "vault_114_bluefire_starlight.png",
+      "name": "Bluefire Starlight",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_115_bluefire_titan",
+      "file": "vault_115_bluefire_titan.png",
+      "name": "Bluefire Titan",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_116_bluefire_ranger",
+      "file": "vault_116_bluefire_ranger.png",
+      "name": "Bluefire Ranger",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_117_bluefire_outrider",
+      "file": "vault_117_bluefire_outrider.png",
+      "name": "Bluefire Outrider",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_118_bluefire_mirage",
+      "file": "vault_118_bluefire_mirage.png",
+      "name": "Bluefire Mirage",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_119_bluefire_overdrive",
+      "file": "vault_119_bluefire_overdrive.png",
+      "name": "Bluefire Overdrive",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "vault_120_bluefire_nightjar",
+      "file": "vault_120_bluefire_nightjar.png",
+      "name": "Bluefire Nightjar",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_121_carbon_viper",
+      "file": "vault_121_carbon_viper.png",
+      "name": "Carbon Viper",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_122_carbon_warden",
+      "file": "vault_122_carbon_warden.png",
+      "name": "Carbon Warden",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_123_carbon_spectre",
+      "file": "vault_123_carbon_spectre.png",
+      "name": "Carbon Spectre",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_124_carbon_phantom",
+      "file": "vault_124_carbon_phantom.png",
+      "name": "Carbon Phantom",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_125_carbon_sentinel",
+      "file": "vault_125_carbon_sentinel.png",
+      "name": "Carbon Sentinel",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "vault_126_carbon_raptor",
+      "file": "vault_126_carbon_raptor.png",
+      "name": "Carbon Raptor",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_127_carbon_tempest",
+      "file": "vault_127_carbon_tempest.png",
+      "name": "Carbon Tempest",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_128_carbon_marauder",
+      "file": "vault_128_carbon_marauder.png",
+      "name": "Carbon Marauder",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_129_carbon_striker",
+      "file": "vault_129_carbon_striker.png",
+      "name": "Carbon Striker",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_130_carbon_nomad",
+      "file": "vault_130_carbon_nomad.png",
+      "name": "Carbon Nomad",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_131_carbon_catalyst",
+      "file": "vault_131_carbon_catalyst.png",
+      "name": "Carbon Catalyst",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_132_carbon_vanguard",
+      "file": "vault_132_carbon_vanguard.png",
+      "name": "Carbon Vanguard",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_133_carbon_revenant",
+      "file": "vault_133_carbon_revenant.png",
+      "name": "Carbon Revenant",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_134_carbon_starlight",
+      "file": "vault_134_carbon_starlight.png",
+      "name": "Carbon Starlight",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_135_carbon_titan",
+      "file": "vault_135_carbon_titan.png",
+      "name": "Carbon Titan",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_136_carbon_ranger",
+      "file": "vault_136_carbon_ranger.png",
+      "name": "Carbon Ranger",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_137_carbon_outrider",
+      "file": "vault_137_carbon_outrider.png",
+      "name": "Carbon Outrider",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_138_carbon_mirage",
+      "file": "vault_138_carbon_mirage.png",
+      "name": "Carbon Mirage",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_139_carbon_overdrive",
+      "file": "vault_139_carbon_overdrive.png",
+      "name": "Carbon Overdrive",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_140_carbon_nightjar",
+      "file": "vault_140_carbon_nightjar.png",
+      "name": "Carbon Nightjar",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_141_celestial_viper",
+      "file": "vault_141_celestial_viper.png",
+      "name": "Celestial Viper",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_142_celestial_warden",
+      "file": "vault_142_celestial_warden.png",
+      "name": "Celestial Warden",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_143_celestial_spectre",
+      "file": "vault_143_celestial_spectre.png",
+      "name": "Celestial Spectre",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_144_celestial_phantom",
+      "file": "vault_144_celestial_phantom.png",
+      "name": "Celestial Phantom",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_145_celestial_sentinel",
+      "file": "vault_145_celestial_sentinel.png",
+      "name": "Celestial Sentinel",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_146_celestial_raptor",
+      "file": "vault_146_celestial_raptor.png",
+      "name": "Celestial Raptor",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_147_celestial_tempest",
+      "file": "vault_147_celestial_tempest.png",
+      "name": "Celestial Tempest",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_148_celestial_marauder",
+      "file": "vault_148_celestial_marauder.png",
+      "name": "Celestial Marauder",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_149_celestial_striker",
+      "file": "vault_149_celestial_striker.png",
+      "name": "Celestial Striker",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_150_celestial_nomad",
+      "file": "vault_150_celestial_nomad.png",
+      "name": "Celestial Nomad",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_151_celestial_catalyst",
+      "file": "vault_151_celestial_catalyst.png",
+      "name": "Celestial Catalyst",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_152_celestial_vanguard",
+      "file": "vault_152_celestial_vanguard.png",
+      "name": "Celestial Vanguard",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_153_celestial_revenant",
+      "file": "vault_153_celestial_revenant.png",
+      "name": "Celestial Revenant",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_154_celestial_starlight",
+      "file": "vault_154_celestial_starlight.png",
+      "name": "Celestial Starlight",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_155_celestial_titan",
+      "file": "vault_155_celestial_titan.png",
+      "name": "Celestial Titan",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_156_celestial_ranger",
+      "file": "vault_156_celestial_ranger.png",
+      "name": "Celestial Ranger",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_157_celestial_outrider",
+      "file": "vault_157_celestial_outrider.png",
+      "name": "Celestial Outrider",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_158_celestial_mirage",
+      "file": "vault_158_celestial_mirage.png",
+      "name": "Celestial Mirage",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_159_celestial_overdrive",
+      "file": "vault_159_celestial_overdrive.png",
+      "name": "Celestial Overdrive",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_160_celestial_nightjar",
+      "file": "vault_160_celestial_nightjar.png",
+      "name": "Celestial Nightjar",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_161_chrome_viper",
+      "file": "vault_161_chrome_viper.png",
+      "name": "Chrome Viper",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_162_chrome_warden",
+      "file": "vault_162_chrome_warden.png",
+      "name": "Chrome Warden",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_163_chrome_spectre",
+      "file": "vault_163_chrome_spectre.png",
+      "name": "Chrome Spectre",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_164_chrome_phantom",
+      "file": "vault_164_chrome_phantom.png",
+      "name": "Chrome Phantom",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_165_chrome_sentinel",
+      "file": "vault_165_chrome_sentinel.png",
+      "name": "Chrome Sentinel",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_166_chrome_raptor",
+      "file": "vault_166_chrome_raptor.png",
+      "name": "Chrome Raptor",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_167_chrome_tempest",
+      "file": "vault_167_chrome_tempest.png",
+      "name": "Chrome Tempest",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_168_chrome_marauder",
+      "file": "vault_168_chrome_marauder.png",
+      "name": "Chrome Marauder",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_169_chrome_striker",
+      "file": "vault_169_chrome_striker.png",
+      "name": "Chrome Striker",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_170_chrome_nomad",
+      "file": "vault_170_chrome_nomad.png",
+      "name": "Chrome Nomad",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_171_chrome_catalyst",
+      "file": "vault_171_chrome_catalyst.png",
+      "name": "Chrome Catalyst",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_172_chrome_vanguard",
+      "file": "vault_172_chrome_vanguard.png",
+      "name": "Chrome Vanguard",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_173_chrome_revenant",
+      "file": "vault_173_chrome_revenant.png",
+      "name": "Chrome Revenant",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_174_chrome_starlight",
+      "file": "vault_174_chrome_starlight.png",
+      "name": "Chrome Starlight",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_175_chrome_titan",
+      "file": "vault_175_chrome_titan.png",
+      "name": "Chrome Titan",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_176_chrome_ranger",
+      "file": "vault_176_chrome_ranger.png",
+      "name": "Chrome Ranger",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_177_chrome_outrider",
+      "file": "vault_177_chrome_outrider.png",
+      "name": "Chrome Outrider",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_178_chrome_mirage",
+      "file": "vault_178_chrome_mirage.png",
+      "name": "Chrome Mirage",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_179_chrome_overdrive",
+      "file": "vault_179_chrome_overdrive.png",
+      "name": "Chrome Overdrive",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_180_chrome_nightjar",
+      "file": "vault_180_chrome_nightjar.png",
+      "name": "Chrome Nightjar",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_181_crimson_viper",
+      "file": "vault_181_crimson_viper.png",
+      "name": "Crimson Viper",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_182_crimson_warden",
+      "file": "vault_182_crimson_warden.png",
+      "name": "Crimson Warden",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_183_crimson_spectre",
+      "file": "vault_183_crimson_spectre.png",
+      "name": "Crimson Spectre",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_184_crimson_phantom",
+      "file": "vault_184_crimson_phantom.png",
+      "name": "Crimson Phantom",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_185_crimson_sentinel",
+      "file": "vault_185_crimson_sentinel.png",
+      "name": "Crimson Sentinel",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_186_crimson_raptor",
+      "file": "vault_186_crimson_raptor.png",
+      "name": "Crimson Raptor",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_187_crimson_tempest",
+      "file": "vault_187_crimson_tempest.png",
+      "name": "Crimson Tempest",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_188_crimson_marauder",
+      "file": "vault_188_crimson_marauder.png",
+      "name": "Crimson Marauder",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_189_crimson_striker",
+      "file": "vault_189_crimson_striker.png",
+      "name": "Crimson Striker",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_190_crimson_nomad",
+      "file": "vault_190_crimson_nomad.png",
+      "name": "Crimson Nomad",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_191_crimson_catalyst",
+      "file": "vault_191_crimson_catalyst.png",
+      "name": "Crimson Catalyst",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_192_crimson_vanguard",
+      "file": "vault_192_crimson_vanguard.png",
+      "name": "Crimson Vanguard",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_193_crimson_revenant",
+      "file": "vault_193_crimson_revenant.png",
+      "name": "Crimson Revenant",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_194_crimson_starlight",
+      "file": "vault_194_crimson_starlight.png",
+      "name": "Crimson Starlight",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_195_crimson_titan",
+      "file": "vault_195_crimson_titan.png",
+      "name": "Crimson Titan",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_196_crimson_ranger",
+      "file": "vault_196_crimson_ranger.png",
+      "name": "Crimson Ranger",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_197_crimson_outrider",
+      "file": "vault_197_crimson_outrider.png",
+      "name": "Crimson Outrider",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_198_crimson_mirage",
+      "file": "vault_198_crimson_mirage.png",
+      "name": "Crimson Mirage",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_199_crimson_overdrive",
+      "file": "vault_199_crimson_overdrive.png",
+      "name": "Crimson Overdrive",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_200_crimson_nightjar",
+      "file": "vault_200_crimson_nightjar.png",
+      "name": "Crimson Nightjar",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_201_cyber_viper",
+      "file": "vault_201_cyber_viper.png",
+      "name": "Cyber Viper",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_202_cyber_warden",
+      "file": "vault_202_cyber_warden.png",
+      "name": "Cyber Warden",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_203_cyber_spectre",
+      "file": "vault_203_cyber_spectre.png",
+      "name": "Cyber Spectre",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_204_cyber_phantom",
+      "file": "vault_204_cyber_phantom.png",
+      "name": "Cyber Phantom",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_205_cyber_sentinel",
+      "file": "vault_205_cyber_sentinel.png",
+      "name": "Cyber Sentinel",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_206_cyber_raptor",
+      "file": "vault_206_cyber_raptor.png",
+      "name": "Cyber Raptor",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_207_cyber_tempest",
+      "file": "vault_207_cyber_tempest.png",
+      "name": "Cyber Tempest",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_208_cyber_marauder",
+      "file": "vault_208_cyber_marauder.png",
+      "name": "Cyber Marauder",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_209_cyber_striker",
+      "file": "vault_209_cyber_striker.png",
+      "name": "Cyber Striker",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_210_cyber_nomad",
+      "file": "vault_210_cyber_nomad.png",
+      "name": "Cyber Nomad",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_211_cyber_catalyst",
+      "file": "vault_211_cyber_catalyst.png",
+      "name": "Cyber Catalyst",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_212_cyber_vanguard",
+      "file": "vault_212_cyber_vanguard.png",
+      "name": "Cyber Vanguard",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_213_cyber_revenant",
+      "file": "vault_213_cyber_revenant.png",
+      "name": "Cyber Revenant",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_214_cyber_starlight",
+      "file": "vault_214_cyber_starlight.png",
+      "name": "Cyber Starlight",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_215_cyber_titan",
+      "file": "vault_215_cyber_titan.png",
+      "name": "Cyber Titan",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_216_cyber_ranger",
+      "file": "vault_216_cyber_ranger.png",
+      "name": "Cyber Ranger",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_217_cyber_outrider",
+      "file": "vault_217_cyber_outrider.png",
+      "name": "Cyber Outrider",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_218_cyber_mirage",
+      "file": "vault_218_cyber_mirage.png",
+      "name": "Cyber Mirage",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_219_cyber_overdrive",
+      "file": "vault_219_cyber_overdrive.png",
+      "name": "Cyber Overdrive",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_220_cyber_nightjar",
+      "file": "vault_220_cyber_nightjar.png",
+      "name": "Cyber Nightjar",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_221_darkstar_viper",
+      "file": "vault_221_darkstar_viper.png",
+      "name": "Darkstar Viper",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_222_darkstar_warden",
+      "file": "vault_222_darkstar_warden.png",
+      "name": "Darkstar Warden",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_223_darkstar_spectre",
+      "file": "vault_223_darkstar_spectre.png",
+      "name": "Darkstar Spectre",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_224_darkstar_phantom",
+      "file": "vault_224_darkstar_phantom.png",
+      "name": "Darkstar Phantom",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_225_darkstar_sentinel",
+      "file": "vault_225_darkstar_sentinel.png",
+      "name": "Darkstar Sentinel",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_226_darkstar_raptor",
+      "file": "vault_226_darkstar_raptor.png",
+      "name": "Darkstar Raptor",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_227_darkstar_tempest",
+      "file": "vault_227_darkstar_tempest.png",
+      "name": "Darkstar Tempest",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_228_darkstar_marauder",
+      "file": "vault_228_darkstar_marauder.png",
+      "name": "Darkstar Marauder",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_229_darkstar_striker",
+      "file": "vault_229_darkstar_striker.png",
+      "name": "Darkstar Striker",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_230_darkstar_nomad",
+      "file": "vault_230_darkstar_nomad.png",
+      "name": "Darkstar Nomad",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_231_darkstar_catalyst",
+      "file": "vault_231_darkstar_catalyst.png",
+      "name": "Darkstar Catalyst",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_232_darkstar_vanguard",
+      "file": "vault_232_darkstar_vanguard.png",
+      "name": "Darkstar Vanguard",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_233_darkstar_revenant",
+      "file": "vault_233_darkstar_revenant.png",
+      "name": "Darkstar Revenant",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_234_darkstar_starlight",
+      "file": "vault_234_darkstar_starlight.png",
+      "name": "Darkstar Starlight",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_235_darkstar_titan",
+      "file": "vault_235_darkstar_titan.png",
+      "name": "Darkstar Titan",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_236_darkstar_ranger",
+      "file": "vault_236_darkstar_ranger.png",
+      "name": "Darkstar Ranger",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_237_darkstar_outrider",
+      "file": "vault_237_darkstar_outrider.png",
+      "name": "Darkstar Outrider",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_238_darkstar_mirage",
+      "file": "vault_238_darkstar_mirage.png",
+      "name": "Darkstar Mirage",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_239_darkstar_overdrive",
+      "file": "vault_239_darkstar_overdrive.png",
+      "name": "Darkstar Overdrive",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_240_darkstar_nightjar",
+      "file": "vault_240_darkstar_nightjar.png",
+      "name": "Darkstar Nightjar",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_241_deadlock_viper",
+      "file": "vault_241_deadlock_viper.png",
+      "name": "Deadlock Viper",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_242_deadlock_warden",
+      "file": "vault_242_deadlock_warden.png",
+      "name": "Deadlock Warden",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_243_deadlock_spectre",
+      "file": "vault_243_deadlock_spectre.png",
+      "name": "Deadlock Spectre",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "vault_244_deadlock_phantom",
+      "file": "vault_244_deadlock_phantom.png",
+      "name": "Deadlock Phantom",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_245_deadlock_sentinel",
+      "file": "vault_245_deadlock_sentinel.png",
+      "name": "Deadlock Sentinel",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_246_deadlock_raptor",
+      "file": "vault_246_deadlock_raptor.png",
+      "name": "Deadlock Raptor",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "vault_247_deadlock_tempest",
+      "file": "vault_247_deadlock_tempest.png",
+      "name": "Deadlock Tempest",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_248_deadlock_marauder",
+      "file": "vault_248_deadlock_marauder.png",
+      "name": "Deadlock Marauder",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_249_deadlock_striker",
+      "file": "vault_249_deadlock_striker.png",
+      "name": "Deadlock Striker",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_250_deadlock_nomad",
+      "file": "vault_250_deadlock_nomad.png",
+      "name": "Deadlock Nomad",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_251_deadlock_catalyst",
+      "file": "vault_251_deadlock_catalyst.png",
+      "name": "Deadlock Catalyst",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_252_deadlock_vanguard",
+      "file": "vault_252_deadlock_vanguard.png",
+      "name": "Deadlock Vanguard",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_253_deadlock_revenant",
+      "file": "vault_253_deadlock_revenant.png",
+      "name": "Deadlock Revenant",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_254_deadlock_starlight",
+      "file": "vault_254_deadlock_starlight.png",
+      "name": "Deadlock Starlight",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_255_deadlock_titan",
+      "file": "vault_255_deadlock_titan.png",
+      "name": "Deadlock Titan",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_256_deadlock_ranger",
+      "file": "vault_256_deadlock_ranger.png",
+      "name": "Deadlock Ranger",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_257_deadlock_outrider",
+      "file": "vault_257_deadlock_outrider.png",
+      "name": "Deadlock Outrider",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_258_deadlock_mirage",
+      "file": "vault_258_deadlock_mirage.png",
+      "name": "Deadlock Mirage",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_259_deadlock_overdrive",
+      "file": "vault_259_deadlock_overdrive.png",
+      "name": "Deadlock Overdrive",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_260_deadlock_nightjar",
+      "file": "vault_260_deadlock_nightjar.png",
+      "name": "Deadlock Nightjar",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_261_dread_viper",
+      "file": "vault_261_dread_viper.png",
+      "name": "Dread Viper",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_262_dread_warden",
+      "file": "vault_262_dread_warden.png",
+      "name": "Dread Warden",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_263_dread_spectre",
+      "file": "vault_263_dread_spectre.png",
+      "name": "Dread Spectre",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_264_dread_phantom",
+      "file": "vault_264_dread_phantom.png",
+      "name": "Dread Phantom",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_265_dread_sentinel",
+      "file": "vault_265_dread_sentinel.png",
+      "name": "Dread Sentinel",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_266_dread_raptor",
+      "file": "vault_266_dread_raptor.png",
+      "name": "Dread Raptor",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_267_dread_tempest",
+      "file": "vault_267_dread_tempest.png",
+      "name": "Dread Tempest",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_268_dread_marauder",
+      "file": "vault_268_dread_marauder.png",
+      "name": "Dread Marauder",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_269_dread_striker",
+      "file": "vault_269_dread_striker.png",
+      "name": "Dread Striker",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_270_dread_nomad",
+      "file": "vault_270_dread_nomad.png",
+      "name": "Dread Nomad",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_271_dread_catalyst",
+      "file": "vault_271_dread_catalyst.png",
+      "name": "Dread Catalyst",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_272_dread_vanguard",
+      "file": "vault_272_dread_vanguard.png",
+      "name": "Dread Vanguard",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_273_dread_revenant",
+      "file": "vault_273_dread_revenant.png",
+      "name": "Dread Revenant",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_274_dread_starlight",
+      "file": "vault_274_dread_starlight.png",
+      "name": "Dread Starlight",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_275_dread_titan",
+      "file": "vault_275_dread_titan.png",
+      "name": "Dread Titan",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_276_dread_ranger",
+      "file": "vault_276_dread_ranger.png",
+      "name": "Dread Ranger",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_277_dread_outrider",
+      "file": "vault_277_dread_outrider.png",
+      "name": "Dread Outrider",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_278_dread_mirage",
+      "file": "vault_278_dread_mirage.png",
+      "name": "Dread Mirage",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_279_dread_overdrive",
+      "file": "vault_279_dread_overdrive.png",
+      "name": "Dread Overdrive",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_280_dread_nightjar",
+      "file": "vault_280_dread_nightjar.png",
+      "name": "Dread Nightjar",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_281_ember_viper",
+      "file": "vault_281_ember_viper.png",
+      "name": "Ember Viper",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_282_ember_warden",
+      "file": "vault_282_ember_warden.png",
+      "name": "Ember Warden",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_283_ember_spectre",
+      "file": "vault_283_ember_spectre.png",
+      "name": "Ember Spectre",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_284_ember_phantom",
+      "file": "vault_284_ember_phantom.png",
+      "name": "Ember Phantom",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_285_ember_sentinel",
+      "file": "vault_285_ember_sentinel.png",
+      "name": "Ember Sentinel",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_286_ember_raptor",
+      "file": "vault_286_ember_raptor.png",
+      "name": "Ember Raptor",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_287_ember_tempest",
+      "file": "vault_287_ember_tempest.png",
+      "name": "Ember Tempest",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_288_ember_marauder",
+      "file": "vault_288_ember_marauder.png",
+      "name": "Ember Marauder",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_289_ember_striker",
+      "file": "vault_289_ember_striker.png",
+      "name": "Ember Striker",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_290_ember_nomad",
+      "file": "vault_290_ember_nomad.png",
+      "name": "Ember Nomad",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_291_ember_catalyst",
+      "file": "vault_291_ember_catalyst.png",
+      "name": "Ember Catalyst",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_292_ember_vanguard",
+      "file": "vault_292_ember_vanguard.png",
+      "name": "Ember Vanguard",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_293_ember_revenant",
+      "file": "vault_293_ember_revenant.png",
+      "name": "Ember Revenant",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_294_ember_starlight",
+      "file": "vault_294_ember_starlight.png",
+      "name": "Ember Starlight",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_295_ember_titan",
+      "file": "vault_295_ember_titan.png",
+      "name": "Ember Titan",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_296_ember_ranger",
+      "file": "vault_296_ember_ranger.png",
+      "name": "Ember Ranger",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_297_ember_outrider",
+      "file": "vault_297_ember_outrider.png",
+      "name": "Ember Outrider",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_298_ember_mirage",
+      "file": "vault_298_ember_mirage.png",
+      "name": "Ember Mirage",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_299_ember_overdrive",
+      "file": "vault_299_ember_overdrive.png",
+      "name": "Ember Overdrive",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_300_ember_nightjar",
+      "file": "vault_300_ember_nightjar.png",
+      "name": "Ember Nightjar",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_301_enigma_viper",
+      "file": "vault_301_enigma_viper.png",
+      "name": "Enigma Viper",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_302_enigma_warden",
+      "file": "vault_302_enigma_warden.png",
+      "name": "Enigma Warden",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_303_enigma_spectre",
+      "file": "vault_303_enigma_spectre.png",
+      "name": "Enigma Spectre",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_304_enigma_phantom",
+      "file": "vault_304_enigma_phantom.png",
+      "name": "Enigma Phantom",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_305_enigma_sentinel",
+      "file": "vault_305_enigma_sentinel.png",
+      "name": "Enigma Sentinel",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_306_enigma_raptor",
+      "file": "vault_306_enigma_raptor.png",
+      "name": "Enigma Raptor",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_307_enigma_tempest",
+      "file": "vault_307_enigma_tempest.png",
+      "name": "Enigma Tempest",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_308_enigma_marauder",
+      "file": "vault_308_enigma_marauder.png",
+      "name": "Enigma Marauder",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_309_enigma_striker",
+      "file": "vault_309_enigma_striker.png",
+      "name": "Enigma Striker",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_310_enigma_nomad",
+      "file": "vault_310_enigma_nomad.png",
+      "name": "Enigma Nomad",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_311_enigma_catalyst",
+      "file": "vault_311_enigma_catalyst.png",
+      "name": "Enigma Catalyst",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_312_enigma_vanguard",
+      "file": "vault_312_enigma_vanguard.png",
+      "name": "Enigma Vanguard",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_313_enigma_revenant",
+      "file": "vault_313_enigma_revenant.png",
+      "name": "Enigma Revenant",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_314_enigma_starlight",
+      "file": "vault_314_enigma_starlight.png",
+      "name": "Enigma Starlight",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_315_enigma_titan",
+      "file": "vault_315_enigma_titan.png",
+      "name": "Enigma Titan",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_316_enigma_ranger",
+      "file": "vault_316_enigma_ranger.png",
+      "name": "Enigma Ranger",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_317_enigma_outrider",
+      "file": "vault_317_enigma_outrider.png",
+      "name": "Enigma Outrider",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_318_enigma_mirage",
+      "file": "vault_318_enigma_mirage.png",
+      "name": "Enigma Mirage",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_319_enigma_overdrive",
+      "file": "vault_319_enigma_overdrive.png",
+      "name": "Enigma Overdrive",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_320_enigma_nightjar",
+      "file": "vault_320_enigma_nightjar.png",
+      "name": "Enigma Nightjar",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_321_frostbite_viper",
+      "file": "vault_321_frostbite_viper.png",
+      "name": "Frostbite Viper",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_322_frostbite_warden",
+      "file": "vault_322_frostbite_warden.png",
+      "name": "Frostbite Warden",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_323_frostbite_spectre",
+      "file": "vault_323_frostbite_spectre.png",
+      "name": "Frostbite Spectre",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_324_frostbite_phantom",
+      "file": "vault_324_frostbite_phantom.png",
+      "name": "Frostbite Phantom",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_325_frostbite_sentinel",
+      "file": "vault_325_frostbite_sentinel.png",
+      "name": "Frostbite Sentinel",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_326_frostbite_raptor",
+      "file": "vault_326_frostbite_raptor.png",
+      "name": "Frostbite Raptor",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_327_frostbite_tempest",
+      "file": "vault_327_frostbite_tempest.png",
+      "name": "Frostbite Tempest",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_328_frostbite_marauder",
+      "file": "vault_328_frostbite_marauder.png",
+      "name": "Frostbite Marauder",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_329_frostbite_striker",
+      "file": "vault_329_frostbite_striker.png",
+      "name": "Frostbite Striker",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_330_frostbite_nomad",
+      "file": "vault_330_frostbite_nomad.png",
+      "name": "Frostbite Nomad",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_331_frostbite_catalyst",
+      "file": "vault_331_frostbite_catalyst.png",
+      "name": "Frostbite Catalyst",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_332_frostbite_vanguard",
+      "file": "vault_332_frostbite_vanguard.png",
+      "name": "Frostbite Vanguard",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_333_frostbite_revenant",
+      "file": "vault_333_frostbite_revenant.png",
+      "name": "Frostbite Revenant",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_334_frostbite_starlight",
+      "file": "vault_334_frostbite_starlight.png",
+      "name": "Frostbite Starlight",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_335_frostbite_titan",
+      "file": "vault_335_frostbite_titan.png",
+      "name": "Frostbite Titan",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_336_frostbite_ranger",
+      "file": "vault_336_frostbite_ranger.png",
+      "name": "Frostbite Ranger",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_337_frostbite_outrider",
+      "file": "vault_337_frostbite_outrider.png",
+      "name": "Frostbite Outrider",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_338_frostbite_mirage",
+      "file": "vault_338_frostbite_mirage.png",
+      "name": "Frostbite Mirage",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_339_frostbite_overdrive",
+      "file": "vault_339_frostbite_overdrive.png",
+      "name": "Frostbite Overdrive",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_340_frostbite_nightjar",
+      "file": "vault_340_frostbite_nightjar.png",
+      "name": "Frostbite Nightjar",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_341_ghost_viper",
+      "file": "vault_341_ghost_viper.png",
+      "name": "Ghost Viper",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_342_ghost_warden",
+      "file": "vault_342_ghost_warden.png",
+      "name": "Ghost Warden",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_343_ghost_spectre",
+      "file": "vault_343_ghost_spectre.png",
+      "name": "Ghost Spectre",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_344_ghost_phantom",
+      "file": "vault_344_ghost_phantom.png",
+      "name": "Ghost Phantom",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_345_ghost_sentinel",
+      "file": "vault_345_ghost_sentinel.png",
+      "name": "Ghost Sentinel",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_346_ghost_raptor",
+      "file": "vault_346_ghost_raptor.png",
+      "name": "Ghost Raptor",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_347_ghost_tempest",
+      "file": "vault_347_ghost_tempest.png",
+      "name": "Ghost Tempest",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_348_ghost_marauder",
+      "file": "vault_348_ghost_marauder.png",
+      "name": "Ghost Marauder",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_349_ghost_striker",
+      "file": "vault_349_ghost_striker.png",
+      "name": "Ghost Striker",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_350_ghost_nomad",
+      "file": "vault_350_ghost_nomad.png",
+      "name": "Ghost Nomad",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_351_ghost_catalyst",
+      "file": "vault_351_ghost_catalyst.png",
+      "name": "Ghost Catalyst",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_352_ghost_vanguard",
+      "file": "vault_352_ghost_vanguard.png",
+      "name": "Ghost Vanguard",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_353_ghost_revenant",
+      "file": "vault_353_ghost_revenant.png",
+      "name": "Ghost Revenant",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_354_ghost_starlight",
+      "file": "vault_354_ghost_starlight.png",
+      "name": "Ghost Starlight",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_355_ghost_titan",
+      "file": "vault_355_ghost_titan.png",
+      "name": "Ghost Titan",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_356_ghost_ranger",
+      "file": "vault_356_ghost_ranger.png",
+      "name": "Ghost Ranger",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_357_ghost_outrider",
+      "file": "vault_357_ghost_outrider.png",
+      "name": "Ghost Outrider",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_358_ghost_mirage",
+      "file": "vault_358_ghost_mirage.png",
+      "name": "Ghost Mirage",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_359_ghost_overdrive",
+      "file": "vault_359_ghost_overdrive.png",
+      "name": "Ghost Overdrive",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_360_ghost_nightjar",
+      "file": "vault_360_ghost_nightjar.png",
+      "name": "Ghost Nightjar",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_361_golden_viper",
+      "file": "vault_361_golden_viper.png",
+      "name": "Golden Viper",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_362_golden_warden",
+      "file": "vault_362_golden_warden.png",
+      "name": "Golden Warden",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_363_golden_spectre",
+      "file": "vault_363_golden_spectre.png",
+      "name": "Golden Spectre",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_364_golden_phantom",
+      "file": "vault_364_golden_phantom.png",
+      "name": "Golden Phantom",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_365_golden_sentinel",
+      "file": "vault_365_golden_sentinel.png",
+      "name": "Golden Sentinel",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_366_golden_raptor",
+      "file": "vault_366_golden_raptor.png",
+      "name": "Golden Raptor",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_367_golden_tempest",
+      "file": "vault_367_golden_tempest.png",
+      "name": "Golden Tempest",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_368_golden_marauder",
+      "file": "vault_368_golden_marauder.png",
+      "name": "Golden Marauder",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_369_golden_striker",
+      "file": "vault_369_golden_striker.png",
+      "name": "Golden Striker",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "vault_370_golden_nomad",
+      "file": "vault_370_golden_nomad.png",
+      "name": "Golden Nomad",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_371_golden_catalyst",
+      "file": "vault_371_golden_catalyst.png",
+      "name": "Golden Catalyst",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_372_golden_vanguard",
+      "file": "vault_372_golden_vanguard.png",
+      "name": "Golden Vanguard",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "vault_373_golden_revenant",
+      "file": "vault_373_golden_revenant.png",
+      "name": "Golden Revenant",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_374_golden_starlight",
+      "file": "vault_374_golden_starlight.png",
+      "name": "Golden Starlight",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_375_golden_titan",
+      "file": "vault_375_golden_titan.png",
+      "name": "Golden Titan",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_376_golden_ranger",
+      "file": "vault_376_golden_ranger.png",
+      "name": "Golden Ranger",
+      "rarity": "legendary",
+      "family": "rifle",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_377_golden_outrider",
+      "file": "vault_377_golden_outrider.png",
+      "name": "Golden Outrider",
+      "rarity": "legendary",
+      "family": "smg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_378_golden_mirage",
+      "file": "vault_378_golden_mirage.png",
+      "name": "Golden Mirage",
+      "rarity": "legendary",
+      "family": "revolver",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_379_golden_overdrive",
+      "file": "vault_379_golden_overdrive.png",
+      "name": "Golden Overdrive",
+      "rarity": "legendary",
+      "family": "pistol",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_380_golden_nightjar",
+      "file": "vault_380_golden_nightjar.png",
+      "name": "Golden Nightjar",
+      "rarity": "legendary",
+      "family": "energy",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_381_hyper_viper",
+      "file": "vault_381_hyper_viper.png",
+      "name": "Hyper Viper",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_382_hyper_warden",
+      "file": "vault_382_hyper_warden.png",
+      "name": "Hyper Warden",
+      "rarity": "legendary",
+      "family": "lmg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_383_hyper_spectre",
+      "file": "vault_383_hyper_spectre.png",
+      "name": "Hyper Spectre",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_384_hyper_phantom",
+      "file": "vault_384_hyper_phantom.png",
+      "name": "Hyper Phantom",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_385_hyper_sentinel",
+      "file": "vault_385_hyper_sentinel.png",
+      "name": "Hyper Sentinel",
+      "rarity": "legendary",
+      "family": "rifle",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_386_hyper_raptor",
+      "file": "vault_386_hyper_raptor.png",
+      "name": "Hyper Raptor",
+      "rarity": "legendary",
+      "family": "smg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_387_hyper_tempest",
+      "file": "vault_387_hyper_tempest.png",
+      "name": "Hyper Tempest",
+      "rarity": "legendary",
+      "family": "revolver",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_388_hyper_marauder",
+      "file": "vault_388_hyper_marauder.png",
+      "name": "Hyper Marauder",
+      "rarity": "legendary",
+      "family": "pistol",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_389_hyper_striker",
+      "file": "vault_389_hyper_striker.png",
+      "name": "Hyper Striker",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_390_hyper_nomad",
+      "file": "vault_390_hyper_nomad.png",
+      "name": "Hyper Nomad",
+      "rarity": "legendary",
+      "family": "lmg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_391_hyper_catalyst",
+      "file": "vault_391_hyper_catalyst.png",
+      "name": "Hyper Catalyst",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_392_hyper_vanguard",
+      "file": "vault_392_hyper_vanguard.png",
+      "name": "Hyper Vanguard",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_393_hyper_revenant",
+      "file": "vault_393_hyper_revenant.png",
+      "name": "Hyper Revenant",
+      "rarity": "legendary",
+      "family": "rifle",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_394_hyper_starlight",
+      "file": "vault_394_hyper_starlight.png",
+      "name": "Hyper Starlight",
+      "rarity": "legendary",
+      "family": "smg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_395_hyper_titan",
+      "file": "vault_395_hyper_titan.png",
+      "name": "Hyper Titan",
+      "rarity": "legendary",
+      "family": "revolver",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_396_hyper_ranger",
+      "file": "vault_396_hyper_ranger.png",
+      "name": "Hyper Ranger",
+      "rarity": "legendary",
+      "family": "pistol",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_397_hyper_outrider",
+      "file": "vault_397_hyper_outrider.png",
+      "name": "Hyper Outrider",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_398_hyper_mirage",
+      "file": "vault_398_hyper_mirage.png",
+      "name": "Hyper Mirage",
+      "rarity": "legendary",
+      "family": "lmg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_399_hyper_overdrive",
+      "file": "vault_399_hyper_overdrive.png",
+      "name": "Hyper Overdrive",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_400_hyper_nightjar",
+      "file": "vault_400_hyper_nightjar.png",
+      "name": "Hyper Nightjar",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_401_iron_viper",
+      "file": "vault_401_iron_viper.png",
+      "name": "Iron Viper",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_402_iron_warden",
+      "file": "vault_402_iron_warden.png",
+      "name": "Iron Warden",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_403_iron_spectre",
+      "file": "vault_403_iron_spectre.png",
+      "name": "Iron Spectre",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_404_iron_phantom",
+      "file": "vault_404_iron_phantom.png",
+      "name": "Iron Phantom",
+      "rarity": "legendary",
+      "family": "revolver",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_405_iron_sentinel",
+      "file": "vault_405_iron_sentinel.png",
+      "name": "Iron Sentinel",
+      "rarity": "legendary",
+      "family": "pistol",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_406_iron_raptor",
+      "file": "vault_406_iron_raptor.png",
+      "name": "Iron Raptor",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_407_iron_tempest",
+      "file": "vault_407_iron_tempest.png",
+      "name": "Iron Tempest",
+      "rarity": "legendary",
+      "family": "lmg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_408_iron_marauder",
+      "file": "vault_408_iron_marauder.png",
+      "name": "Iron Marauder",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_409_iron_striker",
+      "file": "vault_409_iron_striker.png",
+      "name": "Iron Striker",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_410_iron_nomad",
+      "file": "vault_410_iron_nomad.png",
+      "name": "Iron Nomad",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_411_iron_catalyst",
+      "file": "vault_411_iron_catalyst.png",
+      "name": "Iron Catalyst",
+      "rarity": "legendary",
+      "family": "smg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_412_iron_vanguard",
+      "file": "vault_412_iron_vanguard.png",
+      "name": "Iron Vanguard",
+      "rarity": "legendary",
+      "family": "revolver",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_413_iron_revenant",
+      "file": "vault_413_iron_revenant.png",
+      "name": "Iron Revenant",
+      "rarity": "legendary",
+      "family": "pistol",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_414_iron_starlight",
+      "file": "vault_414_iron_starlight.png",
+      "name": "Iron Starlight",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_415_iron_titan",
+      "file": "vault_415_iron_titan.png",
+      "name": "Iron Titan",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_416_iron_ranger",
+      "file": "vault_416_iron_ranger.png",
+      "name": "Iron Ranger",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_417_iron_outrider",
+      "file": "vault_417_iron_outrider.png",
+      "name": "Iron Outrider",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_418_iron_mirage",
+      "file": "vault_418_iron_mirage.png",
+      "name": "Iron Mirage",
+      "rarity": "legendary",
+      "family": "rifle",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_419_iron_overdrive",
+      "file": "vault_419_iron_overdrive.png",
+      "name": "Iron Overdrive",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_420_iron_nightjar",
+      "file": "vault_420_iron_nightjar.png",
+      "name": "Iron Nightjar",
+      "rarity": "legendary",
+      "family": "revolver",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_421_jade_viper",
+      "file": "vault_421_jade_viper.png",
+      "name": "Jade Viper",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_422_jade_warden",
+      "file": "vault_422_jade_warden.png",
+      "name": "Jade Warden",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_423_jade_spectre",
+      "file": "vault_423_jade_spectre.png",
+      "name": "Jade Spectre",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_424_jade_phantom",
+      "file": "vault_424_jade_phantom.png",
+      "name": "Jade Phantom",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_425_jade_sentinel",
+      "file": "vault_425_jade_sentinel.png",
+      "name": "Jade Sentinel",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_426_jade_raptor",
+      "file": "vault_426_jade_raptor.png",
+      "name": "Jade Raptor",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_427_jade_tempest",
+      "file": "vault_427_jade_tempest.png",
+      "name": "Jade Tempest",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_428_jade_marauder",
+      "file": "vault_428_jade_marauder.png",
+      "name": "Jade Marauder",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_429_jade_striker",
+      "file": "vault_429_jade_striker.png",
+      "name": "Jade Striker",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_430_jade_nomad",
+      "file": "vault_430_jade_nomad.png",
+      "name": "Jade Nomad",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_431_jade_catalyst",
+      "file": "vault_431_jade_catalyst.png",
+      "name": "Jade Catalyst",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_432_jade_vanguard",
+      "file": "vault_432_jade_vanguard.png",
+      "name": "Jade Vanguard",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_433_jade_revenant",
+      "file": "vault_433_jade_revenant.png",
+      "name": "Jade Revenant",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_434_jade_starlight",
+      "file": "vault_434_jade_starlight.png",
+      "name": "Jade Starlight",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_435_jade_titan",
+      "file": "vault_435_jade_titan.png",
+      "name": "Jade Titan",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_436_jade_ranger",
+      "file": "vault_436_jade_ranger.png",
+      "name": "Jade Ranger",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_437_jade_outrider",
+      "file": "vault_437_jade_outrider.png",
+      "name": "Jade Outrider",
+      "rarity": "legendary",
+      "family": "revolver",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_438_jade_mirage",
+      "file": "vault_438_jade_mirage.png",
+      "name": "Jade Mirage",
+      "rarity": "legendary",
+      "family": "pistol",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "vault_439_jade_overdrive",
+      "file": "vault_439_jade_overdrive.png",
+      "name": "Jade Overdrive",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_440_jade_nightjar",
+      "file": "vault_440_jade_nightjar.png",
+      "name": "Jade Nightjar",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_441_midnight_viper",
+      "file": "vault_441_midnight_viper.png",
+      "name": "Midnight Viper",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_442_midnight_warden",
+      "file": "vault_442_midnight_warden.png",
+      "name": "Midnight Warden",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_443_midnight_spectre",
+      "file": "vault_443_midnight_spectre.png",
+      "name": "Midnight Spectre",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_444_midnight_phantom",
+      "file": "vault_444_midnight_phantom.png",
+      "name": "Midnight Phantom",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_445_midnight_sentinel",
+      "file": "vault_445_midnight_sentinel.png",
+      "name": "Midnight Sentinel",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_446_midnight_raptor",
+      "file": "vault_446_midnight_raptor.png",
+      "name": "Midnight Raptor",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_447_midnight_tempest",
+      "file": "vault_447_midnight_tempest.png",
+      "name": "Midnight Tempest",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_448_midnight_marauder",
+      "file": "vault_448_midnight_marauder.png",
+      "name": "Midnight Marauder",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_449_midnight_striker",
+      "file": "vault_449_midnight_striker.png",
+      "name": "Midnight Striker",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_450_midnight_nomad",
+      "file": "vault_450_midnight_nomad.png",
+      "name": "Midnight Nomad",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_451_midnight_catalyst",
+      "file": "vault_451_midnight_catalyst.png",
+      "name": "Midnight Catalyst",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_452_midnight_vanguard",
+      "file": "vault_452_midnight_vanguard.png",
+      "name": "Midnight Vanguard",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_453_midnight_revenant",
+      "file": "vault_453_midnight_revenant.png",
+      "name": "Midnight Revenant",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_454_midnight_starlight",
+      "file": "vault_454_midnight_starlight.png",
+      "name": "Midnight Starlight",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_455_midnight_titan",
+      "file": "vault_455_midnight_titan.png",
+      "name": "Midnight Titan",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_456_midnight_ranger",
+      "file": "vault_456_midnight_ranger.png",
+      "name": "Midnight Ranger",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_457_midnight_outrider",
+      "file": "vault_457_midnight_outrider.png",
+      "name": "Midnight Outrider",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_458_midnight_mirage",
+      "file": "vault_458_midnight_mirage.png",
+      "name": "Midnight Mirage",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_459_midnight_overdrive",
+      "file": "vault_459_midnight_overdrive.png",
+      "name": "Midnight Overdrive",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_460_midnight_nightjar",
+      "file": "vault_460_midnight_nightjar.png",
+      "name": "Midnight Nightjar",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_461_neon_viper",
+      "file": "vault_461_neon_viper.png",
+      "name": "Neon Viper",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_462_neon_warden",
+      "file": "vault_462_neon_warden.png",
+      "name": "Neon Warden",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_463_neon_spectre",
+      "file": "vault_463_neon_spectre.png",
+      "name": "Neon Spectre",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_464_neon_phantom",
+      "file": "vault_464_neon_phantom.png",
+      "name": "Neon Phantom",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_465_neon_sentinel",
+      "file": "vault_465_neon_sentinel.png",
+      "name": "Neon Sentinel",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_466_neon_raptor",
+      "file": "vault_466_neon_raptor.png",
+      "name": "Neon Raptor",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_467_neon_tempest",
+      "file": "vault_467_neon_tempest.png",
+      "name": "Neon Tempest",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_468_neon_marauder",
+      "file": "vault_468_neon_marauder.png",
+      "name": "Neon Marauder",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_469_neon_striker",
+      "file": "vault_469_neon_striker.png",
+      "name": "Neon Striker",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_470_neon_nomad",
+      "file": "vault_470_neon_nomad.png",
+      "name": "Neon Nomad",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_471_neon_catalyst",
+      "file": "vault_471_neon_catalyst.png",
+      "name": "Neon Catalyst",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_472_neon_vanguard",
+      "file": "vault_472_neon_vanguard.png",
+      "name": "Neon Vanguard",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_473_neon_revenant",
+      "file": "vault_473_neon_revenant.png",
+      "name": "Neon Revenant",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_474_neon_starlight",
+      "file": "vault_474_neon_starlight.png",
+      "name": "Neon Starlight",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_475_neon_titan",
+      "file": "vault_475_neon_titan.png",
+      "name": "Neon Titan",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_476_neon_ranger",
+      "file": "vault_476_neon_ranger.png",
+      "name": "Neon Ranger",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_477_neon_outrider",
+      "file": "vault_477_neon_outrider.png",
+      "name": "Neon Outrider",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_478_neon_mirage",
+      "file": "vault_478_neon_mirage.png",
+      "name": "Neon Mirage",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_479_neon_overdrive",
+      "file": "vault_479_neon_overdrive.png",
+      "name": "Neon Overdrive",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_480_neon_nightjar",
+      "file": "vault_480_neon_nightjar.png",
+      "name": "Neon Nightjar",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_481_obsidian_viper",
+      "file": "vault_481_obsidian_viper.png",
+      "name": "Obsidian Viper",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_482_obsidian_warden",
+      "file": "vault_482_obsidian_warden.png",
+      "name": "Obsidian Warden",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_483_obsidian_spectre",
+      "file": "vault_483_obsidian_spectre.png",
+      "name": "Obsidian Spectre",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_484_obsidian_phantom",
+      "file": "vault_484_obsidian_phantom.png",
+      "name": "Obsidian Phantom",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_485_obsidian_sentinel",
+      "file": "vault_485_obsidian_sentinel.png",
+      "name": "Obsidian Sentinel",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_486_obsidian_raptor",
+      "file": "vault_486_obsidian_raptor.png",
+      "name": "Obsidian Raptor",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_487_obsidian_tempest",
+      "file": "vault_487_obsidian_tempest.png",
+      "name": "Obsidian Tempest",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_488_obsidian_marauder",
+      "file": "vault_488_obsidian_marauder.png",
+      "name": "Obsidian Marauder",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_489_obsidian_striker",
+      "file": "vault_489_obsidian_striker.png",
+      "name": "Obsidian Striker",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_490_obsidian_nomad",
+      "file": "vault_490_obsidian_nomad.png",
+      "name": "Obsidian Nomad",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_491_obsidian_catalyst",
+      "file": "vault_491_obsidian_catalyst.png",
+      "name": "Obsidian Catalyst",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_492_obsidian_vanguard",
+      "file": "vault_492_obsidian_vanguard.png",
+      "name": "Obsidian Vanguard",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "vault_493_obsidian_revenant",
+      "file": "vault_493_obsidian_revenant.png",
+      "name": "Obsidian Revenant",
+      "rarity": "legendary",
+      "family": "shotgun"
+    },
+    {
+      "id": "vault_494_obsidian_starlight",
+      "file": "vault_494_obsidian_starlight.png",
+      "name": "Obsidian Starlight",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "vault_495_obsidian_titan",
+      "file": "vault_495_obsidian_titan.png",
+      "name": "Obsidian Titan",
+      "rarity": "legendary",
+      "family": "smg"
+    },
+    {
+      "id": "vault_496_obsidian_ranger",
+      "file": "vault_496_obsidian_ranger.png",
+      "name": "Obsidian Ranger",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "vault_497_obsidian_outrider",
+      "file": "vault_497_obsidian_outrider.png",
+      "name": "Obsidian Outrider",
+      "rarity": "legendary",
+      "family": "pistol"
+    },
+    {
+      "id": "vault_498_obsidian_mirage",
+      "file": "vault_498_obsidian_mirage.png",
+      "name": "Obsidian Mirage",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "vault_499_obsidian_overdrive",
+      "file": "vault_499_obsidian_overdrive.png",
+      "name": "Obsidian Overdrive",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "vault_500_obsidian_nightjar",
+      "file": "vault_500_obsidian_nightjar.png",
+      "name": "Obsidian Nightjar",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "copperhead_sidearm",
+      "file": "copperhead_sidearm.png",
+      "name": "Copperhead Sidearm",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "frostline_pistol",
+      "file": "frostline_pistol.png",
+      "name": "Frostline Pistol",
+      "rarity": "common",
+      "family": "pistol"
+    },
+    {
+      "id": "brass_knuckle_revolver",
+      "file": "brass_knuckle_revolver.png",
+      "name": "Brass Knuckle",
+      "rarity": "common",
+      "family": "revolver"
+    },
+    {
+      "id": "rattletrap_smg",
+      "file": "rattletrap_smg.png",
+      "name": "Rattletrap SMG",
+      "rarity": "common",
+      "family": "smg"
+    },
+    {
+      "id": "yardstick_rifle",
+      "file": "yardstick_rifle.png",
+      "name": "Yardstick Rifle",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "dustpan_shotgun",
+      "file": "dustpan_shotgun.png",
+      "name": "Dustpan Shotgun",
+      "rarity": "common",
+      "family": "shotgun"
+    },
+    {
+      "id": "tinroof_scout",
+      "file": "tinroof_scout.png",
+      "name": "Tinroof Scout",
+      "rarity": "common",
+      "family": "sniper"
+    },
+    {
+      "id": "workhorse_lmg",
+      "file": "workhorse_lmg.png",
+      "name": "Workhorse LMG",
+      "rarity": "common",
+      "family": "lmg"
+    },
+    {
+      "id": "sparrow_burst",
+      "file": "sparrow_burst.png",
+      "name": "Sparrow Burst",
+      "rarity": "common",
+      "family": "rifle"
+    },
+    {
+      "id": "pocket_arc",
+      "file": "pocket_arc.png",
+      "name": "Pocket Arc",
+      "rarity": "common",
+      "family": "energy"
+    },
+    {
+      "id": "bluejay_revolver",
+      "file": "bluejay_revolver.png",
+      "name": "Bluejay Revolver",
+      "rarity": "rare",
+      "family": "revolver"
+    },
+    {
+      "id": "icebreaker_smg",
+      "file": "icebreaker_smg.png",
+      "name": "Icebreaker SMG",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "redline_carbine",
+      "file": "redline_carbine.png",
+      "name": "Redline Carbine",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "thunder_muzzle",
+      "file": "thunder_muzzle.png",
+      "name": "Thunder Muzzle",
+      "rarity": "rare",
+      "family": "shotgun"
+    },
+    {
+      "id": "longmile_rifle",
+      "file": "longmile_rifle.png",
+      "name": "Longmile Rifle",
+      "rarity": "rare",
+      "family": "sniper"
+    },
+    {
+      "id": "rivet_lmg",
+      "file": "rivet_lmg.png",
+      "name": "Rivet LMG",
+      "rarity": "rare",
+      "family": "lmg"
+    },
+    {
+      "id": "pulse_driver",
+      "file": "pulse_driver.png",
+      "name": "Pulse Driver",
+      "rarity": "rare",
+      "family": "energy"
+    },
+    {
+      "id": "switchback_pistol",
+      "file": "switchback_pistol.png",
+      "name": "Switchback Pistol",
+      "rarity": "rare",
+      "family": "pistol"
+    },
+    {
+      "id": "brimstone_burst",
+      "file": "brimstone_burst.png",
+      "name": "Brimstone Burst",
+      "rarity": "rare",
+      "family": "rifle"
+    },
+    {
+      "id": "wildcard_auto",
+      "file": "wildcard_auto.png",
+      "name": "Wildcard Auto",
+      "rarity": "rare",
+      "family": "smg"
+    },
+    {
+      "id": "glacier_repeater",
+      "file": "glacier_repeater.png",
+      "name": "Glacier Repeater",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "blackice_cannon",
+      "file": "blackice_cannon.png",
+      "name": "Blackice Cannon",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "aftershock_smg",
+      "file": "aftershock_smg.png",
+      "name": "Aftershock SMG",
+      "rarity": "epic",
+      "family": "smg"
+    },
+    {
+      "id": "cobalt_marksman",
+      "file": "cobalt_marksman.png",
+      "name": "Cobalt Marksman",
+      "rarity": "epic",
+      "family": "sniper"
+    },
+    {
+      "id": "kingfisher_lmg",
+      "file": "kingfisher_lmg.png",
+      "name": "Kingfisher LMG",
+      "rarity": "epic",
+      "family": "lmg"
+    },
+    {
+      "id": "ion_revolver",
+      "file": "ion_revolver.png",
+      "name": "Ion Revolver",
+      "rarity": "epic",
+      "family": "revolver"
+    },
+    {
+      "id": "radiant_pistol",
+      "file": "radiant_pistol.png",
+      "name": "Radiant Pistol",
+      "rarity": "epic",
+      "family": "pistol"
+    },
+    {
+      "id": "stormcell_blaster",
+      "file": "stormcell_blaster.png",
+      "name": "Stormcell Blaster",
+      "rarity": "epic",
+      "family": "energy"
+    },
+    {
+      "id": "wildfire_carbine",
+      "file": "wildfire_carbine.png",
+      "name": "Wildfire Carbine",
+      "rarity": "epic",
+      "family": "rifle"
+    },
+    {
+      "id": "quarry_breaker",
+      "file": "quarry_breaker.png",
+      "name": "Quarry Breaker",
+      "rarity": "epic",
+      "family": "shotgun"
+    },
+    {
+      "id": "sunforge_rifle",
+      "file": "sunforge_rifle.png",
+      "name": "Sunforge Rifle",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "deepvoid_sniper",
+      "file": "deepvoid_sniper.png",
+      "name": "Deepvoid Sniper",
+      "rarity": "legendary",
+      "family": "sniper",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "monarch_minigun",
+      "file": "monarch_minigun.png",
+      "name": "Monarch Minigun",
+      "rarity": "legendary",
+      "family": "lmg"
+    },
+    {
+      "id": "starlit_blaster",
+      "file": "starlit_blaster.png",
+      "name": "Starlit Blaster",
+      "rarity": "legendary",
+      "family": "energy"
+    },
+    {
+      "id": "redshift_revolver",
+      "file": "redshift_revolver.png",
+      "name": "Redshift Revolver",
+      "rarity": "legendary",
+      "family": "revolver"
+    },
+    {
+      "id": "cathedral_smg",
+      "file": "cathedral_smg.png",
+      "name": "Cathedral SMG",
+      "rarity": "legendary",
+      "family": "smg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "crownfall_shotgun",
+      "file": "crownfall_shotgun.png",
+      "name": "Crownfall Shotgun",
+      "rarity": "legendary",
+      "family": "shotgun",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "emberline_pistol",
+      "file": "emberline_pistol.png",
+      "name": "Emberline Pistol",
+      "rarity": "legendary",
+      "family": "pistol",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "highnoon_marksman",
+      "file": "highnoon_marksman.png",
+      "name": "Highnoon Marksman",
+      "rarity": "legendary",
+      "family": "sniper"
+    },
+    {
+      "id": "thunderbird_ar",
+      "file": "thunderbird_ar.png",
+      "name": "Thunderbird AR",
+      "rarity": "legendary",
+      "family": "rifle"
+    },
+    {
+      "id": "aurora_breaker",
+      "file": "aurora_breaker.png",
+      "name": "Aurora Breaker",
+      "rarity": "gem",
+      "family": "sniper",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "prism_tempest",
+      "file": "prism_tempest.png",
+      "name": "Prism Tempest",
+      "rarity": "gem",
+      "family": "energy",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "starcore_repeater",
+      "file": "starcore_repeater.png",
+      "name": "Starcore Repeater",
+      "rarity": "gem",
+      "family": "rifle",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "quantum_drum",
+      "file": "quantum_drum.png",
+      "name": "Quantum Drum",
+      "rarity": "gem",
+      "family": "lmg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "nova_scatter",
+      "file": "nova_scatter.png",
+      "name": "Nova Scatter",
+      "rarity": "gem",
+      "family": "shotgun",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "voidfang_revolver",
+      "file": "voidfang_revolver.png",
+      "name": "Voidfang Revolver",
+      "rarity": "gem",
+      "family": "revolver",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "celestial_smg",
+      "file": "celestial_smg.png",
+      "name": "Celestial SMG",
+      "rarity": "gem",
+      "family": "smg",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "singularity_lance",
+      "file": "singularity_lance.png",
+      "name": "Singularity Lance",
+      "rarity": "gem",
+      "family": "energy",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "nebula_longshot",
+      "file": "nebula_longshot.png",
+      "name": "Nebula Longshot",
+      "rarity": "gem",
+      "family": "sniper",
+      "artSource": "generated-sprite-atlas"
+    },
+    {
+      "id": "infinity_crown",
+      "file": "infinity_crown.png",
+      "name": "Infinity Crown",
+      "rarity": "gem",
+      "family": "rifle",
+      "artSource": "generated-sprite-atlas"
+    }
+  ],
+  "generatedArtCount": 64,
+  "proceduralArtCount": 637,
+  "format": "PNG with transparent background"
+}
