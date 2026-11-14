@@ -1060,3 +1060,22 @@ nav{
   height: 56px;
   margin: 0 -9px 6px;
 }
+
+/* Buy KittyGems with Tikkie */
+.gembuy{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;margin-bottom:20px;padding:20px 22px;border:1px solid #54f1dc55;border-radius:17px;background:radial-gradient(circle at 0 0,#54f1dc1c,transparent 45%),linear-gradient(135deg,#162338,#101828)}
+.gembuy-copy h3{margin:6px 0;font:800 24px Orbitron,sans-serif;color:#f5f8ff}.gembuy-copy h3 em{color:#54f1dc;font-style:normal}
+.gembuy-copy p{margin:0 0 14px;color:#a9b6d0;font-size:13px;line-height:1.5}
+.gembuy-copy label{display:block;margin-bottom:6px;color:#9eabc7;font-size:12px;font-weight:700}
+.gembuy-copy input{width:100%;max-width:390px;margin-bottom:12px;padding:11px 13px;border:1px solid #3b4d72;border-radius:10px;background:#0b1220;color:#eaf1ff;font:600 15px Rajdhani,sans-serif}
+.gembuy-orders h4{margin:0 0 10px;color:#9eabc7;font-size:11px;letter-spacing:.14em}
+#gem-orders{display:flex;flex-direction:column;gap:8px;max-height:330px;overflow:auto}
+.gemorder{padding:11px 13px;border:1px solid #ffffff1c;border-radius:12px;background:#ffffff08}
+.gemorder-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.gemorder-top b{font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:.08em}
+.gemorder-badge{padding:3px 9px;border-radius:99px;font-size:10px;font-weight:900;letter-spacing:.1em;background:#ffb81f26;color:#ffcf5c;border:1px solid #ffb81f88}
+.gemorder-completed .gemorder-badge{background:#2fd08a22;color:#6dffbd;border-color:#2fd08a88}
+.gemorder-rejected .gemorder-badge{background:#ff6b8122;color:#ff9aac;border-color:#ff6b8188}
+.gemorder-line{margin:6px 0 3px;color:#cfd8ec;font-size:13px}
+.gemorder small{display:block;color:#8f9db8;font-size:11px;line-height:1.4}
+.gemorder-pay{display:inline-block;margin-top:8px;padding:7px 12px;border-radius:9px;background:#2fd08a;color:#06231a;font-size:12px;font-weight:900;text-decoration:none}
+@media(max-width:680px){.gembuy{grid-template-columns:1fr;padding:16px}}
