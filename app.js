@@ -741,7 +741,7 @@ const rankBadge=g=>isSecretGun(g)?ST(g):isLimitedGun(g)?LT(g):isGemRank(g)?GT(g)
 const hexc=c=>'#'+c.toString(16).padStart(6,'0'),lvOf=x=>Math.floor(Math.sqrt((x||0)/60))+1;
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
 function feed(t){const d=document.createElement('div');d.textContent=t;$('feed').appendChild(d);setTimeout(()=>d.remove(),1600)}
-function setTab(t){tab=t;if(t==='index')indexMilestoneSync();menu();if(t=='crates')refreshLim();if(t=='lb')loadLb()}
+function setTab(t){tab=t;if(t==='index')indexMilestoneSync();menu();if(t=='crates')refreshLim();if(t=='lb')loadLb();if(t=='gemstore')loadGemOrders()}
 function showMenu(){$('sub').textContent='Fight the bots. Earn KittyCoins. Crack crates.';menu();$('menu').style.display='flex'}
 function closeRs(){$('results').style.display='none'}
 function closeRv(){$('reveal').style.display='none';rolling=false;menu()}
@@ -990,6 +990,54 @@ function renderGemStore(){
  for(const [id,quantity,label] of options){const b=$(id);if(b){b.disabled=rolling||balance<25*quantity;if(!rolling)b.textContent=label;}}
 }
 async function buyGemGun(){toast('Individual purchases are disabled. Open the KittyGem Crate instead.');}
+// ---- Buying KittyGems with Tikkie (orders are created and approved server-side) ----
+let gemOrders=null,gemOrdersBusy=false;
+const gemOrderDate=ms=>new Date(ms).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
+function renderGemOrders(){
+ const box=$('gem-orders');if(!box)return;
+ if(!cu){box.innerHTML='<p class="note">Sign in to buy KittyGems.</p>';return}
+ if(!gemOrders){box.innerHTML='<p class="note">Loading…</p>';return}
+ if(!gemOrders.length){box.innerHTML='<p class="note">No orders yet.</p>';return}
+ const label={pending:'PENDING',approved:'PENDING',completed:'COMPLETED',rejected:'REJECTED'};
+ box.innerHTML=gemOrders.map(o=>{
+  const st=o.status==='approved'?'pending':o.status;
+  const extra=st==='pending'
+   ?`<small>Waiting for approval · credited automatically on ${gemOrderDate(o.autoAtMs)} at the latest</small>${o.tikkieUrl?`<a class="gemorder-pay" href="${gemRollEsc(o.tikkieUrl)}" target="_blank" rel="noopener noreferrer">Open Tikkie to pay €${gemRollEsc(o.euro)}</a>`:''}`
+   :st==='completed'?`<small>+${Number(o.gems).toLocaleString()} KittyGems added to your account</small>`:'<small>This order was not approved. Contact support if you already paid.</small>';
+  return `<div class="gemorder gemorder-${st}"><div class="gemorder-top"><b>${gemRollEsc(o.code)}</b><span class="gemorder-badge">${label[o.status]||gemRollEsc(o.status)}</span></div><div class="gemorder-line">${Number(o.gems).toLocaleString()} gems · €${gemRollEsc(o.euro)} · ${gemOrderDate(o.createdAtMs)}</div>${extra}</div>`;
+ }).join('');
+}
+function applyGemOrdersResult(res,announce){
+ if(!res)return;
+ const before=new Map((gemOrders||[]).map(o=>[o.id,o.status==='approved'?'pending':o.status]));
+ gemOrders=res.orders||[];
+ if(announce)for(const o of gemOrders)if(o.status==='completed'&&before.get(o.id)==='pending')toast(`Order ${o.code} approved · +${Number(o.gems).toLocaleString()} KittyGems`);
+ if(res.player)applyServerPlayer(res.player);
+ renderGemOrders();
+}
+async function loadGemOrders(announce=false){
+ if(!cloud||!cu||gemOrdersBusy)return renderGemOrders();
+ gemOrdersBusy=true;
+ try{applyGemOrdersResult(await cloud.action('/api/gems/orders'),announce)}
+ catch(e){const box=$('gem-orders');if(box&&!gemOrders)box.innerHTML='<p class="note">Could not load your orders. '+gemRollEsc(e.message||'')+'</p>'}
+ finally{gemOrdersBusy=false}
+}
+async function buyGemPack(){
+ if(!cloud||!cu){toast('Sign in first');return}
+ const input=$('gem-payer'),btn=$('gem-buy'),name=(input.value||'').trim();
+ if(name.length<2){toast('Enter the name you will pay with');input.focus();return}
+ btn.disabled=true;btn.textContent='PLACING ORDER…';
+ try{
+  const res=await cloud.action('/api/gems/order',{payerName:name});
+  applyGemOrdersResult(res,false);
+  try{localStorage.setItem('cm-payer',name)}catch(e){}
+  toast(`Order ${res.created.code} placed · now pay the Tikkie link below`);
+ }catch(e){toast(e.message||'Could not place the order')}
+ finally{btn.disabled=false;btn.textContent='BUY 200 GEMS · €2'}
+}
+setInterval(()=>{if(tab==='gemstore'&&!document.hidden&&cu&&!playing)loadGemOrders(true)},30000);
+addEventListener('DOMContentLoaded',()=>{try{const v=localStorage.getItem('cm-payer');const i=$('gem-payer');if(v&&i&&!i.value)i.value=v}catch(e){}});
+
 const waitMs=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 function gemVisualRarity(){
  // Decorative filler only. The winning rarity/item always comes from the server response.
