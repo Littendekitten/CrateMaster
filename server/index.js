@@ -382,9 +382,158 @@ async function limitedCrate(uid, key) {
   return { ...base, cost: Number.isFinite(cost) && cost > 0 && cost <= 1000000 ? Math.floor(cost) : base.cost };
 }
 
+// ---------------------------------------------------------------------------
+// Buying KittyGems with Tikkie (manual approval)
+//   Firestore  "Gem Shop/tikkie"  -> { url: "https://tikkie.me/pay/..." }  (you replace it every ~2 weeks)
+//   Firestore  "gemOrders/{id}"   -> created by this server only (Admin SDK)
+//   Env: FORMSPREE_ENDPOINT (https://formspree.io/f/xxxx), GEM_APPROVE_SECRET (long random string),
+//        PUBLIC_SERVER_URL (default https://cratemaster.onrender.com)
+// Order status: pending -> completed (you approve, or 30 days pass) | rejected
+//   Setting status to "approved" by hand in the Firestore console also works; it is credited on the next sweep.
+// ---------------------------------------------------------------------------
+const GEM_PACK = { gems: 200, euro: 2 };
+const GEM_ORDERS = 'gemOrders', DAY_MS = 86400000, GEM_AUTO_DAYS = 30, GEM_MAX_OPEN_ORDERS = 3;
+const PUBLIC_SERVER_URL = (process.env.PUBLIC_SERVER_URL || 'https://cratemaster.onrender.com').replace(/\/+$/, '');
+const APPROVE_SECRET = process.env.GEM_APPROVE_SECRET || '';
+const FORMSPREE_ENDPOINT = process.env.FORMSPREE_ENDPOINT || '';
+const approveSig = id => crypto.createHmac('sha256', APPROVE_SECRET).update('gem-order:' + id).digest('hex');
+function validApproveSig(id, sig) {
+  if (!APPROVE_SECRET || !/^[a-f0-9]{64}$/i.test(String(sig || ''))) return false;
+  return crypto.timingSafeEqual(Buffer.from(approveSig(id)), Buffer.from(String(sig).toLowerCase()));
+}
+const escHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function newOrderCode() {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return 'CM-' + Array.from({ length: 6 }, () => alphabet[crypto.randomInt(0, alphabet.length)]).join('');
+}
+async function currentTikkieUrl() {
+  const snap = await fs.doc('Gem Shop/tikkie').get();
+  let url; try { url = new URL(String((snap.exists && (snap.data() || {}).url) || '').trim()); } catch { return ''; }
+  return url.protocol === 'https:' && /^(www\.)?tikkie\.me$/i.test(url.hostname) ? url.toString() : '';
+}
+async function emailGemOrder(order) {
+  if (!FORMSPREE_ENDPOINT) { console.warn('FORMSPREE_ENDPOINT is not set; order email not sent'); return false; }
+  const lines = [
+    `New KittyGem order ${order.code}: ${order.gems} gems for EUR ${order.euro}`,
+    '',
+    `Payer name (as in Tikkie/bank): ${order.payerName}`,
+    `Google account: ${order.email || '(unknown)'}`,
+    `In-game name: ${order.gameName || '(none)'}`,
+    `User id: ${order.uid}`,
+    `Ordered: ${new Date(order.createdAtMs).toISOString()}`,
+    `Auto-credited on: ${new Date(order.createdAtMs + GEM_AUTO_DAYS * DAY_MS).toISOString()}`,
+    '',
+    APPROVE_SECRET
+      ? `When the money is in your account, approve or reject here:\n${PUBLIC_SERVER_URL}/gems/approve?order=${order.id}&sig=${approveSig(order.id)}`
+      : `Approve in the Firestore console: collection ${GEM_ORDERS}, document ${order.id}, set status to "approved".`
+  ];
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ _subject: `CrateMaster gem order ${order.code} (EUR ${order.euro})`, email: order.email || undefined, name: order.payerName, message: lines.join('\n') }),
+      signal: AbortSignal.timeout(10000)
+    });
+    if (!res.ok) console.error('Formspree rejected the order email:', res.status, (await res.text()).slice(0, 300));
+    return res.ok;
+  } catch (e) { console.error('Formspree request failed:', e.message); return false; }
+}
+// decision: 'approve' (owner), 'auto' (30 days passed) or 'reject'. Idempotent: an order is only ever credited once.
+async function settleGemOrder(orderId, decision) {
+  const orderRef = fs.doc(GEM_ORDERS + '/' + orderId);
+  const out = await fs.runTransaction(async tx => {
+    const snap = await tx.get(orderRef);
+    if (!snap.exists) return { status: 'missing', changed: false };
+    const o = snap.data() || {};
+    if (o.status !== 'pending' && o.status !== 'approved') return { status: o.status, changed: false };
+    if (decision === 'reject') { tx.update(orderRef, { status: 'rejected', resolvedAtMs: Date.now() }); return { status: 'rejected', changed: true }; }
+    const userRef = fs.doc('users/' + o.uid), userSnap = await tx.get(userRef);
+    if (!userSnap.exists) return { status: o.status, changed: false };
+    tx.update(userRef, { gems: numberAtLeastZero((userSnap.data() || {}).gems) + numberAtLeastZero(o.gems), updated: FV.serverTimestamp() });
+    tx.update(orderRef, { status: 'completed', completedAtMs: Date.now(), completedBy: decision === 'auto' ? 'auto-30-days' : 'owner' });
+    return { status: 'completed', changed: true };
+  });
+  if (out.changed) lbCache.delete('gems');
+  return out;
+}
+function gemOrderDue(o, now) {
+  if (o.status === 'approved') return 'approve';
+  if (o.status === 'pending' && now - numberAtLeastZero(o.createdAtMs) >= GEM_AUTO_DAYS * DAY_MS) return 'auto';
+  return '';
+}
+async function settleDueGemOrders(docs) {
+  const now = Date.now();
+  for (const d of docs) {
+    const how = gemOrderDue(d.data() || {}, now);
+    if (how) await settleGemOrder(d.id, how).catch(e => console.error('Gem order settle failed:', d.id, e));
+  }
+}
+async function userGemOrderDocs(uid) { return (await fs.collection(GEM_ORDERS).where('uid', '==', uid).get()).docs; }
+// Global sweep: credits approved / 30-day-old orders and re-sends emails that failed.
+async function sweepGemOrders() {
+  const snap = await fs.collection(GEM_ORDERS).where('status', 'in', ['pending', 'approved']).get();
+  await settleDueGemOrders(snap.docs);
+  for (const d of snap.docs) {
+    const o = d.data() || {};
+    if (o.status === 'pending' && o.emailed !== true && (await emailGemOrder({ ...o, id: d.id }))) await d.ref.update({ emailed: true }).catch(() => {});
+  }
+}
+function gemOrderView(d) {
+  const o = d.data() || {};
+  return {
+    id: d.id, code: o.code, status: o.status, gems: o.gems, euro: o.euro, createdAtMs: o.createdAtMs,
+    autoAtMs: numberAtLeastZero(o.createdAtMs) + GEM_AUTO_DAYS * DAY_MS,
+    tikkieUrl: o.status === 'pending' ? o.tikkieUrl || '' : ''
+  };
+}
+async function gemOrdersResponse(uid) {
+  const docs = await userGemOrderDocs(uid);
+  await settleDueGemOrders(docs);
+  const fresh = await userGemOrderDocs(uid);
+  const orders = fresh.map(gemOrderView).sort((a, b) => b.createdAtMs - a.createdAtMs).slice(0, 10);
+  const player = playerView(await ensurePlayer(uid));
+  return { ok: true, orders, player, pack: GEM_PACK, autoDays: GEM_AUTO_DAYS };
+}
+async function readRawBody(req) {
+  let raw = '';
+  for await (const part of req) { raw += part; if (raw.length > 4096) throw new Error('Request is too large'); }
+  return raw;
+}
+function sendHtml(res, status, body) {
+  res.writeHead(status, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'no-referrer' });
+  res.end(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CrateMaster order</title><body style="font:16px system-ui,sans-serif;max-width:480px;margin:40px auto;padding:0 16px;background:#0e1421;color:#e8eefc">${body}</body>`);
+}
+// Approve page. GET only shows the order (email scanners can prefetch links); the buttons POST.
+async function handleGemApprovePage(q, r, requestUrl) {
+  const isPost = q.method === 'POST';
+  let id, sig, action = '';
+  if (isPost) {
+    const form = new URLSearchParams(await readRawBody(q));
+    id = String(form.get('order') || ''); sig = form.get('sig'); action = String(form.get('action') || '');
+  } else { id = String(requestUrl.searchParams.get('order') || ''); sig = requestUrl.searchParams.get('sig'); }
+  if (!/^[A-Za-z0-9]{10,40}$/.test(id) || !validApproveSig(id, sig)) return sendHtml(r, 403, '<h2>Invalid or expired link</h2>');
+  if (isPost) {
+    if (action !== 'approve' && action !== 'reject') return sendHtml(r, 400, '<h2>Unknown action</h2>');
+    const out = await settleGemOrder(id, action === 'approve' ? 'approve' : 'reject');
+    const text = out.changed ? (out.status === 'completed' ? 'Approved. The gems were added to the player.' : 'Order rejected.')
+      : out.status === 'missing' ? 'Order not found.' : `Nothing changed. This order is already "${escHtml(out.status)}".`;
+    return sendHtml(r, 200, `<h2>${text}</h2>`);
+  }
+  const snap = await fs.doc(GEM_ORDERS + '/' + id).get();
+  if (!snap.exists) return sendHtml(r, 404, '<h2>Order not found</h2>');
+  const o = snap.data() || {};
+  const form = act => `<form method="post" style="display:inline"><input type="hidden" name="order" value="${escHtml(id)}"><input type="hidden" name="sig" value="${escHtml(sig)}"><input type="hidden" name="action" value="${act}"><button style="padding:12px 20px;font-size:16px;border-radius:10px;border:0;margin-right:10px;cursor:pointer;background:${act === 'approve' ? '#2fd08a' : '#ff6b81'}">${act === 'approve' ? 'I received the money: approve' : 'Reject'}</button></form>`;
+  return sendHtml(r, 200, `<h2>Order ${escHtml(o.code)}</h2><p>${escHtml(o.gems)} KittyGems for EUR ${escHtml(o.euro)}<br>Payer: <b>${escHtml(o.payerName)}</b><br>Account: ${escHtml(o.email)}<br>Status: <b>${escHtml(o.status)}</b></p>${o.status === 'pending' || o.status === 'approved' ? form('approve') + form('reject') : ''}`);
+}
+
 const server = http.createServer(async (q, r) => {
   const requestUrl = new URL(q.url || '/', 'http://localhost');
   if (q.method === 'OPTIONS') { cors(r); r.writeHead(204); r.end(); return; }
+  if (requestUrl.pathname === '/gems/approve' && (q.method === 'GET' || q.method === 'POST')) {
+    try { await handleGemApprovePage(q, r, requestUrl); }
+    catch (e) { console.error('Gem approve error:', e); sendHtml(r, 500, '<h2>Something went wrong</h2>'); }
+    return;
+  }
   if (requestUrl.pathname === '/leaderboard' && q.method === 'GET') {
     const type = LB_FIELDS[requestUrl.searchParams.get('type')] ? requestUrl.searchParams.get('type') : 'money';
     try { sendJson(r, 200, await leaderboard(type, requestUrl.searchParams.get('fresh') === '1')); }
@@ -402,6 +551,35 @@ const server = http.createServer(async (q, r) => {
         const player = await ensurePlayer(uid);
         lbCache.delete('gems');
         sendJson(r, 200, { ok: true, player: playerView(player) }); return;
+      }
+
+      if (path === '/api/gems/orders') {
+        rateLimit(uid, 'gem-orders', 30, 60000);
+        sendJson(r, 200, await gemOrdersResponse(uid)); return;
+      }
+
+      if (path === '/api/gems/order') {
+        rateLimit(uid, 'gem-order', 5, 3600000);
+        const payerName = String(body.payerName || '').replace(/[\u0000-\u001f<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 60);
+        if (payerName.length < 2) throw Object.assign(new Error('Enter the name you will pay with (at least 2 characters).'), { status: 400 });
+        const userSnap = await fs.doc('users/' + uid).get();
+        if (!userSnap.exists) throw Object.assign(new Error('Player save not found. Reload the game.'), { status: 404 });
+        await settleDueGemOrders(await userGemOrderDocs(uid));
+        const open = (await userGemOrderDocs(uid)).filter(d => ['pending', 'approved'].includes((d.data() || {}).status));
+        if (open.length >= GEM_MAX_OPEN_ORDERS) throw Object.assign(new Error(`You already have ${GEM_MAX_OPEN_ORDERS} pending orders. Wait until one is approved.`), { status: 409 });
+        const tikkieUrl = await currentTikkieUrl();
+        if (!tikkieUrl) throw Object.assign(new Error('Buying gems is not available right now. Please try again later.'), { status: 503 });
+        let authUser = {}; try { authUser = await admin.auth().getUser(uid); } catch {}
+        const ref = fs.collection(GEM_ORDERS).doc();
+        const order = {
+          id: ref.id, uid, code: newOrderCode(), status: 'pending', gems: GEM_PACK.gems, euro: GEM_PACK.euro,
+          payerName, email: authUser.email || '', gameName: String((userSnap.data() || {}).username || '').slice(0, 16),
+          tikkieUrl, createdAtMs: Date.now(), emailed: false
+        };
+        const { id: _id, ...stored } = order;
+        await ref.set(stored);
+        if (await emailGemOrder(order)) await ref.update({ emailed: true }).catch(() => {});
+        sendJson(r, 200, { ...(await gemOrdersResponse(uid)), created: gemOrderView({ id: ref.id, data: () => stored }) }); return;
       }
 
       if (path === '/api/run/recover') {
@@ -738,6 +916,8 @@ async function startServer() {
     console.error('Could not initialize Limited Crates config:', error);
   }
   await rtdb.ref('presence').remove().catch(() => {}); // clear stale presence from before a restart
+  setTimeout(() => sweepGemOrders().catch(e => console.error('Gem sweep failed:', e)), 30000);
+  setInterval(() => sweepGemOrders().catch(e => console.error('Gem sweep failed:', e)), 10 * 60000);
   server.listen(process.env.PORT || 8080, () => console.log('CrateMaster server listening'));
 }
 startServer().catch(error => {
