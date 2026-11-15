@@ -1,8 +1,8 @@
 const $=id=>document.getElementById(id);
-const R={common:'#9aa4c4',rare:'#3b9cff',epic:'#b45cff',legendary:'#ffb81f',gem:'#54f1dc',limited:'#ff5d78',secret:'#ff48cf'};
+const R={common:'#9aa4c4',rare:'#3b9cff',epic:'#b45cff',legendary:'#ffb81f',gem:'#54f1dc',limited:'#ff5d78',secret:'#ff48cf',admin:'#ff3b3b'};
 const RK=['common','rare','epic','legendary'];
-// Unified display order: Secret > Limited > GEM > Legendary > Epic > Rare > Common.
-const RANK_ORDER=['common','rare','epic','legendary','gem','limited','secret'];
+// Unified display order: Admin > Secret > Limited > GEM > Legendary > Epic > Rare > Common.
+const RANK_ORDER=['common','rare','epic','legendary','gem','limited','secret','admin'];
 const RANK_SCORE=Object.fromEntries(RANK_ORDER.map((rank,index)=>[rank,index]));
 const GUNS={pistol:{n:'Pistol',r:'common',d:25,f:.3,p:1,s:.004,a:0,l:.6},smg:{n:'Viper SMG',r:'common',d:11,f:.08,p:1,s:.03,a:1,l:.9},shotgun:{n:'Boomstick',r:'rare',d:13,f:.8,p:8,s:.09,a:0,l:1.1},rifle:{n:'Striker AR',r:'epic',d:24,f:.13,p:1,s:.012,a:1,l:1.2},sniper:{n:'Longshot',r:'legendary',d:110,f:1.1,p:1,s:0,a:0,l:1.5},
  revolver:{n:'Deputy',r:'common',d:42,f:.5,p:1,s:.008,a:0,l:.7},scrapper:{n:'Scrapper',r:'common',d:8,f:.06,p:1,s:.05,a:1,l:.65},
@@ -677,6 +677,15 @@ EVENT_GUNS.gemheart_singularity={
  d:78,f:.31,p:1,s:.004,a:1,l:1.48,family:'energy',design:5300,series:'kittygem-secret'
 };
 
+// ADMIN-rank weapons: only from the Admin Crate. Keep identical to server/index.js.
+Object.assign(EVENT_GUNS,{
+ admin_banhammer:{n:'Ban Hammer',r:'legendary',rank:'ADMIN',admin:true,d:38,f:.7,p:9,s:.07,a:0,l:1.2,family:'shotgun',design:5400,series:'admin-exclusive'},
+ admin_sudo_rifle:{n:'Sudo Rifle',r:'legendary',rank:'ADMIN',admin:true,d:46,f:.1,p:1,s:.008,a:1,l:1.3,family:'rifle',design:5401,series:'admin-exclusive'},
+ admin_root_access:{n:'Root Access',r:'legendary',rank:'ADMIN',admin:true,d:30,f:.06,p:1,s:.012,a:1,l:1,family:'smg',design:5402,series:'admin-exclusive'},
+ admin_kernel_panic:{n:'Kernel Panic',r:'legendary',rank:'ADMIN',admin:true,d:34,f:.07,p:1,s:.02,a:1,l:1.45,family:'lmg',design:5403,series:'admin-exclusive'},
+ admin_decree:{n:"Admin's Decree",r:'legendary',rank:'ADMIN',admin:true,d:120,f:.8,p:1,s:.001,a:0,l:1.6,family:'sniper',design:5404,series:'admin-exclusive'}
+});
+
 const MAIN_GUN_IDS=Object.keys(GUNS);
 Object.assign(GUNS,EVENT_GUNS);
 
@@ -713,6 +722,7 @@ let AC;function beep(f,d,t,v){try{AC=AC||new AudioContext();const o=AC.createOsc
 
 /* ---------- menu / shop / locker ---------- */
 let tab='play',cu=null,sync='',gateDone=false;
+let ev={adminLuck:false};
 const cleanNick=s=>String(s||'').replace(/[<>&"'`]/g,'').replace(/\s+/g,' ').trim().slice(0,16);
 const shown=()=>S.nick||(cu&&cu.name)||'Player';
 let hsel=0;
@@ -724,11 +734,12 @@ function applyCw(){const v=csz(),g=$('inv');if(g){g.style.setProperty('--cw',v+'
 function fixHot(h,own){h=(h||[]).slice(0,5);while(h.length<5)h.push('');const used={};return h.map(g=>{if(!g||!GUNS[g])return '';used[g]=(used[g]||0)+1;return used[g]<=cnt(own,g)?g:''})}
 const isGemRank=g=>!!(g&&(g.gem||g.rank==='GEM'||g.r==='gem'));
 const isSecretGun=g=>!!(g&&(g.secret||g.rank==='SECRET'||g.r==='secret'));
-const isLimitedGun=g=>!!(g&&!isSecretGun(g)&&(g.limited||g.rank==='LIMITED'||g.x));
+const isAdminGun=g=>!!(g&&(g.admin||g.rank==='ADMIN'));
+const isLimitedGun=g=>!!(g&&!isSecretGun(g)&&!isAdminGun(g)&&(g.limited||g.rank==='LIMITED'||g.x));
 const rarityLabel=r=>r==='gem'?'GEM':r==='rare'?'rare':String(r||'common').toUpperCase();
-const rankKeyOf=g=>isSecretGun(g)?'secret':isLimitedGun(g)?'limited':isGemRank(g)?'gem':(R[g&&(g.r||g.rarity)]?(g.r||g.rarity):'common');
+const rankKeyOf=g=>isAdminGun(g)?'admin':isSecretGun(g)?'secret':isLimitedGun(g)?'limited':isGemRank(g)?'gem':(R[g&&(g.r||g.rarity)]?(g.r||g.rarity):'common');
 const rankScoreOf=g=>RANK_SCORE[rankKeyOf(g)]??0;
-const rankLabelOf=g=>rankKeyOf(g)==='gem'?'GEM RANK':rankKeyOf(g).toUpperCase();
+const rankLabelOf=g=>rankKeyOf(g)==='gem'?'GEM RANK':rankKeyOf(g)==='admin'?'ADMIN RANK':rankKeyOf(g).toUpperCase();
 const rankColorOf=g=>R[rankKeyOf(g)]||R.common;
 const gScore=g=>g.d*g.p/Math.max(.001,g.f);
 const gunRankScore=g=>rankScoreOf(g);
@@ -737,11 +748,12 @@ const sSort=(x,y)=>RK.indexOf(SKINS[y].r)-RK.indexOf(SKINS[x].r);
 const ST=g=>g&&isSecretGun(g)?'<span class="secrettag">SECRET</span>':'';
 const LT=g=>g&&isLimitedGun(g)?'<span class="ltag">LIMITED</span>':'';
 const GT=g=>g&&isGemRank(g)?'<span class="gemtag">GEM RANK</span>':'';
-const rankBadge=g=>isSecretGun(g)?ST(g):isLimitedGun(g)?LT(g):isGemRank(g)?GT(g):`<small>${rankLabelOf(g)}</small>`;
+const AT=g=>g&&isAdminGun(g)?'<span class="admintag">ADMIN</span>':'';
+const rankBadge=g=>isAdminGun(g)?AT(g):isSecretGun(g)?ST(g):isLimitedGun(g)?LT(g):isGemRank(g)?GT(g):`<small>${rankLabelOf(g)}</small>`;
 const hexc=c=>'#'+c.toString(16).padStart(6,'0'),lvOf=x=>Math.floor(Math.sqrt((x||0)/60))+1;
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
 function feed(t){const d=document.createElement('div');d.textContent=t;$('feed').appendChild(d);setTimeout(()=>d.remove(),1600)}
-function setTab(t){tab=t;if(t==='index')indexMilestoneSync();menu();if(t=='crates')refreshLim();if(t=='lb')loadLb();if(t=='gemstore')loadGemOrders()}
+function setTab(t){tab=t;if(t==='index')indexMilestoneSync();menu();if(t=='crates')refreshLim();if(t=='lb')loadLb();if(t=='gemstore'){loadGemOrders();loadEvents()}if(t=='mail')loadMail();if(t=='crates')loadEvents()}
 function showMenu(){$('sub').textContent='Fight the bots. Earn KittyCoins. Crack crates.';menu();$('menu').style.display='flex'}
 function closeRs(){$('results').style.display='none'}
 function closeRv(){$('reveal').style.display='none';rolling=false;menu()}
@@ -890,15 +902,16 @@ function showMoreGuns(){inventoryPage++;menuCache.inv=null;renderLockerCards()}
 function ownedBeforeSnapshot(){return {guns:new Set(S.discoveredGuns||S.guns||[]),skins:new Set(S.skins||[])}}
 function isNewReward(item,snapshot){if(!snapshot||!item)return false;return item.type==='skins'?!snapshot.skins.has(item.id):!snapshot.guns.has(item.id)}
 function renderCrateCards(){
- const data=allCR(),key=JSON.stringify(data);
+ const data=allCR(),adminOn=adminCrateAvailable(),key=JSON.stringify([data,ev.adminLuck,adminOn,adminOn?Number(S.adminKeys||0):0]);
  if(menuCache.crates===key)return;
  menuCache.crates=key;
  const card=([k,c])=>{
-  return `<article class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>c.w[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${c.w[i]}%;background:${R[r]}"></u></i><em>${c.w[i]}%</em></div>`:'').join('')}</div>${c.ltd?'<small class="hidden-event-note">Secret event rewards are separate from the standard rarity display.</small>':''}<div class="cbtns"><button class="big" onclick="openCrate('${k}')">OPEN · <i class="coin"></i>${c.cost}</button><button class="big ten" onclick="openTen('${k}')">OPEN 10 · <i class="coin"></i>${c.cost*10}</button><button class="big hund" onclick="openHundred('${k}')">OPEN 100 · <i class="coin"></i>${c.cost*100}</button></div></article>`;
+  const W=ev.adminLuck?boostW(c.w):c.w;
+  return `<article class="crate ${c.ltd?'ltd':''}" style="--c:${c.col}">${c.ltd?'<span class="tag">LIMITED</span>':''}<div class="cbox"></div><b>${c.n}</b><div class="odds">${RK.map((r,i)=>W[i]?`<div><span style="color:${R[r]}">${r}</span><i><u style="width:${W[i]}%;background:${R[r]}"></u></i><em>${W[i]}%</em></div>`:'').join('')}</div>${c.ltd?'<small class="hidden-event-note">Secret event rewards are separate from the standard rarity display.</small>':''}<div class="cbtns"><button class="big" onclick="openCrate('${k}')">OPEN · <i class="coin"></i>${c.cost}</button><button class="big ten" onclick="openTen('${k}')">OPEN 10 · <i class="coin"></i>${c.cost*10}</button><button class="big hund" onclick="openHundred('${k}')">OPEN 100 · <i class="coin"></i>${c.cost*100}</button></div></article>`;
  };
  const entries=Object.entries(data),normal=entries.filter(([,c])=>!c.ltd),limited=entries.filter(([,c])=>!!c.ltd);
  const group=(title,sub,items,kind)=>`<section class="crate-group ${kind}"><div class="crate-group-head"><div><span class="crate-group-eyebrow">CRATEMASTER DROP COLLECTION</span><h3>${title}</h3><p>${sub}</p></div><span class="crate-group-count">${items.length} ${items.length===1?'CRATE':'CRATES'}</span></div><div class="crate-grid">${items.map(card).join('')||'<div class="crate-group-empty">No Limited Crates are currently available. Check back when an event goes live.</div>'}</div></section>`;
- $('crates').innerHTML=group('NORMAL CRATES','Standard crates with regular KittyCoins drops.',normal,'normal')+group('LIMITED CRATES','Event and time-limited collections. These crates appear only while enabled.',limited,'limited');
+ $('crates').innerHTML=(ev.adminLuck?'<div class="ev-banner">⚡ <b>ADMIN LUCK EVENT</b> · Secret weapons 0.5% · Limited chance 3% · Legendary odds +30%</div>':'')+(adminOn?adminCrateCard():'')+group('NORMAL CRATES','Standard crates with regular KittyCoins drops.',normal,'normal')+group('LIMITED CRATES','Event and time-limited collections. These crates appear only while enabled.',limited,'limited');
 }
 function renderLockerCards(){
  S.hot=fixHot(S.hot,S.guns);
@@ -928,13 +941,13 @@ function renderLockerCards(){
 
 let sellPending=null;
 const SELL_VALUES={guns:{common:5,rare:12,epic:30,legendary:75,gem:180},skins:{common:2,rare:5,epic:12,legendary:25}};
-function sellUnitValue(type,id){const item=(type==='guns'?GUNS:SKINS)[id];if(!item)return 0;if(type==='guns'&&isSecretGun(item))return 500;if(type==='guns'&&isLimitedGun(item))return 100;if(type==='guns'&&isGemRank(item))return 200;return (SELL_VALUES[type]||{})[item.r]||5}
+function sellUnitValue(type,id){const item=(type==='guns'?GUNS:SKINS)[id];if(!item)return 0;if(type==='guns'&&isAdminGun(item))return 1000;if(type==='guns'&&isSecretGun(item))return 500;if(type==='guns'&&isLimitedGun(item))return 100;if(type==='guns'&&isGemRank(item))return 200;return (SELL_VALUES[type]||{})[item.r]||5}
 function closeSell(){sellPending=null;$('sell-modal').style.display='none'}
 function openSell(type,id){
  if(rolling||window.tradeLock){toast('Finish the current action first');return;}
  const dict=type==='guns'?GUNS:SKINS,item=dict[id],owned=type==='guns'?S.guns:S.skins,count=cnt(owned,id);
  if(!item||!count||id==='pistol'||id==='default'){toast('That item cannot be sold');return;}
- const unit=sellUnitValue(type,id),protectedItem=type==='guns'&&(isLimitedGun(item)||isSecretGun(item));
+ const unit=sellUnitValue(type,id),protectedItem=type==='guns'&&(isLimitedGun(item)||isSecretGun(item)||isAdminGun(item));
  sellPending={type,id,name:item.n,unit,limited:protectedItem,count};
  const action=(qty,label)=>`<button class=\"sell-choice\" onclick=\"confirmSell(${qty})\"><span>${label}</span><b>+${(unit*qty).toLocaleString()} KittyCoins</b></button>`;
  $('sell-body').innerHTML=`<div class=\"sell-eyebrow\">KITTYCOINS EXCHANGE</div><h2>Sell ${item.n}</h2><p>You own <b>${count}</b> ${type==='guns'?'copies':'copies'} · ${unit} KittyCoins per copy.</p><div class=\"sell-options\">${action(1,'Sell 1')}${count>1?action(count-1,'Sell extras — keep 1'):''}${count>1?action(count,'Sell all'):''}</div>${protectedItem?`<div class=\"sell-limited-warning\"><b>LIMITED ITEM</b><span>To prevent accidental sales, type the exact item name below:</span><input id=\"sell-name-confirm\" autocomplete=\"off\" placeholder=\"${item.n}\"></div>`:''}<button class=\"sell-cancel\" onclick=\"closeSell()\">CANCEL</button>`;
@@ -959,14 +972,14 @@ async function refreshIndex(){try{if(cloud&&cu){const result=await cloud.bootstr
 function renderIndex(){
  const found=new Set((S.discoveredGuns||[]).filter(id=>Object.prototype.hasOwnProperty.call(GUNS,id)));
  // Undiscovered Limited and Secret weapons are deliberately absent, not shown as question-mark cards.
- const visibleIds=ACTIVE_GUN_IDS.filter(id=>{const g=GUNS[id];return !(isLimitedGun(g)||isSecretGun(g))||found.has(id)});
+ const visibleIds=ACTIVE_GUN_IDS.filter(id=>{const g=GUNS[id];return !(isLimitedGun(g)||isSecretGun(g)||isAdminGun(g))||found.has(id)});
  const all=visibleIds.map(id=>[id,GUNS[id]]),complete=found.size>=500;
  const discovered=found.size,boostProgress=Math.min(discovered,500),next=(Math.floor(found.size/10)+1)*10,progress=(found.size%10)*10;
  $('index-summary').innerHTML=`<div class="index-summary-card"><span>WEAPONS DISCOVERED</span><b>${discovered.toLocaleString()}</b><small>Unique weapons registered in your Index</small></div><div class="index-summary-card"><span>COLLECTION BOOST</span><b>${boostProgress}/500</b><small>${complete?'5% KittyGem bonus chance active on eligible drops':'Discover '+Math.max(0,500-discovered)+' more unique weapons to unlock the 5% KittyGem bonus'}</small></div><div class="index-summary-card"><span>NEXT GEM MILESTONE</span><b>${Math.max(0,next-found.size)} guns to go</b><i><u class="gem-progress" style="width:${progress}%"></u></i><small>Every 10 discoveries = 10 KittyGems · Balance: ${Number(S.gems||0).toLocaleString()}</small></div>`;
  const filters=[['all','All'],['normal','Normal'],['limited','Limited'],['secret','Secret'],['gem','GEM rank'],['found','Discovered']];
  $('index-filters').innerHTML=filters.map(([v,n])=>`<button class="index-filter ${indexFilter===v?'on':''}" onclick="setIndexFilter('${v}')">${n}</button>`).join('');
  let entries=all.filter(([id,g])=>{
-  const isFound=found.has(id),isNormal=!isLimitedGun(g)&&!isSecretGun(g)&&!isGemRank(g);
+  const isFound=found.has(id),isNormal=!isLimitedGun(g)&&!isSecretGun(g)&&!isGemRank(g)&&!isAdminGun(g);
   if(indexFilter==='normal'&&!isNormal)return false;
   if(indexFilter==='limited'&&!isLimitedGun(g))return false;
   if(indexFilter==='secret'&&!isSecretGun(g))return false;
@@ -983,11 +996,52 @@ function renderIndex(){
  $('index-buff').classList.toggle('complete',complete);
  $('index-buff').innerHTML=complete?`<b>✦ COLLECTION BOOST ACTIVE · ${boostProgress}/500</b><span>You have discovered enough unique weapons. Eligible Legendary, LIMITED, SECRET and GEM-rank gun drops now have a 5% chance to grant +1 KittyGem.</span>`:`<b>COLLECTION BOOST · ${boostProgress}/500</b><span>Discover ${Math.max(0,500-discovered)} more unique weapons. Any combination of normal, GEM, LIMITED and SECRET guns counts toward unlocking the 5% KittyGem bonus on eligible drops.</span>`;
 }
+function renderGemOdds(){
+ const base={common:50,rare:25,epic:15,legendary:8,gem:2},t={...base};if(ev.adminLuck)t.legendary*=1.3;
+ const sum=Object.values(t).reduce((a,b)=>a+b,0);
+ for(const k in t){const el=$('go-'+k);if(el)el.textContent=(Math.round(t[k]/sum*1000)/10)+'%'}
+ const b=$('ev-banner-gem');if(b)b.style.display=ev.adminLuck?'block':'none';
+}
 function renderGemStore(){
  const balance=Number(S.gems||0);
  $('gemstore-balance').textContent=balance.toLocaleString();
  const options=[['open-gem-crate',1,'OPEN 1 · 25 GEMS'],['open-gem-crate-10',10,'OPEN 10 · 250 GEMS'],['open-gem-crate-100',100,'OPEN 100 · 2,500 GEMS']];
+ renderGemOdds();
  for(const [id,quantity,label] of options){const b=$(id);if(b){b.disabled=rolling||balance<25*quantity;if(!rolling)b.textContent=label;}}
+}
+// ---- Events, Admin Crate (needs the AdminLuck event + at least 1 Admin Key) ----
+const boostW=w=>{const t=w.map((v,i)=>i===3?v*1.3:v),sum=t.reduce((a,b)=>a+b,0)||1;return t.map(v=>Math.round(v/sum*1000)/10)};
+const adminCrateAvailable=()=>!!(ev&&ev.adminLuck)&&Number(S.adminKeys||0)>=1;
+const ADMIN_ODDS=[['epic',35],['legendary',60],['gem',3],['admin',2]];
+function adminCrateCard(){
+ const keys=Number(S.adminKeys||0),btn=(q,cls)=>`<button class="big ${cls}" ${keys<q?'disabled':''} onclick="openAdminCrate(${q})">OPEN ${q>1?q+' · ':'· '}${q} KEY${q>1?'S':''}</button>`;
+ return `<section class="crate-group admin"><div class="crate-group-head"><div><span class="crate-group-eyebrow">ADMIN ACCESS</span><h3>ADMIN CRATE</h3><p>Opens with Admin Keys while the Admin Luck event is live.</p></div><span class="crate-group-count">${keys} KEY${keys===1?'':'S'}</span></div><div class="crate-grid"><article class="crate ltd admincrate" style="--c:${R.admin}"><span class="tag admin-tag">ADMIN</span><div class="cbox"></div><b>Admin Crate</b><div class="odds">${ADMIN_ODDS.map(([r,v])=>`<div><span style="color:${R[r]}">${r==='gem'?'GEM RANK':r==='admin'?'ADMIN RANK':r}</span><i><u style="width:${v}%;background:${R[r]}"></u></i><em>${v}%</em></div>`).join('')}</div><div class="cbtns">${btn(1,'')}${btn(10,'ten')}${btn(100,'hund')}</div></article></div></section>`;
+}
+const adminVisualRarity=()=>{const n=Math.random()*100;return n<35?'epic':n<95?'legendary':n<98?'gem':'admin'};
+async function openAdminCrate(quantity=1){
+ quantity=Math.floor(Number(quantity)||0);
+ if(![1,10,100].includes(quantity))return;
+ if(rolling||window.tradeLock){toast('Finish the current action first');return}
+ if(!cu||!cloud){toast('Sign in first');return}
+ if(Number(S.adminKeys||0)<quantity){toast('Not enough Admin Keys');return}
+ if(quantity>1&&!confirm(`Open ${quantity} Admin Crates using ${quantity} Admin Keys?`))return;
+ const ownedBefore=ownedBeforeSnapshot();rolling=true;
+ try{
+  const [result]=await Promise.all([cloud.action('/api/economy/open-admin-crate',{quantity}),waitMs(quantity===100?850:650)]);
+  applyServerPlayer(result.player);
+  const awarded=Array.isArray(result.items)?result.items:[];
+  if(awarded.length!==quantity)throw new Error('The server returned an incomplete Admin Crate result. Refresh and check your inventory.');
+  menuCache.crates=null;
+  await animateGemCrateRoll(quantity,awarded,result.rewards||{},ownedBefore,{name:'ADMIN CRATE',visual:adminVisualRarity});
+  updateWallet();menu();
+ }catch(e){rolling=false;menuCache.crates=null;menu();toast(e.message||'Admin Crate failed to open')}
+}
+async function loadEvents(){
+ try{
+  if(!cloud||!cu)return;
+  const res=await cloud.action('/api/events'),next=res.events||{adminLuck:false};
+  if(JSON.stringify(next)!==JSON.stringify(ev)){ev=next;menuCache.crates=null;if(!rolling&&(!playing||paused))menu()}
+ }catch(e){console.warn('events',e)}
 }
 async function buyGemGun(){toast('Individual purchases are disabled. Open the KittyGem Crate instead.');}
 // ---- Buying KittyGems with Tikkie (orders are created and approved server-side) ----
@@ -1053,7 +1107,8 @@ function gemRollWinnerMarkup(item,small=false){
 function gemRollCardMarkup(rarity){
  return `<div class="rc" style="--c:${R[rarity]||R.common}"><b>?</b><small>${String(rarity).toUpperCase()}</small></div>`;
 }
-function animateGemCrateRoll(quantity,items,rewards={},ownedBefore=null){
+function animateGemCrateRoll(quantity,items,rewards={},ownedBefore=null,opts={}){
+ const crateName=opts.name||'KITTYGEM CRATE',visual=opts.visual||gemVisualRarity;
  return new Promise(resolve=>{
   const rv=$('reveal');
   const size=quantity===1?'single':quantity===10?'ten':'hundred';
@@ -1063,9 +1118,9 @@ function animateGemCrateRoll(quantity,items,rewards={},ownedBefore=null){
   const duration=size==='single'?6500:size==='ten'?5400:4200;
   const center=size==='single'?65:size==='ten'?39:21;
   const rollClass=size==='single'?'':size==='ten'?'mini':'mega';
-  const title=quantity===1?'OPENING KITTYGEM CRATE':`OPENING KITTYGEM CRATES ×${quantity}`;
+  const title=quantity===1?`OPENING ${crateName}`:`OPENING ${crateName}S ×${quantity}`;
   const stripsHtml=size==='single'?'':items.map((item,i)=>{
-   const cards=Array.from({length:count},()=>gemVisualRarity());
+   const cards=Array.from({length:count},()=>visual());
    cards[winIndex]=item.rarity|| (item.gem?'gem':'common');
    const markup=cards.map(gemRollCardMarkup).join('');
    return `<div class="roll ${rollClass}" aria-label="Gem Crate roll ${i+1}"><div class="marker"></div><div class="strip" id="gem-roll-strip-${i}">${markup}</div></div>`;
@@ -1074,7 +1129,7 @@ function animateGemCrateRoll(quantity,items,rewards={},ownedBefore=null){
    rv.innerHTML=`<div class="rtitle">${title}</div><div class="roll gem-roll-single"><div class="marker"></div><div class="strip" id="gem-roll-strip-0"></div></div><button class="link" id="gem-roll-skip">Skip</button>`;
    // For the single reel, keep the cards directly inside its strip (no nested reel wrapper).
    const strip=$('gem-roll-strip-0');
-   const cards=Array.from({length:count},()=>gemVisualRarity());
+   const cards=Array.from({length:count},()=>visual());
    cards[winIndex]=items[0].rarity||(items[0].gem?'gem':'common');
    strip.innerHTML=cards.map(gemRollCardMarkup).join('');
   } else {
@@ -1117,9 +1172,9 @@ function animateGemCrateRoll(quantity,items,rewards={},ownedBefore=null){
     const bestItem=items.reduce((bestItem,item)=>rankScoreOf(item)>rankScoreOf(bestItem)?item:bestItem,items[0]);
     const best=rankKeyOf(bestItem||{r:'common'});
     rv.className=`r-${best} gem-roll-screen hit`;
-    beep(best==='secret'?1320:best==='limited'?1120:best==='gem'?980:best==='legendary'?880:best==='epic'?660:440,.5,'triangle',.09);
+    beep(best==='admin'?1500:best==='secret'?1320:best==='limited'?1120:best==='gem'?980:best==='legendary'?880:best==='epic'?660:440,.5,'triangle',.09);
     setTimeout(()=>{
-     renderSecureReveal(`KITTYGEM CRATE ×${quantity}`,items,rewards,ownedBefore);
+     renderSecureReveal(`${crateName} ×${quantity}`,items,rewards,ownedBefore);
      resolve();
     },size==='hundred'?700:950);
    }
@@ -1186,7 +1241,7 @@ async function openGemCrate(quantity=1){
 }
 function applyServerPlayer(p){
  if(!p)return;
- for(const k of ['coins','gems','guns','skins','discoveredGuns','indexGemMilestones','best','kills','xp','runs','gun','skin','hotbar'])if(p[k]!==undefined){S[k]=Array.isArray(p[k])?[...p[k]]:p[k]}
+ for(const k of ['coins','gems','adminKeys','guns','skins','discoveredGuns','indexGemMilestones','best','kills','xp','runs','gun','skin','hotbar'])if(p[k]!==undefined){S[k]=Array.isArray(p[k])?[...p[k]]:p[k]}
  if(Array.isArray(S.hotbar))S.hot=fixHot(S.hotbar,S.guns);
  S.guns=Array.isArray(S.guns)?S.guns:['pistol'];S.skins=Array.isArray(S.skins)?S.skins:['default'];
  if(!S.guns.includes(S.gun))S.gun=S.guns[0]||'pistol';if(!S.skins.includes(S.skin))S.skin='default';
@@ -1202,7 +1257,9 @@ function renderSecureReveal(title,items,rewards={},ownedBefore=null){
  rv.innerHTML=`<div class="secure-reveal-panel"><span class="index-eyebrow">CRATEMASTER REWARDS</span><h2>${title}</h2><p class="secure-reveal-subtitle">${items.length.toLocaleString()} rewards revealed · ${list.length.toLocaleString()} unique item types</p><div class="secure-reveal-grid">${list.map((x,i)=>`<article class="secure-drop reveal-drop" style="--c:${rankColorOf(x)};--reveal-index:${Math.min(i,14)}"><div class="secure-drop-art">${art(x)}</div><b>${label(x)}</b>${isNewReward(x,ownedBefore)?'<span class="crate-new-badge reward-new-badge">NEW</span>':''}${rankBadge(x)}<em>${x.count>1?'×'+x.count+' DROPS':'1 DROP'}</em></article>`).join('')}</div>${rewardBits?`<p class="reward-line">${rewardBits}</p>`:''}<button class="big" onclick="closeRv()">NICE</button></div>`;
 }
 
-function updateWallet(){if($('coins'))$('coins').textContent=Number(S.coins||0).toLocaleString();if($('gems'))$('gems').textContent=Number(S.gems||0).toLocaleString();}
+function updateWallet(){if($('coins'))$('coins').textContent=Number(S.coins||0).toLocaleString();if($('gems'))$('gems').textContent=Number(S.gems||0).toLocaleString();
+ // Admin Keys stay completely hidden until you own at least one.
+ const keys=Number(S.adminKeys||0),kp=$('keypill');if(kp){kp.style.display=keys>=1?'':'none';if($('adminkeys'))$('adminkeys').textContent=keys.toLocaleString()}}
 
 function menu(){
  const xp=S.xp||0,lv=lvOf(xp),lo=60*(lv-1)**2,hi=60*lv*lv;
@@ -1217,6 +1274,7 @@ function menu(){
  if(tab==='locker')renderLockerCards();
  if(tab==='index'){indexMilestoneSync();renderIndex()}
  if(tab==='gemstore')renderGemStore();
+ if(tab==='mail')renderMail();
  if(tab==='trade'&&typeof renderTrade=='function')renderTrade();
  if(tab==='lb')renderLb();
  if(document.activeElement!==$('o-nick'))$('o-nick').value=S.nick||'';
@@ -1243,6 +1301,7 @@ async function requestCrateOpen(k,quantity){
 }
 function crateDropRank(item){
  const gun=GUNS[item.id]||{};
+ if(item.admin||isAdminGun(gun))return 'admin';
  if(item.secret||isSecretGun(gun))return 'secret';
  if(item.limited||isLimitedGun(gun))return 'limited';
  if(item.gem||isGemRank(gun))return 'gem';
@@ -1337,7 +1396,7 @@ function animateCrateRoll(crateName,crate,quantity,items,rewards={},ownedBefore=
     const bestItem=items.reduce((best,item)=>RANK_SCORE[crateDropRank(item)]>RANK_SCORE[crateDropRank(best)]?item:best,items[0]);
     const best=crateDropRank(bestItem||{rarity:'common'});
     rv.className=`r-${best} crate-roll-screen hit`;
-    beep(best==='secret'?1320:best==='limited'?1120:best==='gem'?980:best==='legendary'?880:best==='epic'?660:440,.5,'triangle',.09);
+    beep(best==='admin'?1500:best==='secret'?1320:best==='limited'?1120:best==='gem'?980:best==='legendary'?880:best==='epic'?660:440,.5,'triangle',.09);
     setTimeout(()=>{
      renderSecureReveal(`${String(crateName).toUpperCase()} ×${quantity}`,items,rewards,ownedBefore);
      resolve();
@@ -2103,7 +2162,7 @@ addEventListener('blur',()=>{for(const k in keys)keys[k]=false;down=false;if(pla
 
 /* ---------- main loop ---------- */
 /* ---------- cloud (Firebase auth + Firestore) + mandatory login gate ---------- */
-const DEF=()=>({coins:250,gems:0,discoveredGuns:['pistol'],indexGemMilestones:0,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true,nick:'',hot:['pistol']});
+const DEF=()=>({coins:250,gems:0,adminKeys:0,discoveredGuns:['pistol'],indexGemMilestones:0,guns:['pistol'],skins:['default'],gun:'pistol',skin:'default',best:0,kills:0,xp:0,runs:0,sens:1,vol:1,bloom:true,nick:'',hot:['pistol']});
 const hasGunId=id=>typeof id==='string'&&Object.prototype.hasOwnProperty.call(GUNS,id);
 const hasSkinId=id=>typeof id==='string'&&Object.prototype.hasOwnProperty.call(SKINS,id);
 function clean(d){
@@ -2125,6 +2184,7 @@ function clean(d){
  else o.hot=o.guns.slice(0,5);
  o.hot=fixHot(o.hot,o.guns);
  o.gems=Math.max(0,Math.floor(Number(d.gems)||0));
+ o.adminKeys=Math.max(0,Math.floor(Number(d.adminKeys)||0));
  const seen=new Set((Array.isArray(d.discoveredGuns)?d.discoveredGuns:[]).filter(hasGunId));
  for(const id of o.guns)seen.add(id);
  o.discoveredGuns=[...seen];
@@ -2136,7 +2196,7 @@ function signIn(){$('g-err').textContent='';if(!window.cloud){$('g-err').textCon
  cloud.login().catch(e=>{$('g-err').textContent='Sign-in failed: '+(e.code||e.message)})}
 addEventListener('cm-auth',async e=>{const was=cu;cu=e.detail;gateDone=true;
  if(cu){
-  try{await cloud.bootstrap();const d=await cloud.load();if(d)S=clean(d);else throw new Error('Server did not initialize your player save');cloud.save(S,true);sync='synced'}
+  try{const boot=await cloud.bootstrap();if(boot&&boot.events)ev=boot.events;const d=await cloud.load();if(d)S=clean(d);else throw new Error('Server did not initialize your player save');cloud.save(S,true);sync='synced';setTimeout(()=>loadMail(true),1200)}
   catch(err){console.error(err);$('g-err').textContent='Could not load your save ('+(err.code||err.message)+'). Check your connection and sign in again.';cloud.logout();return}
   gate('off');showMenu();refreshLim()}
  else{if(was){S=DEF();playing=false;paused=false;down=false;$('hud').style.display='none';closeRs();$('reveal').style.display='none';rolling=false}
@@ -2160,3 +2220,103 @@ function loop(t){requestAnimationFrame(loop);
  if(menuMode){ren.render(sc,cam);return}
  if(comp&&S.bloom!==false&&activeQuality.post){fxp.uniforms.t.value=now%100;comp.render()}else ren.render(sc,cam)}
 applyGun();menu();requestAnimationFrame(loop);
+
+/* ---------- Mailbox ---------- */
+let mailData=null,mailItems=[],mailBusy=false;
+const mailNum=n=>Number(n||0).toLocaleString();
+const mailWhen=ms=>new Date(ms).toLocaleDateString(undefined,{day:'numeric',month:'short'})+' '+new Date(ms).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+function mailItemName(type,id){const o=(type==='guns'?GUNS:SKINS)[id];return o?o.n:id}
+function mailChips(m){
+ const c=[];
+ if(m.coins)c.push(`<span class="mb"><i class="coin"></i>${mailNum(m.coins)}</span>`);
+ if(m.gems)c.push(`<span class="mb"><i class="gem-icon"></i>${mailNum(m.gems)}</span>`);
+ if(m.adminKeys)c.push(`<span class="mb key">🗝 ${mailNum(m.adminKeys)} Admin Key${m.adminKeys===1?'':'s'}</span>`);
+ const count=a=>{const o={};(a||[]).forEach(x=>o[x]=(o[x]||0)+1);return o};
+ for(const [id,n] of Object.entries(count(m.guns)))c.push(`<span class="mb" style="--c:${GUNS[id]?rankColorOf(GUNS[id]):'#999'}">${gemRollEsc(mailItemName('guns',id))}${n>1?' ×'+n:''}</span>`);
+ for(const [id,n] of Object.entries(count(m.skins)))c.push(`<span class="mb">${gemRollEsc(mailItemName('skins',id))}${n>1?' ×'+n:''} <small>skin</small></span>`);
+ return c.join('')||'<span class="mb muted">Message only</span>';
+}
+function renderMail(){
+ if(!$('mail-inbox'))return;
+ const m=mailData;
+ if(!cu){$('mail-inbox').innerHTML='<p class="note">Sign in to use the mailbox.</p>';return}
+ if(!m){$('mail-inbox').innerHTML='<p class="note">Loading…</p>';return}
+ const badge=$('mail-badge');if(badge){badge.textContent=m.unclaimed||'';badge.style.display=m.unclaimed?'inline-block':'none'}
+ $('mail-count').textContent=m.unclaimed?`· ${m.unclaimed} new`:'';
+ $('mail-claim-all').style.display=m.unclaimed>1?'':'none';
+ $('mail-inbox').innerHTML=m.inbox.length?m.inbox.map(x=>`<div class="mailitem ${x.claimed?'done':''}"><div class="mailitem-top"><b>From ${gemRollEsc(x.fromName)}</b><small>${mailWhen(x.createdAtMs)}</small></div>${x.message?`<p>${gemRollEsc(x.message)}</p>`:''}<div class="mbs">${mailChips(x)}</div>${x.claimed?'<small class="muted">Claimed</small>':`<button class="sm" onclick="claimMailItem('${x.id}')">Claim</button>`}</div>`).join(''):'<p class="note">Your mailbox is empty.</p>';
+ $('mail-sent').innerHTML=m.sent.length?m.sent.map(x=>`<div class="mailitem ${x.claimed?'done':''}"><div class="mailitem-top"><b>To ${gemRollEsc(x.toName)}</b><small>${mailWhen(x.createdAtMs)}</small></div>${x.message?`<p>${gemRollEsc(x.message)}</p>`:''}<div class="mbs">${mailChips(x)}</div><small class="muted">${x.claimed?'Claimed by the player':'Waiting to be claimed'}</small></div>`).join(''):'<p class="note">Nothing sent yet.</p>';
+ const kw=$('mail-keys-wrap');if(kw)kw.style.display=m.canSendKeys?'':'none';
+ renderMailPicker();
+}
+function renderMailPicker(){
+ const sel=$('mail-pick');if(!sel)return;
+ const used={};mailItems.forEach(i=>{const k=i.type+':'+i.id;used[k]=(used[k]||0)+1});
+ const opts=[];
+ const grp={};S.guns.forEach(id=>{if(GUNS[id]&&id!=='pistol')grp[id]=(grp[id]||0)+1});
+ Object.keys(grp).sort(gSort).forEach(id=>{const left=grp[id]-(used['guns:'+id]||0);if(left>0)opts.push(`<option value="guns:${id}">${gemRollEsc(GUNS[id].n)} · ${rankLabelOf(GUNS[id])}${grp[id]>1?' (×'+left+')':''}</option>`)});
+ const sk={};S.skins.forEach(id=>{if(SKINS[id]&&id!=='default')sk[id]=(sk[id]||0)+1});
+ Object.keys(sk).forEach(id=>{const left=sk[id]-(used['skins:'+id]||0);if(left>0)opts.push(`<option value="skins:${id}">Skin: ${gemRollEsc(SKINS[id].n)}${sk[id]>1?' (×'+left+')':''}</option>`)});
+ sel.innerHTML='<option value="">Choose an item…</option>'+opts.join('');
+ $('mail-attached').innerHTML=mailItems.map((i,n)=>`<span class="mb">${gemRollEsc(mailItemName(i.type,i.id))} <button class="x" onclick="mailRemoveItem(${n})" aria-label="Remove">✕</button></span>`).join('');
+}
+function mailAddItem(){
+ const v=$('mail-pick').value;if(!v)return;
+ if(mailItems.length>=10){toast('At most 10 items per mail');return}
+ const [type,id]=v.split(':');mailItems.push({type,id});renderMailPicker();
+}
+function mailRemoveItem(n){mailItems.splice(n,1);renderMailPicker()}
+async function loadMail(silent){
+ if(!cloud||!cu||mailBusy)return renderMail();
+ mailBusy=true;
+ try{
+  const res=await cloud.action('/api/mail/inbox');
+  mailData=res;
+  if(res.player&&!playing)applyServerPlayer(res.player);
+  renderMail();
+ }catch(e){if(!silent)toast(e.message||'Could not load your mailbox')}
+ finally{mailBusy=false}
+}
+async function mailLookup(){
+ const st=$('mail-to-status'),name=$('mail-to').value.trim();
+ if(!name){st.textContent='Type a username first.';st.className='mail-status bad';return}
+ st.textContent='Checking…';st.className='mail-status';
+ try{const r=await cloud.action('/api/mail/lookup',{name});st.textContent='✓ Player found: '+r.name;st.className='mail-status ok'}
+ catch(e){st.textContent=e.message||'Not found';st.className='mail-status bad'}
+}
+async function sendMailForm(){
+ if(!cloud||!cu){toast('Sign in first');return}
+ const btn=$('mail-send'),to=$('mail-to').value.trim();
+ if(!to){toast('Type the username of the player');return}
+ const body={to,message:$('mail-msg').value,coins:+$('mail-coins').value||0,gems:+$('mail-gems').value||0,items:mailItems};
+ if(mailData&&mailData.canSendKeys)body.adminKeys=+$('mail-keys').value||0;
+ if(body.coins>S.coins){toast('You do not have that many KittyCoins');return}
+ if(body.gems>S.gems){toast('You do not have that many KittyGems');return}
+ const total=[body.coins?mailNum(body.coins)+' coins':'',body.gems?mailNum(body.gems)+' gems':'',mailItems.length?mailItems.length+' item(s)':'',body.adminKeys?body.adminKeys+' Admin Key(s)':''].filter(Boolean).join(', ');
+ if(total&&!confirm(`Send ${total} to ${to}? This cannot be undone.`))return;
+ btn.disabled=true;btn.textContent='SENDING…';
+ try{
+  const res=await cloud.action('/api/mail/send',body);
+  applyServerPlayer(res.player);
+  toast('Mail sent to '+res.sentTo);
+  mailItems=[];['mail-msg'].forEach(i=>$(i).value='');['mail-coins','mail-gems','mail-keys'].forEach(i=>{if($(i))$(i).value=0});
+  menuCache.inv=null;updateWallet();menu();mailBusy=false;await loadMail(true);
+ }catch(e){toast(e.message||'Could not send the mail')}
+ finally{btn.disabled=false;btn.textContent='SEND MAIL'}
+}
+async function claimMailItem(id,quiet){
+ try{
+  const res=await cloud.action('/api/mail/claim',{id});
+  applyServerPlayer(res.player);
+  if(!quiet){const c=res.claimed||{};toast('Claimed'+(c.coins?` · +${mailNum(c.coins)} coins`:'')+(c.gems?` · +${mailNum(c.gems)} gems`:'')+((c.guns||[]).length+(c.skins||[]).length?` · ${(c.guns||[]).length+(c.skins||[]).length} item(s)`:'')+(c.adminKeys?` · +${c.adminKeys} Admin Key(s)`:'')+(res.indexGems?` · Index bonus +${res.indexGems} gems`:''))}
+  menuCache.inv=null;menuCache.skins=null;menuCache.index=null;updateWallet();
+  if(!quiet){mailBusy=false;await loadMail(true);menu()}
+ }catch(e){toast(e.message||'Could not claim');if(!quiet){mailBusy=false;loadMail(true)}}
+}
+async function claimAllMail(){
+ if(!mailData)return;
+ const ids=mailData.inbox.filter(x=>!x.claimed).map(x=>x.id);
+ for(const id of ids)await claimMailItem(id,true);
+ toast(`Claimed ${ids.length} mails`);mailBusy=false;await loadMail(true);menu();
+}
+setInterval(()=>{if(cu&&!playing&&!document.hidden)loadMail(true)},60000);
