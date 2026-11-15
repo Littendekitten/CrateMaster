@@ -56,7 +56,15 @@ async function leaderboard(type = 'money', force = false) {
 }
 const CATALOG = require('./catalog.json');
 const EVENT_GUN_CATALOG = CATALOG.eventGuns || {};
-const GUN_CATALOG = { ...(CATALOG.guns || {}), ...EVENT_GUN_CATALOG };
+// ADMIN-rank weapons: only dropped by the Admin Crate (needs Admin Keys + the AdminLuck event). Keep identical to app.js.
+const ADMIN_GUN_CATALOG = {
+  admin_banhammer: { n: 'Ban Hammer', r: 'legendary', rank: 'ADMIN', admin: true, d: 38, f: 0.7, p: 9, s: 0.07, a: 0, l: 1.2, family: 'shotgun', design: 5400, series: 'admin-exclusive' },
+  admin_sudo_rifle: { n: 'Sudo Rifle', r: 'legendary', rank: 'ADMIN', admin: true, d: 46, f: 0.1, p: 1, s: 0.008, a: 1, l: 1.3, family: 'rifle', design: 5401, series: 'admin-exclusive' },
+  admin_root_access: { n: 'Root Access', r: 'legendary', rank: 'ADMIN', admin: true, d: 30, f: 0.06, p: 1, s: 0.012, a: 1, l: 1.0, family: 'smg', design: 5402, series: 'admin-exclusive' },
+  admin_kernel_panic: { n: 'Kernel Panic', r: 'legendary', rank: 'ADMIN', admin: true, d: 34, f: 0.07, p: 1, s: 0.02, a: 1, l: 1.45, family: 'lmg', design: 5403, series: 'admin-exclusive' },
+  admin_decree: { n: "Admin's Decree", r: 'legendary', rank: 'ADMIN', admin: true, d: 120, f: 0.8, p: 1, s: 0.001, a: 0, l: 1.6, family: 'sniper', design: 5404, series: 'admin-exclusive' }
+};
+const GUN_CATALOG = { ...(CATALOG.guns || {}), ...EVENT_GUN_CATALOG, ...ADMIN_GUN_CATALOG };
 const SKIN_CATALOG = CATALOG.skins || {};
 const ECON_CRATES = {
   basic: { n: 'Basic Crate', cost: 100, w: [60, 28, 10, 2] },
@@ -165,8 +173,9 @@ function sanitizePlayerCatalogue(data) {
 }
 function isGemGun(g) { return !!(g && (g.gem || g.rank === 'GEM' || g.r === 'gem')); }
 function isSecretGun(g) { return !!(g && (g.secret || g.rank === 'SECRET' || g.r === 'secret')); }
-function isLimitedGun(g) { return !!(g && !isSecretGun(g) && (g.limited || g.rank === 'LIMITED' || g.x)); }
-function normalGunIds() { return Object.keys(GUN_CATALOG).filter(id => !isGemGun(GUN_CATALOG[id]) && !isLimitedGun(GUN_CATALOG[id]) && !isSecretGun(GUN_CATALOG[id])); }
+function isAdminGun(g) { return !!(g && (g.admin || g.rank === 'ADMIN')); }
+function isLimitedGun(g) { return !!(g && !isSecretGun(g) && !isAdminGun(g) && (g.limited || g.rank === 'LIMITED' || g.x)); }
+function normalGunIds() { return Object.keys(GUN_CATALOG).filter(id => !isGemGun(GUN_CATALOG[id]) && !isLimitedGun(GUN_CATALOG[id]) && !isSecretGun(GUN_CATALOG[id]) && !isAdminGun(GUN_CATALOG[id])); }
 function collectionBoostUnlocked(data) {
   // Any 500 distinct, valid catalogue weapons count: normal, GEM, LIMITED or SECRET.
   // Unknown/stale IDs and duplicate copies never increase the discovery count.
@@ -195,7 +204,7 @@ function registerDiscoveries(data, ids) {
 function playerView(data) {
   const clean = { ...data };
   sanitizePlayerCatalogue(clean);
-  const scalarDefaults = { coins: 250, gems: 0, indexGemMilestones: 0, best: 0, kills: 0, xp: 0, runs: 0, gun: 'pistol', skin: 'default' };
+  const scalarDefaults = { coins: 250, gems: 0, adminKeys: 0, indexGemMilestones: 0, best: 0, kills: 0, xp: 0, runs: 0, gun: 'pistol', skin: 'default' };
   const out = {
     guns: [...clean.guns], skins: [...clean.skins], discoveredGuns: [...clean.discoveredGuns],
     hotbar: [...clean.hotbar]
@@ -231,6 +240,8 @@ async function ensurePlayer(uid) {
     if (d.vol !== vol) patch.vol = vol;
     if (typeof d.bloom !== 'boolean') patch.bloom = true;
     if (typeof d.username !== 'string') patch.username = '';
+    const lowerName = String(typeof d.username === 'string' ? d.username : '').trim().toLowerCase();
+    if (d.usernameLower !== lowerName) patch.usernameLower = lowerName;
     if (typeof d.displayName !== 'string') patch.displayName = '';
     // Permanently prune every weapon that is not in the exact 500-gun catalogue.
     const owned = catalogueList(d.guns, GUN_CATALOG, 'pistol');
@@ -275,19 +286,21 @@ function pickWeighted(weights) {
 function eventDropPool(crateKey, kind) {
   return Object.entries(GUN_CATALOG).filter(([id, gun]) => gun.x === crateKey && (kind === 'secret' ? isSecretGun(gun) : isLimitedGun(gun)));
 }
-function rollNormalCrate(crateKey, crate) {
+function rollNormalCrate(crateKey, crate, luck = false) {
   // Hidden event outcomes are separate from the public rarity meter:
   // Secret = 0.001% and Limited = 2.000% total per Limited Crate.
   // Ranges are exclusive: 10 / 1,000,000 Secret, then 20,000 / 1,000,000 Limited.
   if (crate.ltd) {
     const special = crypto.randomInt(0, 1000000);
-    if (special < 10) {
+    // AdminLuck event: Secret 0.5% (normally 0.001%), Limited 3% (normally 2%).
+    const secretCut = luck ? 5000 : 10, limitedCut = secretCut + (luck ? 30000 : 20000);
+    if (special < secretCut) {
       const pool = eventDropPool(crateKey, 'secret');
       if (pool.length) {
         const [id, gun] = pool[crypto.randomInt(0, pool.length)];
         return { type: 'guns', id, rarity: 'secret', name: gun.n, secret: true, limited: false, gem: false };
       }
-    } else if (special < 20010) {
+    } else if (special < limitedCut) {
       const pool = eventDropPool(crateKey, 'limited');
       if (pool.length) {
         const [id, gun] = pool[crypto.randomInt(0, pool.length)];
@@ -296,34 +309,75 @@ function rollNormalCrate(crateKey, crate) {
     }
   }
 
-  const rarity = RARITIES[pickWeighted(crate.w)];
+  // AdminLuck event: Legendary weight +30%.
+  const rarity = RARITIES[pickWeighted(luck ? crate.w.map((v, i) => (i === 3 ? v * 1.3 : v)) : crate.w)];
   const pool = [];
   for (const [id, gun] of Object.entries(GUN_CATALOG)) {
-    if (id === 'pistol' || gun.r !== rarity || isGemGun(gun) || isLimitedGun(gun) || isSecretGun(gun)) continue;
+    if (id === 'pistol' || gun.r !== rarity || isGemGun(gun) || isLimitedGun(gun) || isSecretGun(gun) || isAdminGun(gun)) continue;
     pool.push({ type: 'guns', id, rarity, name: gun.n, limited: false, secret: false, gem: false });
   }
   for (const [id, skin] of Object.entries(SKIN_CATALOG)) if (id !== 'default' && skin.r === rarity) pool.push({ type: 'skins', id, rarity, name: skin.n });
   if (!pool.length) throw new Error('This crate has no valid standard drops. Contact the game owner.');
   return pool[crypto.randomInt(0, pool.length)];
 }
-function rollGemCrate() {
+function rollGemCrate(luck = false) {
   // Hidden Gem Crate Secret: 0.01% per opening (1 in 10,000).
   // This roll is separate from GEM_CRATE.weights, so it never appears in the public rarity meter.
   const secretPool = Object.entries(GUN_CATALOG).filter(([id, gun]) => gun.x === 'gem' && isSecretGun(gun));
-  if (secretPool.length && crypto.randomInt(0, 10000) === 0) {
+  if (secretPool.length && crypto.randomInt(0, 10000) < (luck ? 50 : 1)) { // AdminLuck: 0.5% instead of 0.01%
     const [id, gun] = secretPool[crypto.randomInt(0, secretPool.length)];
     return { type: 'guns', id, rarity: 'secret', name: gun.n, secret: true, limited: false, gem: false };
   }
-  const rarities = Object.keys(GEM_CRATE.weights), weights = rarities.map(r => GEM_CRATE.weights[r]);
+  const rarities = Object.keys(GEM_CRATE.weights), weights = rarities.map(r => GEM_CRATE.weights[r] * (luck && r === 'legendary' ? 1.3 : 1));
   const rarity = rarities[pickWeighted(weights)];
   const pool = Object.entries(GUN_CATALOG).filter(([id, gun]) => gun.gemStore && (isGemGun(gun) ? rarity === 'gem' : gun.r === rarity));
   if (!pool.length) throw new Error('The Gem Crate drop pool is not configured correctly.');
   const [id, gun] = pool[crypto.randomInt(0, pool.length)];
   return { type: 'guns', id, rarity, name: gun.n, limited: false, secret: false, gem: isGemGun(gun) };
 }
+// ---------------------------------------------------------------------------
+// Events: Firestore collection "Events", one doc per event, field enabled:true/false.
+// Currently: "AdminLuck". Created automatically (disabled) on server start.
+// ---------------------------------------------------------------------------
+const EVENT_NAMES = ['AdminLuck'], eventCache = new Map();
+async function eventActive(name) {
+  const hit = eventCache.get(name);
+  if (hit && Date.now() - hit.at < 15000) return hit.on;
+  let on = false;
+  try { const snap = await fs.doc('Events/' + name).get(); on = !!(snap.exists && (snap.data() || {}).enabled === true); }
+  catch (e) { console.error('Event lookup failed:', name, e.message); on = hit ? hit.on : false; }
+  eventCache.set(name, { at: Date.now(), on });
+  return on;
+}
+async function ensureEventDocuments() {
+  for (const name of EVENT_NAMES) {
+    const ref = fs.doc('Events/' + name);
+    await fs.runTransaction(async tx => {
+      const snap = await tx.get(ref);
+      if (!snap.exists) tx.create(ref, { enabled: false });
+      else if (typeof (snap.data() || {}).enabled !== 'boolean') tx.set(ref, { enabled: false }, { merge: true });
+    });
+  }
+}
+async function eventsView() { return { adminLuck: await eventActive('AdminLuck') }; }
+// Admin Crate: costs 1 Admin Key per opening, only while AdminLuck is active.
+const ADMIN_CRATE_WEIGHTS = { epic: 35, legendary: 60, gem: 3, admin: 2 };
+function rollAdminCrate() {
+  const ranks = Object.keys(ADMIN_CRATE_WEIGHTS), rank = ranks[pickWeighted(ranks.map(k => ADMIN_CRATE_WEIGHTS[k]))];
+  const pool = Object.entries(GUN_CATALOG).filter(([id, gun]) => {
+    if (id === 'pistol') return false;
+    if (rank === 'admin') return isAdminGun(gun);
+    if (rank === 'gem') return isGemGun(gun) && gun.gemStore;
+    return gun.r === rank && !isGemGun(gun) && !isLimitedGun(gun) && !isSecretGun(gun) && !isAdminGun(gun);
+  });
+  if (!pool.length) throw new Error('The Admin Crate drop pool is not configured correctly.');
+  const [id, gun] = pool[crypto.randomInt(0, pool.length)];
+  return { type: 'guns', id, rarity: rank, name: gun.n, limited: false, secret: false, gem: rank === 'gem', admin: rank === 'admin' };
+}
 function itemValue(type, id) {
   if (type === 'guns') {
     const g = GUN_CATALOG[id]; if (!g) return 0;
+    if (isAdminGun(g)) return 1000;
     if (isSecretGun(g)) return 500;
     if (isLimitedGun(g)) return 100;
     if (isGemGun(g)) return 200;
@@ -349,7 +403,7 @@ function applyDrop(data, item, completeBefore) {
   }
   const ix = item.type === 'guns' ? registerDiscoveries(data, [item.id]) : { indexGems: 0, newDiscoveries: 0 };
   let bonusGem = false;
-  if (completeBefore && item.type === 'guns' && (item.rarity === 'legendary' || item.limited || item.secret || item.gem) && crypto.randomInt(0, 10000) < 500) {
+  if (completeBefore && item.type === 'guns' && (item.rarity === 'legendary' || item.limited || item.secret || item.gem || item.admin) && crypto.randomInt(0, 10000) < 500) {
     data.gems = numberAtLeastZero(data.gems) + 1; bonusGem = true;
   }
   return { ...item, bonusGem, indexGems: ix.indexGems };
@@ -363,7 +417,7 @@ async function updatePlayerEconomy(uid, mutator) {
     if (!userSnap.exists) throw Object.assign(new Error('Player save not found. Reload the game.'), { status: 404 });
     const data = userSnap.data() || {};
     sanitizePlayerCatalogue(data);
-    const outcome = await mutator(data);
+    const outcome = await mutator(data, tx);
     data.updated = FV.serverTimestamp();
     const writeData = { ...data, newGuns: FV.delete() };
     tx.set(userRef, writeData, { merge: true });
@@ -526,6 +580,121 @@ async function handleGemApprovePage(q, r, requestUrl) {
   return sendHtml(r, 200, `<h2>Order ${escHtml(o.code)}</h2><p>${escHtml(o.gems)} KittyGems for EUR ${escHtml(o.euro)}<br>Payer: <b>${escHtml(o.payerName)}</b><br>Account: ${escHtml(o.email)}<br>Status: <b>${escHtml(o.status)}</b></p>${o.status === 'pending' || o.status === 'approved' ? form('approve') + form('reject') : ''}`);
 }
 
+// ---------------------------------------------------------------------------
+// Mailbox: Firestore collection "Mail" (server-only). Gifts are taken from the sender when sending
+// (escrow) and given to the recipient when they claim, so the recipient can be offline.
+// ADMIN_UIDS (env, comma separated Firebase user ids) may attach Admin Keys to mail.
+// ---------------------------------------------------------------------------
+const MAIL = 'Mail', MAIL_MAX_ITEMS = 10, MAIL_MAX_UNCLAIMED = 50, MAIL_KEEP_CLAIMED_MS = 7 * 86400000;
+const ADMIN_UIDS = new Set(String(process.env.ADMIN_UIDS || '').split(',').map(x => x.trim()).filter(Boolean));
+const cleanMailText = (v, max) => String(v || '').replace(/[\u0000-\u001f<>]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
+function removeOwnedItem(d, type, id) {
+  const arr = Array.isArray(d[type]) ? [...d[type]] : [], at = arr.lastIndexOf(id);
+  if (at < 0) throw Object.assign(new Error('You no longer own one of the items you are sending.'), { status: 409 });
+  arr.splice(at, 1); d[type] = arr;
+  if (type === 'guns') {
+    const used = {}; let hotbar = Array.isArray(d.hotbar) ? d.hotbar.slice(0, 5) : [];
+    d.hotbar = hotbar.map(g => { if (!g) return ''; used[g] = (used[g] || 0) + 1; return used[g] <= arr.filter(x => x === g).length ? g : ''; });
+    while (d.hotbar.length < 5) d.hotbar.push('');
+    if (!arr.includes(d.gun)) d.gun = arr.includes('pistol') ? 'pistol' : (arr[0] || 'pistol');
+  } else if (!arr.includes(d.skin)) d.skin = 'default';
+}
+// Usernames are stored exactly as typed, so try the common letter-case spellings and then compare case-insensitively.
+async function findPlayersByName(raw) {
+  const name = String(raw || '').replace(/[<>&"'`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 16);
+  if (!name) throw Object.assign(new Error('Type a username first.'), { status: 400 });
+  const variants = [...new Set([name, name.toLowerCase(), name.toUpperCase(), name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()])];
+  // usernameLower is kept up to date by the server (login / rename); the letter-case variants cover saves that were not indexed yet.
+  const snaps = await Promise.all([
+    fs.collection('users').where('usernameLower', '==', name.toLowerCase()).limit(5).get(),
+    ...variants.map(v => fs.collection('users').where('username', '==', v).limit(5).get())
+  ]);
+  const hits = new Map();
+  for (const snap of snaps) for (const d of snap.docs) {
+    const u = String((d.data() || {}).username || '').trim();
+    if (u.toLowerCase() === name.toLowerCase()) hits.set(d.id, { uid: d.id, name: u });
+  }
+  return [...hits.values()];
+}
+function mailSummary(m) {
+  return { coins: numberAtLeastZero(m.coins), gems: numberAtLeastZero(m.gems), guns: Array.isArray(m.guns) ? m.guns : [], skins: Array.isArray(m.skins) ? m.skins : [], adminKeys: numberAtLeastZero(m.adminKeys) };
+}
+async function mailboxResponse(uid) {
+  const [inSnap, outSnap] = await Promise.all([
+    fs.collection(MAIL).where('to', '==', uid).get(),
+    fs.collection(MAIL).where('from', '==', uid).get()
+  ]);
+  const now = Date.now();
+  const inbox = inSnap.docs.map(d => ({ id: d.id, ...(d.data() || {}) }))
+    .filter(m => !m.claimed || now - numberAtLeastZero(m.claimedAtMs) < MAIL_KEEP_CLAIMED_MS)
+    .sort((a, b) => numberAtLeastZero(b.createdAtMs) - numberAtLeastZero(a.createdAtMs)).slice(0, 60)
+    .map(m => ({ id: m.id, fromName: m.fromName, message: m.message || '', createdAtMs: m.createdAtMs, claimed: !!m.claimed, ...mailSummary(m) }));
+  const sent = outSnap.docs.map(d => ({ id: d.id, ...(d.data() || {}) }))
+    .sort((a, b) => numberAtLeastZero(b.createdAtMs) - numberAtLeastZero(a.createdAtMs)).slice(0, 15)
+    .map(m => ({ id: m.id, toName: m.toName, message: m.message || '', createdAtMs: m.createdAtMs, claimed: !!m.claimed, ...mailSummary(m) }));
+  const player = playerView(await ensurePlayer(uid));
+  return { ok: true, inbox, sent, unclaimed: inbox.filter(m => !m.claimed).length, canSendKeys: ADMIN_UIDS.has(uid), player };
+}
+async function sendMail(uid, body) {
+  const hits = await findPlayersByName(body.to);
+  if (!hits.length) throw Object.assign(new Error('No player has that username.'), { status: 404 });
+  if (hits.length > 1) throw Object.assign(new Error('More than one player has that username. Ask them to pick a unique one.'), { status: 409 });
+  const target = hits[0], isAdmin = ADMIN_UIDS.has(uid);
+  if (target.uid === uid && !isAdmin) throw Object.assign(new Error('You cannot send mail to yourself.'), { status: 400 });
+  const message = cleanMailText(body.message, 140);
+  const coins = numberAtLeastZero(body.coins), gems = numberAtLeastZero(body.gems);
+  const adminKeys = isAdmin ? Math.min(1000, numberAtLeastZero(body.adminKeys)) : 0;
+  const rawItems = Array.isArray(body.items) ? body.items.slice(0, MAIL_MAX_ITEMS + 1) : [];
+  if (rawItems.length > MAIL_MAX_ITEMS) throw Object.assign(new Error(`You can attach at most ${MAIL_MAX_ITEMS} items per mail.`), { status: 400 });
+  if (coins > 1e9 || gems > 1e7) throw Object.assign(new Error('That amount is too large.'), { status: 400 });
+  const items = rawItems.map(it => ({ type: it && it.type === 'skins' ? 'skins' : it && it.type === 'guns' ? 'guns' : '', id: String((it && it.id) || '') }));
+  for (const it of items) {
+    const known = it.type === 'guns' ? GUN_CATALOG[it.id] : it.type === 'skins' ? SKIN_CATALOG[it.id] : null;
+    if (!known || !/^[a-z0-9_-]{1,64}$/i.test(it.id) || it.id === 'pistol' || it.id === 'default') throw Object.assign(new Error('One of the selected items cannot be sent.'), { status: 400 });
+  }
+  if (!message && !coins && !gems && !adminKeys && !items.length) throw Object.assign(new Error('Write a message or attach something.'), { status: 400 });
+  const waiting = (await fs.collection(MAIL).where('to', '==', target.uid).get()).docs.filter(d => !(d.data() || {}).claimed).length;
+  if (waiting >= MAIL_MAX_UNCLAIMED) throw Object.assign(new Error('That player\'s mailbox is full.'), { status: 409 });
+  const mailRef = fs.collection(MAIL).doc();
+  const result = await updatePlayerEconomy(uid, async (d, tx) => {
+    if (numberAtLeastZero(d.coins) < coins) throw Object.assign(new Error('Not enough KittyCoins.'), { status: 409 });
+    if (numberAtLeastZero(d.gems) < gems) throw Object.assign(new Error('Not enough KittyGems.'), { status: 409 });
+    d.coins = numberAtLeastZero(d.coins) - coins; d.gems = numberAtLeastZero(d.gems) - gems;
+    for (const it of items) removeOwnedItem(d, it.type, it.id);
+    tx.create(mailRef, {
+      to: target.uid, toName: target.name, from: uid,
+      fromName: cleanName(d.username || String(d.displayName || '').split(' ')[0]),
+      message, coins, gems, adminKeys,
+      guns: items.filter(i => i.type === 'guns').map(i => i.id), skins: items.filter(i => i.type === 'skins').map(i => i.id),
+      claimed: false, createdAtMs: Date.now()
+    });
+    return { ok: true, sentTo: target.name };
+  });
+  lbCache.clear();
+  return result;
+}
+async function claimMail(uid, id) {
+  if (!/^[A-Za-z0-9]{10,40}$/.test(id)) throw Object.assign(new Error('Invalid mail.'), { status: 400 });
+  const mailRef = fs.doc(MAIL + '/' + id);
+  const result = await updatePlayerEconomy(uid, async (d, tx) => {
+    const snap = await tx.get(mailRef), m = snap.exists ? snap.data() || {} : null;
+    if (!m || m.to !== uid) throw Object.assign(new Error('Mail not found.'), { status: 404 });
+    if (m.claimed) throw Object.assign(new Error('Already claimed.'), { status: 409 });
+    d.coins = numberAtLeastZero(d.coins) + numberAtLeastZero(m.coins);
+    d.gems = numberAtLeastZero(d.gems) + numberAtLeastZero(m.gems);
+    d.adminKeys = numberAtLeastZero(d.adminKeys) + numberAtLeastZero(m.adminKeys);
+    const guns = (Array.isArray(m.guns) ? m.guns : []).filter(g => GUN_CATALOG[g]);
+    const skins = (Array.isArray(m.skins) ? m.skins : []).filter(k => SKIN_CATALOG[k]);
+    d.guns = [...(Array.isArray(d.guns) ? d.guns : ['pistol']), ...guns];
+    d.skins = [...(Array.isArray(d.skins) ? d.skins : ['default']), ...skins];
+    const ix = registerDiscoveries(d, guns);
+    tx.update(mailRef, { claimed: true, claimedAtMs: Date.now() });
+    return { ok: true, claimed: { ...mailSummary(m), fromName: m.fromName }, indexGems: ix.indexGems };
+  });
+  lbCache.clear();
+  return result;
+}
+
 const server = http.createServer(async (q, r) => {
   const requestUrl = new URL(q.url || '/', 'http://localhost');
   if (q.method === 'OPTIONS') { cors(r); r.writeHead(204); r.end(); return; }
@@ -550,7 +719,7 @@ const server = http.createServer(async (q, r) => {
       if (path === '/api/bootstrap') {
         const player = await ensurePlayer(uid);
         lbCache.delete('gems');
-        sendJson(r, 200, { ok: true, player: playerView(player) }); return;
+        sendJson(r, 200, { ok: true, player: playerView(player), events: await eventsView() }); return;
       }
 
       if (path === '/api/gems/orders') {
@@ -580,6 +749,53 @@ const server = http.createServer(async (q, r) => {
         await ref.set(stored);
         if (await emailGemOrder(order)) await ref.update({ emailed: true }).catch(() => {});
         sendJson(r, 200, { ...(await gemOrdersResponse(uid)), created: gemOrderView({ id: ref.id, data: () => stored }) }); return;
+      }
+
+      if (path === '/api/events') {
+        rateLimit(uid, 'events', 30, 60000);
+        sendJson(r, 200, { ok: true, events: await eventsView() }); return;
+      }
+
+      if (path === '/api/economy/open-admin-crate') {
+        rateLimit(uid, 'admin-crate-open', 20, 60000);
+        const quantity = numberAtLeastZero(body.quantity || 1);
+        if (![1, 10, 100].includes(quantity)) throw Object.assign(new Error('Admin Crates can be opened 1, 10 or 100 at a time.'), { status: 400 });
+        const unavailable = () => Object.assign(new Error('This crate is not available right now.'), { status: 404 });
+        if (!(await eventActive('AdminLuck'))) throw unavailable();
+        const items = Array.from({ length: quantity }, () => rollAdminCrate());
+        const result = await updatePlayerEconomy(uid, async d => {
+          const keys = numberAtLeastZero(d.adminKeys);
+          if (keys < 1) throw unavailable();
+          if (keys < quantity) throw Object.assign(new Error('Not enough Admin Keys.'), { status: 409 });
+          d.adminKeys = keys - quantity;
+          const rewards = { indexGems: 0, bonusGems: 0 };
+          const awarded = items.map(item => { const out = applyDrop(d, item, collectionBoostUnlocked(d)); rewards.indexGems += out.indexGems || 0; if (out.bonusGem) rewards.bonusGems++; return out; });
+          return { ok: true, quantity, cost: quantity, items: awarded, rewards };
+        });
+        sendJson(r, 200, result); return;
+      }
+
+      if (path === '/api/mail/lookup') {
+        rateLimit(uid, 'mail-lookup', 30, 60000);
+        const hits = await findPlayersByName(body.name);
+        if (!hits.length) throw Object.assign(new Error('No player has that username.'), { status: 404 });
+        if (hits.length > 1) throw Object.assign(new Error('More than one player has that username. Ask them to pick a unique one.'), { status: 409 });
+        sendJson(r, 200, { ok: true, name: hits[0].name }); return;
+      }
+
+      if (path === '/api/mail/inbox') {
+        rateLimit(uid, 'mail-inbox', 40, 60000);
+        sendJson(r, 200, await mailboxResponse(uid)); return;
+      }
+
+      if (path === '/api/mail/send') {
+        rateLimit(uid, 'mail-send', 10, 60000);
+        sendJson(r, 200, await sendMail(uid, body)); return;
+      }
+
+      if (path === '/api/mail/claim') {
+        rateLimit(uid, 'mail-claim', 60, 60000);
+        sendJson(r, 200, await claimMail(uid, String(body.id || ''))); return;
       }
 
       if (path === '/api/run/recover') {
@@ -711,7 +927,8 @@ const server = http.createServer(async (q, r) => {
         if (![1, 10, 100].includes(quantity)) throw Object.assign(new Error('You can open 1, 10 or 100 crates at a time.'), { status: 400 });
         const crate = await limitedCrate(uid, key);
         if (!crate) throw Object.assign(new Error('Unknown crate.'), { status: 404 });
-        const items = Array.from({ length: quantity }, () => rollNormalCrate(key, crate));
+        const luck = await eventActive('AdminLuck');
+        const items = Array.from({ length: quantity }, () => rollNormalCrate(key, crate, luck));
         const result = await updatePlayerEconomy(uid, async d => {
           const total = crate.cost * quantity;
           if (numberAtLeastZero(d.coins) < total) throw Object.assign(new Error('Not enough KittyCoins.'), { status: 409 });
@@ -727,7 +944,8 @@ const server = http.createServer(async (q, r) => {
         rateLimit(uid, 'gem-crate-open', 20, 60000);
         const quantity = numberAtLeastZero(body.quantity || 1);
         if (![1, 10, 100].includes(quantity)) throw Object.assign(new Error('Gem Crates can be opened 1, 10 or 100 at a time.'), { status: 400 });
-        const items = Array.from({ length: quantity }, () => rollGemCrate());
+        const luck = await eventActive('AdminLuck');
+        const items = Array.from({ length: quantity }, () => rollGemCrate(luck));
         const result = await updatePlayerEconomy(uid, async d => {
           const total = GEM_CRATE.cost * quantity;
           if (numberAtLeastZero(d.gems) < total) throw Object.assign(new Error('Not enough KittyGems.'), { status: 409 });
@@ -757,7 +975,13 @@ const gfirst = new Map(); // uid -> first name of the Google account
 // Display/lookup name = chosen username, otherwise the first name of the Google account
 async function resolveName(uid) {
   let n = '';
-  try { const s = await fs.doc('users/' + uid).get(); if (s.exists) n = String(s.data().username || '').trim(); } catch (e) {}
+  try {
+    const s = await fs.doc('users/' + uid).get();
+    if (s.exists) {
+      n = String(s.data().username || '').trim();
+      if (s.data().usernameLower !== n.toLowerCase()) s.ref.set({ usernameLower: n.toLowerCase() }, { merge: true }).catch(() => {});
+    }
+  } catch (e) {}
   return cleanName(n || gfirst.get(uid) || 'Player');
 }
 const other = (tr, uid) => (uid === tr.a ? tr.b : tr.a);
@@ -915,6 +1139,7 @@ async function startServer() {
     // Limited Crates stay unavailable until the next Render restart.
     console.error('Could not initialize Limited Crates config:', error);
   }
+  try { await ensureEventDocuments(); console.log('Events config ready'); } catch (error) { console.error('Could not initialize Events config:', error); }
   await rtdb.ref('presence').remove().catch(() => {}); // clear stale presence from before a restart
   setTimeout(() => sweepGemOrders().catch(e => console.error('Gem sweep failed:', e)), 30000);
   setInterval(() => sweepGemOrders().catch(e => console.error('Gem sweep failed:', e)), 10 * 60000);
