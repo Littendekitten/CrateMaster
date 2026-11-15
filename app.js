@@ -2246,7 +2246,7 @@ function renderMail(){
  $('mail-claim-all').style.display=m.unclaimed>1?'':'none';
  $('mail-inbox').innerHTML=m.inbox.length?m.inbox.map(x=>`<div class="mailitem ${x.claimed?'done':''}"><div class="mailitem-top"><b>From ${gemRollEsc(x.fromName)}</b><small>${mailWhen(x.createdAtMs)}</small></div>${x.message?`<p>${gemRollEsc(x.message)}</p>`:''}<div class="mbs">${mailChips(x)}</div>${x.claimed?'<small class="muted">Claimed</small>':`<button class="sm" onclick="claimMailItem('${x.id}')">Claim</button>`}</div>`).join(''):'<p class="note">Your mailbox is empty.</p>';
  $('mail-sent').innerHTML=m.sent.length?m.sent.map(x=>`<div class="mailitem ${x.claimed?'done':''}"><div class="mailitem-top"><b>To ${gemRollEsc(x.toName)}</b><small>${mailWhen(x.createdAtMs)}</small></div>${x.message?`<p>${gemRollEsc(x.message)}</p>`:''}<div class="mbs">${mailChips(x)}</div><small class="muted">${x.claimed?'Claimed by the player':'Waiting to be claimed'}</small></div>`).join(''):'<p class="note">Nothing sent yet.</p>';
- const kw=$('mail-keys-wrap');if(kw)kw.style.display=m.canSendKeys?'':'none';
+ const kw=$('mail-keys-wrap');if(kw)kw.style.display=(m.canSendKeys||Number(S.adminKeys||0)>=1)?'':'none'; // hidden unless you own keys
  renderMailPicker();
 }
 function renderMailPicker(){
@@ -2289,7 +2289,9 @@ async function sendMailForm(){
  const btn=$('mail-send'),to=$('mail-to').value.trim();
  if(!to){toast('Type the username of the player');return}
  const body={to,message:$('mail-msg').value,coins:+$('mail-coins').value||0,gems:+$('mail-gems').value||0,items:mailItems};
- if(mailData&&mailData.canSendKeys)body.adminKeys=+$('mail-keys').value||0;
+ const keysVisible=$('mail-keys-wrap')&&$('mail-keys-wrap').style.display!=='none';
+ if(keysVisible)body.adminKeys=+$('mail-keys').value||0;
+ if(body.adminKeys&&!(mailData&&mailData.canSendKeys)&&body.adminKeys>Number(S.adminKeys||0)){toast('You do not have that many Admin Keys');return}
  if(body.coins>S.coins){toast('You do not have that many KittyCoins');return}
  if(body.gems>S.gems){toast('You do not have that many KittyGems');return}
  const total=[body.coins?mailNum(body.coins)+' coins':'',body.gems?mailNum(body.gems)+' gems':'',mailItems.length?mailItems.length+' item(s)':'',body.adminKeys?body.adminKeys+' Admin Key(s)':''].filter(Boolean).join(', ');
