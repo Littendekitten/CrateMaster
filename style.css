@@ -1079,3 +1079,37 @@ nav{
 .gemorder small{display:block;color:#8f9db8;font-size:11px;line-height:1.4}
 .gemorder-pay{display:inline-block;margin-top:8px;padding:7px 12px;border-radius:9px;background:#2fd08a;color:#06231a;font-size:12px;font-weight:900;text-decoration:none}
 @media(max-width:680px){.gembuy{grid-template-columns:1fr;padding:16px}}
+
+/* Mailbox, Admin rank, events */
+.tab[data-t="mail"]::before{content:"✉"}
+.mail-badge{display:inline-block;margin-left:6px;min-width:17px;padding:1px 5px;border-radius:99px;background:#ff3b5c;color:#fff;font:900 10px Rajdhani,sans-serif;font-style:normal;letter-spacing:0;text-align:center;vertical-align:middle}
+.mail-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:14px}
+.mail-box{padding:16px 18px;border:1px solid #ffffff1f;border-radius:15px;background:linear-gradient(145deg,#18233b,#111829)}
+.mail-box h3{margin:0 0 10px;font-size:12px;letter-spacing:.14em;color:#9eabc7}
+.mail-form label{display:block;margin:10px 0 5px;color:#9eabc7;font-size:12px;font-weight:700}
+.mail-form input,.mail-form select{width:100%;padding:9px 11px;border:1px solid #3b4d72;border-radius:9px;background:#0b1220;color:#eaf1ff;font:600 14px Rajdhani,sans-serif}
+.mail-form .nr{display:flex;gap:8px}.mail-form .nr .sm{white-space:nowrap}
+.mail-amounts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mail-status{display:block;margin-top:5px;color:#8f9db8;font-size:11px}.mail-status.ok{color:#6dffbd}.mail-status.bad{color:#ff9aac}
+#mail-send{margin-top:14px;width:100%}
+#mail-inbox,#mail-sent{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow:auto}
+.mailitem{padding:11px 13px;border:1px solid #ffffff1c;border-radius:12px;background:#ffffff08}
+.mailitem.done{opacity:.6}
+.mailitem-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.mailitem p{margin:6px 0;color:#dbe4f7;font-size:13px;overflow-wrap:anywhere}
+.mailitem .sm{margin-top:8px}.muted{color:#8493ad!important}
+.mbs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.mb{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border:1px solid color-mix(in srgb,var(--c,#7f8db0),transparent 40%);border-radius:99px;background:#ffffff0a;font-size:12px;font-weight:700;color:#e8eefc}
+.mb.key{border-color:#ff3b3b99;color:#ffb3b3;background:#ff3b3b18}
+.mb .x{background:none;border:0;color:#ff9aac;cursor:pointer;padding:0 0 0 2px;font-size:12px}
+.mb .coin,.mb .gem-icon{width:14px;height:14px}
+@media(max-width:760px){.mail-grid{grid-template-columns:1fr}}
+.admintag{display:inline-flex;align-items:center;margin:3px 3px 0 0;padding:2px 7px;border:1px solid #ff8a8a;border-radius:5px;background:linear-gradient(105deg,#5c1414,#b01e1e 55%,#4a1010);color:#ffe0e0;font-size:9px;font-weight:1000;letter-spacing:.12em;box-shadow:0 0 14px #ff3b3b77;text-shadow:0 0 8px #ffb3b388}
+.shell>header .wallet .key-pill{border-color:#ff3b3b88!important;background:linear-gradient(145deg,#3a1518,#171d2b)!important}
+.key-pill .key-icon{font-style:normal;font-size:18px;line-height:1}
+.ev-banner{margin:0 0 14px;padding:11px 15px;border:1px solid #ffb81f88;border-radius:12px;background:linear-gradient(100deg,#3a2a0c,#1d2132);color:#ffd98a;font-size:13px}
+.ev-banner b{letter-spacing:.08em}
+.crate.admincrate{border-color:#ff3b3b88!important;box-shadow:0 0 28px #ff3b3b33}
+.crate .tag.admin-tag{background:#c21b1b;color:#fff}
+#reveal.r-admin{--g:#ff3b3b;background:radial-gradient(circle,#5c1414 0,#12070a 72%)}
+.crate-group.admin .crate-group-head{border-color:#ff3b3b55}
