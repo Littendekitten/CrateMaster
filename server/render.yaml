@@ -17,3 +17,5 @@ services:
         sync: false
       - key: PUBLIC_SERVER_URL
         value: https://cratemaster.onrender.com
+      - key: ADMIN_UIDS
+        sync: false
