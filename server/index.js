@@ -218,7 +218,7 @@ async function ensurePlayer(uid) {
     const snap = await tx.get(ref);
     if (!snap.exists) {
       tx.set(ref, {
-        coins: 250, gems: 0, discoveredGuns: ['pistol'], indexGemMilestones: 0,
+        coins: 250, gems: 0, adminKeys: 0, discoveredGuns: ['pistol'], indexGemMilestones: 0,
         guns: ['pistol'], skins: ['default'], gun: 'pistol', skin: 'default', hotbar: ['pistol', '', '', '', ''],
         best: 0, kills: 0, xp: 0, runs: 0, sens: 1, vol: 1, bloom: true,
         username: '', displayName: '', updated: FV.serverTimestamp()
@@ -227,10 +227,10 @@ async function ensurePlayer(uid) {
     }
     const d = snap.data() || {}, patch = {};
     if (Object.prototype.hasOwnProperty.call(d, 'newGuns')) patch.newGuns = FV.delete();
-    const defaults = { coins: 250, gems: 0, guns: ['pistol'], skins: ['default'], gun: 'pistol', skin: 'default', hotbar: ['pistol', '', '', '', ''], best: 0, kills: 0, xp: 0, runs: 0, sens: 1, vol: 1, bloom: true, username: '', displayName: '' };
+    const defaults = { coins: 250, gems: 0, adminKeys: 0, guns: ['pistol'], skins: ['default'], gun: 'pistol', skin: 'default', hotbar: ['pistol', '', '', '', ''], best: 0, kills: 0, xp: 0, runs: 0, sens: 1, vol: 1, bloom: true, username: '', displayName: '' };
     for (const [k, v] of Object.entries(defaults)) if (d[k] === undefined || d[k] === null) patch[k] = v;
     // Sanitize existing numeric values before the server-owned economy is used.
-    for (const k of ['coins', 'gems', 'best', 'kills', 'xp', 'runs']) {
+    for (const k of ['coins', 'gems', 'adminKeys', 'best', 'kills', 'xp', 'runs']) {
       const safe = numberAtLeastZero(d[k] === undefined || d[k] === null ? defaults[k] : d[k]);
       if (d[k] !== safe) patch[k] = safe;
     }
