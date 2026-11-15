@@ -583,7 +583,7 @@ async function handleGemApprovePage(q, r, requestUrl) {
 // ---------------------------------------------------------------------------
 // Mailbox: Firestore collection "Mail" (server-only). Gifts are taken from the sender when sending
 // (escrow) and given to the recipient when they claim, so the recipient can be offline.
-// ADMIN_UIDS (env, comma separated Firebase user ids) may attach Admin Keys to mail.
+// Anyone who owns Admin Keys can mail them (taken from their balance). ADMIN_UIDS (env, comma separated Firebase user ids) can also create keys for free.
 // ---------------------------------------------------------------------------
 const MAIL = 'Mail', MAIL_MAX_ITEMS = 10, MAIL_MAX_UNCLAIMED = 50, MAIL_KEEP_CLAIMED_MS = 7 * 86400000;
 const ADMIN_UIDS = new Set(String(process.env.ADMIN_UIDS || '').split(',').map(x => x.trim()).filter(Boolean));
@@ -643,7 +643,7 @@ async function sendMail(uid, body) {
   if (target.uid === uid && !isAdmin) throw Object.assign(new Error('You cannot send mail to yourself.'), { status: 400 });
   const message = cleanMailText(body.message, 140);
   const coins = numberAtLeastZero(body.coins), gems = numberAtLeastZero(body.gems);
-  const adminKeys = isAdmin ? Math.min(1000, numberAtLeastZero(body.adminKeys)) : 0;
+  const adminKeys = Math.min(100000, numberAtLeastZero(body.adminKeys)); // anyone who owns keys can send them; admins (ADMIN_UIDS) create them for free
   const rawItems = Array.isArray(body.items) ? body.items.slice(0, MAIL_MAX_ITEMS + 1) : [];
   if (rawItems.length > MAIL_MAX_ITEMS) throw Object.assign(new Error(`You can attach at most ${MAIL_MAX_ITEMS} items per mail.`), { status: 400 });
   if (coins > 1e9 || gems > 1e7) throw Object.assign(new Error('That amount is too large.'), { status: 400 });
@@ -660,6 +660,12 @@ async function sendMail(uid, body) {
     if (numberAtLeastZero(d.coins) < coins) throw Object.assign(new Error('Not enough KittyCoins.'), { status: 409 });
     if (numberAtLeastZero(d.gems) < gems) throw Object.assign(new Error('Not enough KittyGems.'), { status: 409 });
     d.coins = numberAtLeastZero(d.coins) - coins; d.gems = numberAtLeastZero(d.gems) - gems;
+    if (adminKeys && !isAdmin) {
+      const have = numberAtLeastZero(d.adminKeys);
+      if (have < 1) throw Object.assign(new Error('Invalid request.'), { status: 400 });
+      if (have < adminKeys) throw Object.assign(new Error('Not enough Admin Keys.'), { status: 409 });
+      d.adminKeys = have - adminKeys;
+    }
     for (const it of items) removeOwnedItem(d, it.type, it.id);
     tx.create(mailRef, {
       to: target.uid, toName: target.name, from: uid,
