@@ -20,8 +20,8 @@
 </div>
 
 <div id="menu"><div class="shell">
- <header><div class="logo">CRATE<span>MASTER</span></div><div id="chip"></div><div class="wallet"><div class="pill" title="KittyCoins"><i class="coin"></i><b id="coins">0</b><small>KITTYCOINS</small></div><div class="pill gem-pill" title="KittyGems"><i class="gem-icon"></i><b id="gems">0</b><small>KITTYGEMS</small></div></div></header>
- <nav><button class="tab" data-t="play" onclick="setTab('play')">Play</button><button class="tab" data-t="crates" onclick="setTab('crates')">Crates</button><button class="tab" data-t="locker" onclick="setTab('locker')">Locker</button><button class="tab" data-t="index" onclick="setTab('index')">Index</button><button class="tab" data-t="gemstore" onclick="setTab('gemstore')">Gem Store</button><button class="tab" data-t="trade" onclick="setTab('trade')">Trade</button><button class="tab" data-t="lb" onclick="setTab('lb')">Leaderboard</button><button class="tab" data-t="opt" onclick="setTab('opt')">Options</button></nav>
+ <header><div class="logo">CRATE<span>MASTER</span></div><div id="chip"></div><div class="wallet"><div class="pill" title="KittyCoins"><i class="coin"></i><b id="coins">0</b><small>KITTYCOINS</small></div><div class="pill gem-pill" title="KittyGems"><i class="gem-icon"></i><b id="gems">0</b><small>KITTYGEMS</small></div><div class="pill key-pill" id="keypill" style="display:none" title="Admin Keys"><i class="key-icon">🗝</i><b id="adminkeys">0</b><small>ADMIN KEYS</small></div></div></header>
+ <nav><button class="tab" data-t="play" onclick="setTab('play')">Play</button><button class="tab" data-t="crates" onclick="setTab('crates')">Crates</button><button class="tab" data-t="locker" onclick="setTab('locker')">Locker</button><button class="tab" data-t="index" onclick="setTab('index')">Index</button><button class="tab" data-t="gemstore" onclick="setTab('gemstore')">Gem Store</button><button class="tab" data-t="trade" onclick="setTab('trade')">Trade</button><button class="tab" data-t="mail" onclick="setTab('mail')">Mail<i id="mail-badge" class="mail-badge" style="display:none"></i></button><button class="tab" data-t="lb" onclick="setTab('lb')">Leaderboard</button><button class="tab" data-t="opt" onclick="setTab('opt')">Options</button></nav>
  <section class="pane" id="p-play"><div class="hero"><h1>Survive the bot waves</h1><p id="sub">Fight the bots. Earn KittyCoins. Crack crates.</p><div class="row"><button class="big" id="play" onclick="go()">PLAY</button><button id="endrun" onclick="endRun()" style="display:none">End run</button></div></div>
   <div class="stats" id="stats"></div>
   <p class="hint">WASD move · Shift sprint · Mouse aim · Click shoot · 1–5 / mouse wheel switch hotbar slot · Esc pause. If the mouse doesn’t lock, hold click and drag, or use the arrow keys to look.</p></section>
@@ -43,10 +43,30 @@
     <div class="gemcrate-art"><div class="gemcrate-glow"></div><div class="gemcrate-box"><span>✦</span><b>GEM</b><small>CRATE</small></div><div class="gemcrate-orbit orbit-one"></div><div class="gemcrate-orbit orbit-two"></div></div>
     <div class="gemcrate-copy"><span class="gemcrate-kicker">ONE CRATE · ONE RANDOM WEAPON</span><h3>The KittyGem Crate</h3><p>Contains 40 normal weapons that can also appear in regular crates, plus 10 exclusive GEM-rank weapons. Better rarities are rarer.</p><div class="gemcrate-price"><i class="gem-icon"></i><b>25</b><span>KittyGems per crate</span></div><div class="gemcrate-actions" aria-label="Gem Crate opening options"><button id="open-gem-crate" class="gemcrate-open primary" onclick="openGemCrate(1)">OPEN 1 · 25 GEMS</button><button id="open-gem-crate-10" class="gemcrate-open" onclick="openGemCrate(10)">OPEN 10 · 250 GEMS</button><button id="open-gem-crate-100" class="gemcrate-open" onclick="openGemCrate(100)">OPEN 100 · 2,500 GEMS</button></div><small class="gemcrate-note">Choose a batch size. The server securely rolls every reward and deducts the KittyGems.</small></div>
   </div>
-  <div class="gemcrate-odds"><h3>GEM CRATE DROP RATES</h3><div><span>COMMON</span><b>50%</b></div><div><span>RARE</span><b>25%</b></div><div><span>EPIC</span><b>15%</b></div><div><span>LEGENDARY</span><b>8%</b></div><div><span>GEM RANK</span><b>2%</b></div></div>
+  <div class="ev-banner" id="ev-banner-gem" style="display:none">⚡ <b>ADMIN LUCK EVENT</b> · Secret weapons 0.5% · Legendary odds +30%</div>
+  <div class="gemcrate-odds"><h3>GEM CRATE DROP RATES</h3><div><span>COMMON</span><b id="go-common">50%</b></div><div><span>RARE</span><b id="go-rare">25%</b></div><div><span>EPIC</span><b id="go-epic">15%</b></div><div><span>LEGENDARY</span><b id="go-legendary">8%</b></div><div><span>GEM RANK</span><b id="go-gem">2%</b></div></div>
 </section>
  <section class="pane" id="p-lb"><div id="lb"></div></section>
  <section class="pane" id="p-trade"><div id="trade"></div></section>
+ <section class="pane" id="p-mail">
+  <div class="index-heading"><div><span class="index-eyebrow">PLAYER MAILBOX</span><h2>Mailbox</h2><p>Send KittyCoins, KittyGems, weapons and skins to any player by username, even when they are offline. Gifts wait in their inbox until they claim them.</p></div><button class="sm" onclick="loadMail()">↻ Refresh</button></div>
+  <div class="mail-grid">
+   <div class="mail-box"><h3>INBOX <span id="mail-count"></span></h3><div class="row" style="margin:0 0 8px"><button class="sm" id="mail-claim-all" onclick="claimAllMail()" style="display:none">Claim all</button></div><div id="mail-inbox"></div></div>
+   <div class="mail-box mail-form"><h3>SEND MAIL</h3>
+    <label for="mail-to">To (username)</label>
+    <div class="nr"><input id="mail-to" type="text" maxlength="16" placeholder="Exact username" autocomplete="off"><button class="sm" onclick="mailLookup()">Check</button></div>
+    <small id="mail-to-status" class="mail-status">The player must have set a username in Options.</small>
+    <label for="mail-msg">Message (optional)</label><input id="mail-msg" type="text" maxlength="140" placeholder="Say something nice" autocomplete="off">
+    <div class="mail-amounts"><label>KittyCoins<input id="mail-coins" type="number" min="0" step="1" value="0"></label><label>KittyGems<input id="mail-gems" type="number" min="0" step="1" value="0"></label></div>
+    <label id="mail-keys-wrap" style="display:none">Admin Keys<input id="mail-keys" type="number" min="0" step="1" value="0"></label>
+    <label for="mail-pick">Attach a weapon or skin</label>
+    <div class="nr"><select id="mail-pick"></select><button class="sm" onclick="mailAddItem()">Add</button></div>
+    <div id="mail-attached" class="mbs"></div>
+    <button id="mail-send" class="big" onclick="sendMailForm()">SEND MAIL</button>
+   </div>
+  </div>
+  <div class="mail-box" style="margin-top:14px"><h3>SENT</h3><div id="mail-sent"></div></div>
+ </section>
  <section class="pane" id="p-opt"><div class="opt nick"><label>Username<small>Shown instead of your Google name. Leave empty to use your account name.</small></label><div class="nr"><input type="text" id="o-nick" maxlength="16" placeholder="Pick a username" autocomplete="off" onkeydown="if(event.key==='Enter')saveNick()"><button class="sm" onclick="saveNick()">Save</button></div></div>
   <div class="opt"><label>Mouse sensitivity <b id="v-sens"></b></label><input type="range" id="o-sens" min=".3" max="3" step=".1" oninput="opt()"></div>
   <div class="opt"><label>Volume</label><input type="range" id="o-vol" min="0" max="1" step=".05" oninput="opt()"></div>
