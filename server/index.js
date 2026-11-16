@@ -112,6 +112,9 @@ async function ensureLimitedCrateDocuments() {
 }
 const RARITIES = ['common', 'rare', 'epic', 'legendary'];
 const GEM_CRATE = { cost: 25, weights: { common: 50, rare: 25, epic: 15, legendary: 8, gem: 2 } };
+const WEB_CRATES = { basic:{name:'Basic Web Crate',cost:100,weights:[65,25,9,1]}, elite:{name:'Elite Web Crate',cost:350,weights:[0,55,32,13]}, legendary:{name:'Legendary Web Crate',cost:1000,weights:[0,0,25,75]}, limited_spooky:{name:'Spooky Web Crate',cost:700,weights:[35,30,23,12],limited:true,source:'spooky'}, limited_og:{name:'OG Web Crate',cost:700,weights:[30,30,25,15],limited:true,source:'og'}, limited_easter:{name:'Easter Web Crate',cost:800,weights:[35,30,23,12],limited:true,source:'easter'}, limited_popsicle:{name:'Popsicle Web Crate',cost:850,weights:[35,30,22,13],limited:true,source:'popsicle'}, limited_clover:{name:'Clover Web Crate',cost:900,weights:[30,30,25,15],limited:true,source:'clover'}, limited_christmas:{name:'Christmas Web Crate',cost:1100,weights:[25,30,25,20],limited:true,source:'christmas'} };
+async function webCrateConfig(key){const base=WEB_CRATES[key];if(!base)throw Object.assign(new Error('Unknown Web Crate.'),{status:404});if(base.limited){const snap=await fs.doc('Limited Crates/'+base.source).get();if(!snap.exists||snap.data().enabled!==true)throw Object.assign(new Error('This limited Web Crate is not active.'),{status:404});return {...base,cost:base.cost};}return base;}
+function rollWebCrate(crate){const normalIds=Object.keys(GUN_CATALOG).filter(id=>{const g=GUN_CATALOG[id]||{};return !g.admin&&!g.secret&&!g.gem&&!g.x;});const eventIds=crate.limited?Object.keys(GUN_CATALOG).filter(id=>(GUN_CATALOG[id]||{}).x===crate.source):[];const bands=['common','rare','epic','legendary'];let roll=crypto.randomInt(0,10000)/100,rarity='common';for(let i=0;i<4;i++){roll-=crate.weights[i]||0;if(roll<0){rarity=bands[i];break;}}let pool=crate.limited&&rarity==='legendary'&&eventIds.length?eventIds.filter(id=>String(GUN_CATALOG[id].r||'common').toLowerCase()===rarity):[];if(!pool.length)pool=normalIds.filter(id=>String(GUN_CATALOG[id].r||'common').toLowerCase()===rarity);if(!pool.length)pool=normalIds.filter(id=>String(GUN_CATALOG[id].r||'common').toLowerCase()==='common');if(!pool.length)pool=eventIds;if(!pool.length)throw new Error('This Web Crate has no valid weapon drops.');const id=pool[crypto.randomInt(pool.length)];return {type:'guns',id,name:GUN_CATALOG[id].n,rarity:GUN_CATALOG[id].r||rarity};}
 const actionRates = new Map();
 
 function cors(res) {
@@ -204,7 +207,7 @@ function registerDiscoveries(data, ids) {
 function playerView(data) {
   const clean = { ...data };
   sanitizePlayerCatalogue(clean);
-  const scalarDefaults = { coins: 250, gems: 0, adminKeys: 0, indexGemMilestones: 0, best: 0, kills: 0, xp: 0, runs: 0, gun: 'pistol', skin: 'default' };
+  const scalarDefaults = { coins: 250, gems: 0, webCredits: 0, multiplayerWins: 0, multiplayerLosses: 0, multiplayerKills: 0, multiplayerHeadshots: 0, adminKeys: 0, indexGemMilestones: 0, best: 0, kills: 0, xp: 0, runs: 0, gun: 'pistol', skin: 'default' };
   const out = {
     guns: [...clean.guns], skins: [...clean.skins], discoveredGuns: [...clean.discoveredGuns],
     hotbar: [...clean.hotbar]
@@ -218,7 +221,7 @@ async function ensurePlayer(uid) {
     const snap = await tx.get(ref);
     if (!snap.exists) {
       tx.set(ref, {
-        coins: 250, gems: 0, adminKeys: 0, discoveredGuns: ['pistol'], indexGemMilestones: 0,
+        coins: 250, gems: 0, webCredits: 0, multiplayerWins: 0, multiplayerLosses: 0, multiplayerKills: 0, multiplayerHeadshots: 0, adminKeys: 0, discoveredGuns: ['pistol'], indexGemMilestones: 0,
         guns: ['pistol'], skins: ['default'], gun: 'pistol', skin: 'default', hotbar: ['pistol', '', '', '', ''],
         best: 0, kills: 0, xp: 0, runs: 0, sens: 1, vol: 1, bloom: true,
         username: '', displayName: '', updated: FV.serverTimestamp()
@@ -227,10 +230,10 @@ async function ensurePlayer(uid) {
     }
     const d = snap.data() || {}, patch = {};
     if (Object.prototype.hasOwnProperty.call(d, 'newGuns')) patch.newGuns = FV.delete();
-    const defaults = { coins: 250, gems: 0, adminKeys: 0, guns: ['pistol'], skins: ['default'], gun: 'pistol', skin: 'default', hotbar: ['pistol', '', '', '', ''], best: 0, kills: 0, xp: 0, runs: 0, sens: 1, vol: 1, bloom: true, username: '', displayName: '' };
+    const defaults = { coins: 250, gems: 0, webCredits: 0, multiplayerWins: 0, multiplayerLosses: 0, multiplayerKills: 0, multiplayerHeadshots: 0, adminKeys: 0, guns: ['pistol'], skins: ['default'], gun: 'pistol', skin: 'default', hotbar: ['pistol', '', '', '', ''], best: 0, kills: 0, xp: 0, runs: 0, sens: 1, vol: 1, bloom: true, username: '', displayName: '' };
     for (const [k, v] of Object.entries(defaults)) if (d[k] === undefined || d[k] === null) patch[k] = v;
     // Sanitize existing numeric values before the server-owned economy is used.
-    for (const k of ['coins', 'gems', 'adminKeys', 'best', 'kills', 'xp', 'runs']) {
+    for (const k of ['coins', 'gems', 'webCredits', 'multiplayerWins', 'multiplayerLosses', 'multiplayerKills', 'multiplayerHeadshots', 'adminKeys', 'best', 'kills', 'xp', 'runs']) {
       const safe = numberAtLeastZero(d[k] === undefined || d[k] === null ? defaults[k] : d[k]);
       if (d[k] !== safe) patch[k] = safe;
     }
@@ -946,6 +949,21 @@ const server = http.createServer(async (q, r) => {
         lbCache.delete('money'); sendJson(r, 200, result); return;
       }
 
+      if (path === '/api/webcredits/open-crate') {
+        rateLimit(uid, 'webcrate-open', 20, 60000);
+        const key=String(body.crate||'');
+        const crate=await webCrateConfig(key);
+        const item=rollWebCrate(crate);
+        const result=await updatePlayerEconomy(uid, async d=>{
+          if(numberAtLeastZero(d.webCredits)<crate.cost)throw Object.assign(new Error('Not enough WebCredits.'),{status:409});
+          d.webCredits=numberAtLeastZero(d.webCredits)-crate.cost;
+          const ownedBefore=collectionBoostUnlocked(d);
+          const awarded=applyDrop(d,item,ownedBefore);
+          return {ok:true,crate:key,cost:crate.cost,item:awarded,rewards:{indexGems:awarded.indexGems||0}};
+        });
+        sendJson(r,200,result);return;
+      }
+
       if (path === '/api/economy/open-gem-crate') {
         rateLimit(uid, 'gem-crate-open', 20, 60000);
         const quantity = numberAtLeastZero(body.quantity || 1);
@@ -975,6 +993,21 @@ const wss = new WebSocketServer({ server, maxPayload: 8192 });
 
 const users = new Map();   // uid -> { ws, name, trade }
 const trades = new Map();  // id  -> { id, a, b, active, offers, ready, to, busy }
+const matchQueue=[];
+const matches=new Map();
+const MP_GOAL=5, MP_DURATION=180000;
+const MP_OBSTACLES=[[-21,-20,1.2,1.5,3.1],[-11,-21,1.6,1.1,2.8],[2,-21,1.1,1.7,3.3],[16,-20,1.7,1.2,2.7],[23,-10,1.1,1.5,3.5],[18,5,1.4,1.1,2.5],[20,20,1.7,1.5,3.2],[7,21,1.2,1.8,2.8],[-8,21,1.8,1.1,3.4],[-22,19,1.2,1.5,2.6],[-23,5,1.8,1.2,3.0],[-15,-5,1.1,1.6,2.6],[15,-5,1.3,1.6,3.2],[0,13,1.7,1.2,2.9],[0,-13,1.5,1.1,2.7],[-5,4,1.1,1.1,3.1],[-19,-8,1.1,1.1,2.2],[-9,-12,1.1,1.1,2.2],[10,-12,1.1,1.1,2.2],[19,10,1.1,1.1,2.2],[9,12,1.1,1.1,2.2],[-18,11,1.1,1.1,2.2]];
+function mpCollide(p){for(let it=0;it<2;it++){p.x=Math.max(-29,Math.min(29,p.x));p.z=Math.max(-29,Math.min(29,p.z));for(const [x,z,w,d] of MP_OBSTACLES){const dx=p.x-x,dz=p.z-z,ox=w+.4-Math.abs(dx),oz=d+.4-Math.abs(dz);if(ox>0&&oz>0){if(ox<oz)p.x+=ox*(dx<0?-1:1);else p.z+=oz*(dz<0?-1:1);}}}}
+function mpLineBlocked(a,b){const dx=b.x-a.x,dz=b.z-a.z;for(const [x,z,w,d,h] of MP_OBSTACLES){if(h<1.7)continue;const minX=x-w-.12,maxX=x+w+.12,minZ=z-d-.12,maxZ=z+d+.12;let t0=0,t1=1;for(const [origin,delta,min,max] of [[a.x,dx,minX,maxX],[a.z,dz,minZ,maxZ]]){if(Math.abs(delta)<1e-8){if(origin<min||origin>max){t0=2;break;}}else{let u0=(min-origin)/delta,u1=(max-origin)/delta;if(u0>u1)[u0,u1]=[u1,u0];t0=Math.max(t0,u0);t1=Math.min(t1,u1);}}if(t0<=t1&&t1>0.02&&t0<0.98)return true;}return false;}
+function mpSend(uid,payload){const u=users.get(uid);if(u)send(u.ws,payload);}
+function mpState(m){for(const uid of [m.a,m.b]){const p=m.players[uid];mpSend(uid,{t:'mp-state',id:m.id,players:[m.players[m.a],m.players[m.b]].map(x=>({id:x.uid===m.a?'a':'b',name:x.name,x:x.x,z:x.z,yaw:x.yaw,hp:x.hp,kills:x.kills,deaths:x.deaths,headshots:x.headshots,alive:x.alive})),self:uid===m.a?'a':'b',endsAt:m.endsAt,goal:MP_GOAL});}}
+function mpFinish(m,winner,reason='complete'){if(!m||m.ended)return;m.ended=true;matches.delete(m.id);for(const uid of [m.a,m.b]){const p=m.players[uid],won=uid===winner,participation=reason==='opponent-left'&&!won?0:10,reward=participation+p.kills*5+p.headshots*3+(won?25:0);updatePlayerEconomy(uid,async d=>{d.webCredits=numberAtLeastZero(d.webCredits)+reward;d.multiplayerKills=numberAtLeastZero(d.multiplayerKills)+p.kills;d.multiplayerHeadshots=numberAtLeastZero(d.multiplayerHeadshots)+p.headshots;if(won)d.multiplayerWins=numberAtLeastZero(d.multiplayerWins)+1;else if(winner!==null)d.multiplayerLosses=numberAtLeastZero(d.multiplayerLosses)+1;return {ok:true};}).then(r=>mpSend(uid,{t:'mp-end',id:m.id,result:winner===null?'draw':won?'win':'loss',reason,reward,stats:{kills:p.kills,deaths:p.deaths,headshots:p.headshots},player:r.player})).catch(e=>{console.error('MP reward failed',e);mpSend(uid,{t:'mp-end',id:m.id,result:'unranked',reason,reward:0,error:'Rewards could not be saved'});});const u=users.get(uid);if(u)u.match=null;} }
+async function mpStart(a,b,reservation){const [sa,sb]=await Promise.all([fs.doc('users/'+a).get(),fs.doc('users/'+b).get()]);if(!users.has(a)||!users.has(b)||users.get(a).match!==reservation||users.get(b).match!==reservation){for(const uid of [a,b]){const u=users.get(uid);if(u&&u.match===reservation){u.match=null;mpSend(uid,{t:'err',m:'Your opponent disconnected while the match was starting.'});}}return;}const da=sa.data()||{},db=sb.data()||{},id=crypto.randomBytes(8).toString('hex'),now=Date.now(),m={id,a,b,startedAt:now,endsAt:now+MP_DURATION,ended:false,players:{}};for(const uid of [a,b]){const u=users.get(uid),d=uid===a?da:db,gun=Array.isArray(d.guns)&&d.guns.includes(d.gun)?d.gun:'pistol';m.players[uid]={uid,name:u?.name||'Player',x:uid===a?-8:8,z:0,yaw:uid===a?-Math.PI/2:Math.PI/2,gun,ownedGuns:(Array.isArray(d.guns)?d.guns.filter(id=>GUN_CATALOG[id]):['pistol']),hp:100,kills:0,deaths:0,headshots:0,alive:true,lastInput:now,lastShot:0,respawnAt:0,move:{f:0,r:0},pitch:0};if(u)u.match=id;}matches.set(id,m);for(const uid of [a,b])mpSend(uid,{t:'mp-start',id,endsAt:m.endsAt,goal:MP_GOAL,spawn:{x:m.players[uid].x,z:m.players[uid].z,yaw:m.players[uid].yaw}});mpState(m);}
+function mpQueue(uid){const u=users.get(uid);if(!u||u.trade||u.match)return false;const i=matchQueue.indexOf(uid);if(i>=0)return true;matchQueue.push(uid);while(matchQueue.length){const a=matchQueue.shift();if(!users.has(a)||users.get(a).match)continue;const b=matchQueue.shift();if(!b){matchQueue.unshift(a);break;}if(!users.has(b)||users.get(b).match){matchQueue.unshift(a);continue;}const reservation='starting:'+crypto.randomBytes(6).toString('hex');users.get(a).match=reservation;users.get(b).match=reservation;mpStart(a,b,reservation).catch(e=>{console.error('Match start failed',e);for(const id of [a,b]){const x=users.get(id);if(x&&x.match===reservation)x.match=null;mpSend(id,{t:'err',m:'Could not start match'});}});return true;}return true;}
+function mpLeave(uid){const i=matchQueue.indexOf(uid);if(i>=0)matchQueue.splice(i,1);const u=users.get(uid);if(u?.match){const m=matches.get(u.match);if(m&&!m.ended)mpFinish(m,uid===m.a?m.b:m.a,'opponent-left');u.match=null;}}
+function mpInput(uid,m){const u=users.get(uid),match=u?.match,game=match&&matches.get(match);if(!game||game.ended)return;const p=game.players[uid],now=Date.now();if(now-(p.lastPacketAt||0)<25)return;p.lastPacketAt=now;const dt=Math.min(.08,Math.max(.005,(now-p.lastInput)/1000));p.lastInput=now;p.yaw=Number.isFinite(+m.yaw)?Math.atan2(Math.sin(+m.yaw),Math.cos(+m.yaw)):p.yaw;p.pitch=Math.max(-1.35,Math.min(1.35,Number(m.pitch)||0));p.move={f:Math.max(-1,Math.min(1,Number(m.f)||0)),r:Math.max(-1,Math.min(1,Number(m.r)||0))};if(typeof m.gun==='string'&&p.ownedGuns.includes(m.gun))p.gun=m.gun;if(p.alive){const f=p.move.f,r=p.move.r,l=Math.hypot(f,r)||1,speed=(m.sprint?10:7.2)*dt;p.x+=(-Math.sin(p.yaw)*f+Math.cos(p.yaw)*r)/l*speed;p.z+=(-Math.cos(p.yaw)*f-Math.sin(p.yaw)*r)/l*speed;mpCollide(p);p.x=Math.max(-29,Math.min(29,p.x));p.z=Math.max(-29,Math.min(29,p.z));}if(m.fire)mpFire(game,p);}
+function mpFire(game,p){const now=Date.now(),weapon=GUN_CATALOG[p.gun]||GUN_CATALOG.pistol,rate=Math.max(120,Math.min(1100,(Number(weapon.f)||.24)*1000));if(!p.alive||now-p.lastShot<rate)return;p.lastShot=now;const target=game.players[p.uid===game.a?game.b:game.a];if(!target?.alive)return;const dx=target.x-p.x,dz=target.z-p.z,dist=Math.hypot(dx,dz);if(dist>65||dist<.1||mpLineBlocked(p,target))return;const fx=-Math.sin(p.yaw),fz=-Math.cos(p.yaw),dot=(dx/dist)*fx+(dz/dist)*fz;if(dot<.994)return;const cross=Math.abs(dx*fz-dz*fx);if(cross>Math.max(.65,dist*.055))return;const aimHeight=Math.tan(p.pitch)*dist;if(aimHeight<-.9||aimHeight>.5)return;const head=aimHeight>.05,damage=head?100:Math.max(15,Math.min(55,Number(weapon.d)||24));target.hp-=damage;mpSend(p.uid,{t:'mp-hit',damage,head});mpSend(target.uid,{t:'mp-damaged',damage,head,by:p.name});if(target.hp<=0){target.alive=false;target.deaths++;p.kills++;if(head)p.headshots++;mpSend(p.uid,{t:'mp-feed',text:(head?'HEADSHOT':'ELIMINATION')+' · +'+(head?8:5)+' WebCredits (pending)'});if(p.kills>=MP_GOAL){mpFinish(game,p.uid);return;}target.respawnAt=now+2200;target.hp=0;}mpState(game);}
+setInterval(()=>{const now=Date.now();for(const m of matches.values()){if(now>=m.endsAt){const a=m.players[m.a],b=m.players[m.b];mpFinish(m,a.kills===b.kills?null:(a.kills>b.kills?m.a:m.b),'time');continue;}for(const uid of [m.a,m.b]){const p=m.players[uid];if(!p.alive&&p.respawnAt&&now>=p.respawnAt){p.alive=true;p.hp=100;p.x=uid===m.a?-8:8;p.z=0;}}mpState(m);}},100);
 const send = (ws, o) => { if (ws && ws.readyState === 1) ws.send(JSON.stringify(o)); };
 const cleanName = s => String(s || '').replace(/[<>&"'`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 16) || 'Player';
 const gfirst = new Map(); // uid -> first name of the Google account
@@ -1064,12 +1097,16 @@ async function onMsg(ws, m) {
     const uid = dec.uid;
     gfirst.set(uid, cleanName(String(dec.name || '').trim().split(' ')[0]));
     let name = await resolveName(uid);
-    const old = users.get(uid); if (old && old.ws !== ws) { try { old.ws.close(); } catch (e) {} }
+    const old = users.get(uid); if (old && old.ws !== ws) { mpLeave(uid); if(old.trade){const activeTrade=trades.get(old.trade);if(activeTrade&&!activeTrade.busy)endTrade(activeTrade,'Account reconnected');} try { old.ws.close(); } catch (e) {} }
     ws.uid = uid; users.set(uid, { ws, name, trade: null });
     rtdb.ref('presence/' + uid).set({ name, ts: Date.now() }).catch(() => {});
     return send(ws, { t: 'ready', name });
   }
   const uid = ws.uid, me = users.get(uid); if (!uid || !me) return;
+  if(m.t==='mp-queue'){if(me.trade||me.match)return send(ws,{t:'err',m:'Finish your trade or current match first'});mpQueue(uid);if(!me.match)return send(ws,{t:'mp-queued',position:Math.max(1,matchQueue.indexOf(uid)+1)});return;}
+  if(m.t==='mp-cancel'){mpLeave(uid);return send(ws,{t:'mp-cancelled'});}
+  if(m.t==='mp-input'){mpInput(uid,m);return;}
+  if(m.t==='mp-fire'){const game=me.match&&matches.get(me.match);if(game)mpFire(game,game.players[uid]);return;}
 
   if (m.t === 'name') {  // client changed username: refresh
     me.name = await resolveName(uid);
@@ -1127,6 +1164,7 @@ wss.on('connection', ws => {
     clearTimeout(authT);
     const uid = ws.uid, u = uid && users.get(uid);
     if (u && u.ws === ws) {
+      mpLeave(uid);
       if (u.trade) { const tr = trades.get(u.trade); if (tr && !tr.busy) endTrade(tr, 'The other player disconnected'); }
       users.delete(uid); rtdb.ref('presence/' + uid).remove().catch(() => {});
     }
@@ -1139,6 +1177,7 @@ async function startServer() {
   // idempotent: it never overwrites a price or enabled flag that already exists.
   try {
     const result = await ensureLimitedCrateDocuments();
+    
     console.log('Limited Crates config ready:', result);
   } catch (error) {
     // Keep the service online if Firestore is temporarily unavailable. Missing
